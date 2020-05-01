@@ -28,7 +28,7 @@ from listPrint import print_list
 
 def takeDir():
     # songDir = input("enter song dir:  ")
-    songDir = r'C:\Users\hritwik\Music'
+    songDir = r'C:\Users\hritwik\Pictures\Camera Roll'
 
     print("Song dir is: ", songDir)
     return songDir
@@ -50,8 +50,8 @@ def change(full_path_of_songs, songDir):
     full_path_of_songs = addFullPath(songDir)
     print('Now in ', songDir, ' and: ')
     try:
-        artistName.start(full_path_of_songs)
-        # composerName.start(full_path_of_songs)
+        # artistName.start(full_path_of_songs)
+        composerName.start(full_path_of_songs)
         # albumName.start(full_path_of_songs)
         # full_path_of_songs = songName.start(full_path_of_songs)
         print()
