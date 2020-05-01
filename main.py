@@ -48,10 +48,11 @@ def getFullPath(songDir):
 
 
 def changeSongTags(songNameWithPath, tags, songDir, full_path_of_songs):
-    # artistName.start(tags)
+    artistName.start(tags)
     albumName.start(tags)
-    # composerName.start(tags)
-    # songName.start(songDir, full_path_of_songs, songNameWithPath)
+    composerName.start(tags)
+    songName.start(songDir, full_path_of_songs, songNameWithPath)
+    # songTitle.start(tags)
     print()
 
 
@@ -77,7 +78,7 @@ def start():
             songDir = dirPath
             handleSongs(songDir)
     else:
-        print("Only changinig attributes in: ", songDir, "...\n")
+        print("Only changing attributes in: ", songDir, "...\n")
         handleSongs(songDir)
 
 
