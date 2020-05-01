@@ -24,18 +24,25 @@ def getFullPath(songDir):
     return full_path_of_songs
 
 
+def changeSongName(songDir, full_path_of_songs):
+    for songNameWithPath in full_path_of_songs:
+        songName.start(songDir, full_path_of_songs, songNameWithPath)
+    print()
+
+
 def changeSongTags(songNameWithPath, tags, songDir, full_path_of_songs):
     artistName.start(tags)
     albumName.start(tags)
     composerName.start(tags)
-    songName.start(songDir, full_path_of_songs, songNameWithPath)
-    # songTitle.start(tags)
+    songTitle.start(tags)
     print()
 
 
 def handleSongs(songDir):
     full_path_of_songs = getFullPath(songDir)
     print('Now in ', songDir)
+
+    changeSongName(songDir, full_path_of_songs)
 
     for songNameWithPath in full_path_of_songs:
         tags = easyid3(songNameWithPath)

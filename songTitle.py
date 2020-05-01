@@ -7,12 +7,14 @@ def modifyTitle(tags):
     print("Curr Title: ", tags['title'][0])
 
     oldTitle = tags['title'][0]
-    newTitle =
-    # if oldTitle != newAlbumName:
-    #     tags['album'] = newAlbumName
-    #     tags.save()
-    #     print("New Album Name : ", newAlbumName)
+    newTitle = removeSiteName(oldTitle)
+
+    if oldTitle != newTitle:
+        tags['title'] = newTitle
+        tags.save()
+        print("New Title : ", newTitle)
 
 
 def start(tags):
     modifyTitle(tags)
+

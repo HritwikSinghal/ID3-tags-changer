@@ -24,14 +24,16 @@ def removeNonUtf8(oldName):
 
 def removeSiteName(oldName):
     # only supported DJMXXX as of now
-    # newName = re.sub(r'', '', newName)
+    # and removes everything after djmaza including
+    # .mp3 extension. So re-add it.
+
     x = re.compile(r'''
     (
     \s*-*\s*                                # for foo - bar
     \[*                                     # for foo [bar or foo [bar]
+    w*\.*                                   # for www.foobar
     (d|D)(j|J)(m|M)aza
-    \.*
-    [^.mp3]*                                # stop at .mp3
+    .*                                   # for foobar.XXX XXX XXX
     )
     ''', re.VERBOSE)
 
