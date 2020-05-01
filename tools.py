@@ -1,3 +1,4 @@
+import os
 import re
 
 
@@ -38,10 +39,21 @@ def removeSiteName(oldName):
     return newName
 
 
-def removeTrailingExtras():
+def removeTrailingExtras(oldName):
     pass
 
 
 def removeYear(oldName):
     newName = re.sub(r' \(\d*\)', '', oldName)
     return newName
+
+
+def print_list(my):
+    print('--------------')
+    for _ in my:
+        print(_)
+    print('--------------\n')
+
+
+def changeDir(songDir):
+    os.chdir(songDir)

@@ -1,9 +1,4 @@
-import os, re
-from tools import removeBitrate, removeNonUtf8, removeSiteName
-
-
-def changeDir(songDir):
-    os.chdir(songDir)
+from tools import *
 
 
 def joinPathAndRename(oldNameWithPath, newName, full_path_of_songs):

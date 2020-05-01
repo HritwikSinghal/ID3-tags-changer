@@ -1,4 +1,4 @@
-from tools import removeYear, removeNonUtf8
+from tools import *
 
 
 def modifyAlbum(tags):
