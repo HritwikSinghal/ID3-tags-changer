@@ -49,36 +49,32 @@ def removeTrailingExtras():
     pass
 
 
-def pathJoinRename(name):
-    pass
-    # if newActualName[0] != oldName[0]:
-    #     os.rename(songNameWithPath, newName)
-    #     print("New Name    : ", newActualName[0])
-    #     full_path_of_songs[i] = newName
-    # old
-    # method
-    # newName = re.findall(r'(.+) \[.*\](.mp3)', songNameWithPath)
+def joinPathAndRename(oldNameWithPath, newName, full_path_of_songs):
+    i = full_path_of_songs.index(oldNameWithPath)
+    newNameWithPath = os.path.join(os.getcwd(), newName)
+    full_path_of_songs[i] = newNameWithPath
+    os.rename(oldNameWithPath, newNameWithPath)
+    return full_path_of_songs
 
 
-def filterName(full_path_of_songs):
-    print("-------------Filtering song name...-------------")
+def fixName(full_path_of_songs):
+    print("-------------Fixing song names...-------------")
 
     for songNameWithPath in full_path_of_songs:
         oldName = re.findall(r'[^\\]+\.mp3', songNameWithPath)
-        # print("Current Name: ", oldName[0])
-        print(oldName[0])
+        print("Current Name: ", oldName[0])
 
         newName = removeBitrate(oldName[0])
         newName = removeNonUtf8(newName)
         newName = removeSiteName(newName)
+        if oldName[0] != newName:
+            print("New Name    : ", newName)
+            full_path_of_songs = joinPathAndRename(songNameWithPath, newName, full_path_of_songs)
 
-        print(newName)
-        print()
-
-    print("-------------Filtering song name Done.-------------")
+    print("-------------Fixing song names Done.-------------")
     return full_path_of_songs
 
 
 def start(full_path_of_songs, songDir):
     changeDir(songDir)
-    full_path_of_songs = filterName(full_path_of_songs)
+    full_path_of_songs = fixName(full_path_of_songs)

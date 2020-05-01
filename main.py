@@ -26,7 +26,7 @@ import albumName, artistName, composerName, songName, songTitle
 from listPrint import print_list
 
 
-def takeDir():
+def inputSongDir():
     # songDir = input("enter song dir:  ")
     songDir = r'C:\Users\hritwik\Pictures\Camera Roll'
 
@@ -62,7 +62,7 @@ def change(songDir):
 
 def start():
     # taking songs directory
-    songDir = takeDir()
+    songDir = inputSongDir()
 
     # resp = input("\nDo you want walk down?\ny == Yes, n == No\n") == 'y'
     resp = False
