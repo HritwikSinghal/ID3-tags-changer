@@ -5,7 +5,7 @@ def filterIndArtist(tags):
     currArtist = tags['artist']
     print("Curr Artist: ", currArtist[0])
 
-    currArtist[0] = re.sub(r' &\w+|/\s*|,\s*', ';', currArtist[0])
+    currArtist[0] = re.sub(r'\s*&\s*|\s*/\s*|\s*,\s*', ';', currArtist[0])
     currArtist[0] = re.sub(r';\s*;\s*|;\s*', '; ', currArtist[0])
 
     # old one

@@ -7,21 +7,21 @@ def removeYearAndExtraCharIfExist(tags):
     newName = re.sub(r' \(\d*\)|&quot;', '', albumName)
     if newName != albumName:
         tags['album'] = newName
-        tags.save()
+        # tags.save()
 
 
 def modifyAlbum(tags):
-    oldAlbumName = tags['album'][0]
-    print("Curr Album Name: ", oldAlbumName)
+    print("Curr Album Name: ", tags['album'][0])
 
     removeYearAndExtraCharIfExist(tags)
+    oldAlbumName = tags['album'][0]
 
     newAlbumName = tags['album'][0] + ' (' + tags['date'][0] + ')'
 
     if oldAlbumName != newAlbumName:
         tags['album'] = newAlbumName
         tags.save()
-        print("New Album Name : ", tags['album'][0])
+        print("New Album Name : ", newAlbumName)
 
 
 def start(tags):

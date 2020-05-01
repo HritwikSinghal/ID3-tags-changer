@@ -49,10 +49,9 @@ def getFullPath(songDir):
 
 def changeSongTags(songNameWithPath, tags, songDir, full_path_of_songs):
     # artistName.start(tags)
-    # albumName.start(tags)
+    albumName.start(tags)
     # composerName.start(tags)
-    songName.start(songDir, full_path_of_songs, songNameWithPath)
-    print_list(full_path_of_songs)
+    # songName.start(songDir, full_path_of_songs, songNameWithPath)
     print()
 
 
