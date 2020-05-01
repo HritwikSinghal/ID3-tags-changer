@@ -24,17 +24,18 @@
 import os, re, traceback
 import albumName, artistName, composerName, songName, songTitle
 from listPrint import print_list
+from mutagen.easyid3 import EasyID3 as easyid3
 
 
 def inputSongDir():
-    # songDir = input("enter song dir:  ")
+    # songDir = input("Enter song dir:  ")
     songDir = r'C:\Users\hritwik\Pictures\Camera Roll'
 
     print("Song dir is: ", songDir)
     return songDir
 
 
-def addFullPath(songDir):
+def getFullPath(songDir):
     files_in_dir = os.listdir(songDir)
 
     full_path_of_songs = []
@@ -46,38 +47,42 @@ def addFullPath(songDir):
     return full_path_of_songs
 
 
-def change(songDir):
-    full_path_of_songs = addFullPath(songDir)
-    print('Now in ', songDir, ' and: ')
-    try:
-        # artistName.start(full_path_of_songs)
-        # composerName.start(full_path_of_songs)
-        # albumName.start(full_path_of_songs)
-        full_path_of_songs = songName.start(full_path_of_songs, songDir)
-        # songTitle.start()
-        print()
-    except Exception:
-        print(traceback.format_exc())
+def changeSongTags(songNameWithPath, tags, songDir, full_path_of_songs):
+    # artistName.start(tags)
+    # albumName.start(tags)
+    # composerName.start(tags)
+    songName.start(songDir, full_path_of_songs, songNameWithPath)
+    print_list(full_path_of_songs)
+    print()
+
+
+def handleSongs(songDir):
+    full_path_of_songs = getFullPath(songDir)
+    print('Now in ', songDir)
+
+    for songNameWithPath in full_path_of_songs:
+        tags = easyid3(songNameWithPath)
+        print("Song title: ", tags['title'][0])
+        changeSongTags(songNameWithPath, tags, songDir, full_path_of_songs)
 
 
 def start():
     # taking songs directory
     songDir = inputSongDir()
 
-    # resp = input("\nDo you want walk down?\ny == Yes, n == No\n") == 'y'
+    # resp = input("\nDo you want walk down?\n1 == Yes, 0 == No\n") == '1'
     resp = False
     if resp:
-        print("walking down ", songDir, "...")
+        print("Walking down ", songDir, "...")
         for dirPath, subDirName, fileNames in (os.walk(songDir, topdown=True)):
             songDir = dirPath
-            change(songDir)
+            handleSongs(songDir)
     else:
-        print("Only changinig attributes in: ", songDir, " Dir...\n")
-        change(songDir)
+        print("Only changinig attributes in: ", songDir, "...\n")
+        handleSongs(songDir)
 
 
 start()
 
 # ex = 'Samuel &amp; Akanksha/Samuel &amp; Akanksha &amp; Jubin Nautiyal/Jubin Nautiyal'
-
 # print(re.findall(r'', ex))

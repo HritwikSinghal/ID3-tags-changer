@@ -54,27 +54,20 @@ def joinPathAndRename(oldNameWithPath, newName, full_path_of_songs):
     newNameWithPath = os.path.join(os.getcwd(), newName)
     full_path_of_songs[i] = newNameWithPath
     os.rename(oldNameWithPath, newNameWithPath)
-    return full_path_of_songs
 
 
-def fixName(full_path_of_songs):
-    print("-------------Fixing song names...-------------")
+def fixName(full_path_of_songs, songNameWithPath):
+    oldName = re.findall(r'[^\\]+\.mp3', songNameWithPath)
+    print("Current Name: ", oldName[0])
 
-    for songNameWithPath in full_path_of_songs:
-        oldName = re.findall(r'[^\\]+\.mp3', songNameWithPath)
-        print("Current Name: ", oldName[0])
-
-        newName = removeBitrate(oldName[0])
-        newName = removeNonUtf8(newName)
-        newName = removeSiteName(newName)
-        if oldName[0] != newName:
-            print("New Name    : ", newName)
-            full_path_of_songs = joinPathAndRename(songNameWithPath, newName, full_path_of_songs)
-
-    print("-------------Fixing song names Done.-------------")
-    return full_path_of_songs
+    newName = removeBitrate(oldName[0])
+    newName = removeNonUtf8(newName)
+    newName = removeSiteName(newName)
+    if oldName[0] != newName:
+        print("New Name    : ", newName)
+        joinPathAndRename(songNameWithPath, newName, full_path_of_songs)
 
 
-def start(full_path_of_songs, songDir):
+def start(songDir, full_path_of_songs, songNameWithPath):
     changeDir(songDir)
-    full_path_of_songs = fixName(full_path_of_songs)
+    fixName(full_path_of_songs, songNameWithPath)

@@ -3,25 +3,16 @@ import re, artistName
 from listPrint import print_list
 
 
-def append_composer(full_path_of_songs):
-    print("-------------Changing Composers...-------------")
-
-    for song in full_path_of_songs:
-        audio = easyid3(song)
-
-        print("Song title: ", audio['title'][0])
-        if 'composer' in audio.keys() and audio['composer'][0] != '':
-            print("Composer: ", audio['composer'][0])
-        else:
-            print("Curr Composer: None")
-            artistName.modifyArtist(audio)
-            audio['composer'] = audio['artist'][0]
-            audio.save()
-            print("New Composer: ", audio['composer'][0])
-
-        print()
-    print("-------------Changing Composers Done.-------------")
+def modifyComposer(tags):
+    if 'composer' in tags.keys() and tags['composer'][0] != '':
+        print("Composer: ", tags['composer'][0])
+    else:
+        print("Curr Composer: None")
+        artistName.filterIndArtist(tags)
+        tags['composer'] = tags['artist'][0]
+        tags.save()
+        print("New Composer: ", tags['composer'][0])
 
 
-def start(full_path_of_songs):
-    append_composer(full_path_of_songs)
+def start(tags):
+    modifyComposer(tags)

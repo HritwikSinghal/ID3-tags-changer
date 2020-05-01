@@ -1,43 +1,28 @@
 from mutagen.easyid3 import EasyID3 as easyid3
 import re
-from listPrint import print_list
 
 
-def removeYearAndExtraCharIfExist(full_path_of_songs):
-    print("--Removing Year If Exists in Album Name ....--")
-
-    for song in full_path_of_songs:
-        tags = easyid3(song)
-        albumName = tags['album'][0]
-        print("Curr Name: ", albumName)
-
-        # old method
-        # newName = re.findall(r'(.*) \(\d+\)', albumName)
-        newName = re.sub(r' \(\d*\)|&quot;', '', albumName)
-        if newName != albumName:
-            print("New Name : ", newName)
-            tags['album'] = newName
-            tags.save()
-
-    print("--Removing Year Done--")
-
-
-def renameAlbum(full_path_of_songs):
-    print("-------------Renaming album names....-------------")
-
-    removeYearAndExtraCharIfExist(full_path_of_songs)
-
-    # rename album name
-    for song in full_path_of_songs:
-        tags = easyid3(song)
-        tags['album'] = (tags['album'][0] +
-                         ' (' + tags['date'][0] + ')')
-
+def removeYearAndExtraCharIfExist(tags):
+    albumName = tags['album'][0]
+    newName = re.sub(r' \(\d*\)|&quot;', '', albumName)
+    if newName != albumName:
+        tags['album'] = newName
         tags.save()
-        print("New Name : ", tags['album'][0])
-
-    print("-------------Renaming album names Done.-------------")
 
 
-def start(full_path_of_songs):
-    renameAlbum(full_path_of_songs)
+def modifyAlbum(tags):
+    oldAlbumName = tags['album'][0]
+    print("Curr Album Name: ", oldAlbumName)
+
+    removeYearAndExtraCharIfExist(tags)
+
+    newAlbumName = tags['album'][0] + ' (' + tags['date'][0] + ')'
+
+    if oldAlbumName != newAlbumName:
+        tags['album'] = newAlbumName
+        tags.save()
+        print("New Album Name : ", tags['album'][0])
+
+
+def start(tags):
+    modifyAlbum(tags)
