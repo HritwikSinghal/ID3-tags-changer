@@ -52,8 +52,8 @@ def change(songDir):
     try:
         # artistName.start(full_path_of_songs)
         # composerName.start(full_path_of_songs)
-        albumName.start(full_path_of_songs)
-        # full_path_of_songs = songName.start(full_path_of_songs)
+        # albumName.start(full_path_of_songs)
+        full_path_of_songs = songName.start(full_path_of_songs, songDir)
         # songTitle.start()
         print()
     except Exception:

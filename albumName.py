@@ -3,7 +3,7 @@ import re
 from listPrint import print_list
 
 
-def removeYearIfExist(full_path_of_songs):
+def removeYearAndExtraCharIfExist(full_path_of_songs):
     print("--Removing Year If Exists in Album Name ....--")
 
     for song in full_path_of_songs:
@@ -23,13 +23,13 @@ def removeYearIfExist(full_path_of_songs):
 
 
 def renameAlbum(full_path_of_songs):
-    removeYearIfExist(full_path_of_songs)
+    removeYearAndExtraCharIfExist(full_path_of_songs)
 
     # rename album name
     for song in full_path_of_songs:
         tags = easyid3(song)
         tags['album'] = (tags['album'][0] +
-                            ' (' + tags['date'][0] + ')')
+                         ' (' + tags['date'][0] + ')')
 
         tags.save()
         print("New Name : ", tags['album'][0])
