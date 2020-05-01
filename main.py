@@ -27,8 +27,8 @@ from listPrint import print_list
 
 
 def takeDir():
-    songDir = input("enter song dir:  ")
-    # songDir = r'C:\Users\hritwik\Music'
+    # songDir = input("enter song dir:  ")
+    songDir = r'C:\Users\hritwik\Music'
 
     print("Song dir is: ", songDir)
     return songDir
@@ -51,25 +51,32 @@ def change(full_path_of_songs, songDir):
     print('Now in ', songDir, ' and: ')
     try:
         artistName.start(full_path_of_songs)
-        composerName.start(full_path_of_songs)
-        albumName.start(full_path_of_songs)
-        full_path_of_songs = songName.start(full_path_of_songs)
+        # composerName.start(full_path_of_songs)
+        # albumName.start(full_path_of_songs)
+        # full_path_of_songs = songName.start(full_path_of_songs)
         print()
     except Exception:
         print(traceback.format_exc())
 
 
-# taking songs directory
-songDir = takeDir()
+def start():
+    # taking songs directory
+    songDir = takeDir()
 
-# adding full path to songs
-full_path_of_songs = addFullPath(songDir)
-
-if input("\nDo you want walk down?\ny == Yes, n == No\n") == 'y':
-    print("walking down ", songDir, "...")
-    for dirPath, subDirName, fileNames in (os.walk(songDir, topdown=True)):
-        songDir = dirPath
+    # adding full path to songs
+    full_path_of_songs = addFullPath(songDir)
+    if input("\nDo you want walk down?\ny == Yes, n == No\n") == 'y':
+        print("walking down ", songDir, "...")
+        for dirPath, subDirName, fileNames in (os.walk(songDir, topdown=True)):
+            songDir = dirPath
+            change(full_path_of_songs, songDir)
+    else:
+        print("Only changinig attributes in: ", songDir, " Dir...\n")
         change(full_path_of_songs, songDir)
-else:
-    print("Only changinig attributes in: ", songDir, " Dir...\n")
-    change(full_path_of_songs, songDir)
+
+
+start()
+
+# ex = 'Samuel &amp; Akanksha/Samuel &amp; Akanksha &amp; Jubin Nautiyal/Jubin Nautiyal'
+#
+# print(re.findall(r'', ex))
