@@ -22,7 +22,7 @@
 # # print(re.findall('known_by_(.+)\.html', tags[-1]['href']))
 
 import os, re, traceback
-import albumName, artistName, composerName, songName
+import albumName, artistName, composerName, songName, songTitle
 from listPrint import print_list
 
 
@@ -46,14 +46,15 @@ def addFullPath(songDir):
     return full_path_of_songs
 
 
-def change(full_path_of_songs, songDir):
+def change(songDir):
     full_path_of_songs = addFullPath(songDir)
     print('Now in ', songDir, ' and: ')
     try:
         # artistName.start(full_path_of_songs)
-        composerName.start(full_path_of_songs)
-        # albumName.start(full_path_of_songs)
+        # composerName.start(full_path_of_songs)
+        albumName.start(full_path_of_songs)
         # full_path_of_songs = songName.start(full_path_of_songs)
+        # songTitle.start()
         print()
     except Exception:
         print(traceback.format_exc())
@@ -63,20 +64,20 @@ def start():
     # taking songs directory
     songDir = takeDir()
 
-    # adding full path to songs
-    full_path_of_songs = addFullPath(songDir)
-    if input("\nDo you want walk down?\ny == Yes, n == No\n") == 'y':
+    # resp = input("\nDo you want walk down?\ny == Yes, n == No\n") == 'y'
+    resp = False
+    if resp:
         print("walking down ", songDir, "...")
         for dirPath, subDirName, fileNames in (os.walk(songDir, topdown=True)):
             songDir = dirPath
-            change(full_path_of_songs, songDir)
+            change(songDir)
     else:
         print("Only changinig attributes in: ", songDir, " Dir...\n")
-        change(full_path_of_songs, songDir)
+        change(songDir)
 
 
 start()
 
 # ex = 'Samuel &amp; Akanksha/Samuel &amp; Akanksha &amp; Jubin Nautiyal/Jubin Nautiyal'
-#
+
 # print(re.findall(r'', ex))

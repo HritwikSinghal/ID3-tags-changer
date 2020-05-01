@@ -4,15 +4,22 @@ from listPrint import print_list
 
 
 def removeYearIfExist(full_path_of_songs):
+    print("--Removing Year If Exists in Album Name ....--")
+
     for song in full_path_of_songs:
         tags = easyid3(song)
-        albumTag = tags['album']
+        albumName = tags['album'][0]
+        print("Curr Name: ", albumName)
 
-        x = re.findall(r'(.*) \(\d+\)', albumTag[0])
-        if len(x) != 0:
-            # print(tags['album'])
-            tags['album'] = x[0]
+        # old method
+        # newName = re.findall(r'(.*) \(\d+\)', albumName)
+        newName = re.sub(r' \(\d*\)|&quot;', '', albumName)
+        if newName != albumName:
+            print("New Name : ", newName)
+            tags['album'] = newName
             tags.save()
+
+    print("--Removing Year Done--")
 
 
 def renameAlbum(full_path_of_songs):
@@ -22,8 +29,10 @@ def renameAlbum(full_path_of_songs):
     for song in full_path_of_songs:
         tags = easyid3(song)
         tags['album'] = (tags['album'][0] +
-                         ' (' + tags['date'][0] + ')')
+                            ' (' + tags['date'][0] + ')')
+
         tags.save()
+        print("New Name : ", tags['album'][0])
 
 
 def start(full_path_of_songs):

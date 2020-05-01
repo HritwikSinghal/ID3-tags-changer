@@ -26,8 +26,6 @@ def func(full_path_of_songs):
     for song in full_path_of_songs:
         audio = easyid3(song)
         print("Song title: ", audio['title'][0])
-        print("Curr Artist: ", audio['artist'][0])
-
         modifyArtist(audio)
 
 
