@@ -23,6 +23,8 @@ def removeYearAndExtraCharIfExist(full_path_of_songs):
 
 
 def renameAlbum(full_path_of_songs):
+    print("-------------Renaming album names....-------------")
+
     removeYearAndExtraCharIfExist(full_path_of_songs)
 
     # rename album name
@@ -34,8 +36,8 @@ def renameAlbum(full_path_of_songs):
         tags.save()
         print("New Name : ", tags['album'][0])
 
+    print("-------------Renaming album names Done.-------------")
+
 
 def start(full_path_of_songs):
-    print("-------------Renaming album names....-------------")
     renameAlbum(full_path_of_songs)
-    print("-------------Renaming album names Done.-------------")

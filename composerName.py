@@ -4,6 +4,8 @@ from listPrint import print_list
 
 
 def append_composer(full_path_of_songs):
+    print("-------------Changing Composers...-------------")
+
     for song in full_path_of_songs:
         audio = easyid3(song)
 
@@ -18,9 +20,8 @@ def append_composer(full_path_of_songs):
             print("New Composer: ", audio['composer'][0])
 
         print()
+    print("-------------Changing Composers Done.-------------")
 
 
 def start(full_path_of_songs):
-    print("-------------Changing Composers...-------------")
     append_composer(full_path_of_songs)
-    print("-------------Changing Composers Done.-------------")

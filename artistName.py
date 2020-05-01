@@ -23,13 +23,14 @@ def modifyArtist(audio):
 
 
 def func(full_path_of_songs):
+    print("-------------Changing Artists....-------------")
+
     for song in full_path_of_songs:
         audio = easyid3(song)
         print("Song title: ", audio['title'][0])
         modifyArtist(audio)
+    print("-------------Changing Artists Done.-------------")
 
 
 def start(full_path_of_songs):
-    print("-------------Changing Artists....-------------")
     func(full_path_of_songs)
-    print("-------------Changing Artists Done.-------------")
