@@ -13,4 +13,7 @@ def append_composer(full_path_of_songs):
 
 
 def start(full_path_of_songs):
+    print("-------------Changing Composers...-------------")
     append_composer(full_path_of_songs)
+    print("-------------Changing Composers Done.-------------")
+

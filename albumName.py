@@ -15,7 +15,7 @@ def removeYearIfExist(full_path_of_songs):
             tags.save()
 
 
-def changeAlbumName(full_path_of_songs):
+def renameAlbum(full_path_of_songs):
     removeYearIfExist(full_path_of_songs)
 
     # rename album name
@@ -27,4 +27,6 @@ def changeAlbumName(full_path_of_songs):
 
 
 def start(full_path_of_songs):
-    changeAlbumName(full_path_of_songs)
+    print("-------------Renaming album names....-------------")
+    renameAlbum(full_path_of_songs)
+    print("-------------Renaming album names Done.-------------")

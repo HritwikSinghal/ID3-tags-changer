@@ -21,7 +21,7 @@
 # #     print(tag['href'])
 # # print(re.findall('known_by_(.+)\.html', tags[-1]['href']))
 
-import os, re
+import os, re, traceback
 import albumName, artistName, composerName, songName
 from listPrint import print_list
 
@@ -49,19 +49,14 @@ def addFullPath(songDir):
 def change(full_path_of_songs, songDir):
     full_path_of_songs = addFullPath(songDir)
     print('Now in ', songDir, ' and: ')
-    print("Changing Artists....")
-    artistName.start(full_path_of_songs)
-    print("Done.")
-    print("Changing Composers...")
-    composerName.start(full_path_of_songs)
-    print("Done.")
-    print("Renaming album names....")
-    albumName.start(full_path_of_songs)
-    print("Done.")
-    print("Removing bitrate from song name")
-    full_path_of_songs = songName.start(full_path_of_songs)
-    print("Done.")
-    print()
+    try:
+        artistName.start(full_path_of_songs)
+        composerName.start(full_path_of_songs)
+        albumName.start(full_path_of_songs)
+        full_path_of_songs = songName.start(full_path_of_songs)
+        print()
+    except Exception:
+        print(traceback.format_exc())
 
 
 # taking songs directory
@@ -70,10 +65,11 @@ songDir = takeDir()
 # adding full path to songs
 full_path_of_songs = addFullPath(songDir)
 
-if input("do you want walk down? y == Yes, n == No\n") == 'y':
+if input("\nDo you want walk down?\ny == Yes, n == No\n") == 'y':
     print("walking down ", songDir, "...")
     for dirPath, subDirName, fileNames in (os.walk(songDir, topdown=True)):
         songDir = dirPath
         change(full_path_of_songs, songDir)
 else:
+    print("Only changinig attributes in: ", songDir, " Dir...\n")
     change(full_path_of_songs, songDir)

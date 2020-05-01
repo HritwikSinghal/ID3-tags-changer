@@ -1,4 +1,5 @@
-import os, re
+import os, re, traceback
+from listPrint import print_list
 
 
 def remove_bitrate(full_path_of_songs):
@@ -15,4 +16,6 @@ def remove_bitrate(full_path_of_songs):
 
 
 def start(full_path_of_songs):
+    print("-------------Removing bitrate from song name...-------------")
     full_path_of_songs = remove_bitrate(full_path_of_songs)
+    print("-------------Removing bitrate from song name Done.-------------")
