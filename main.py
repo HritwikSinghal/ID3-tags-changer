@@ -30,7 +30,7 @@ def changeSongName(songDir, full_path_of_songs):
     print()
 
 
-def changeSongTags(songNameWithPath, tags, songDir, full_path_of_songs):
+def changeSongTags(tags):
     artistName.start(tags)
     albumName.start(tags)
     composerName.start(tags)
@@ -47,15 +47,15 @@ def handleSongs(songDir):
     for songNameWithPath in full_path_of_songs:
         tags = easyid3(songNameWithPath)
         print("Song title: ", tags['title'][0])
-        changeSongTags(songNameWithPath, tags, songDir, full_path_of_songs)
+        changeSongTags(tags)
 
 
 def start():
     # taking songs directory
     songDir = inputSongDir()
 
-    # resp = input("\nDo you want walk down?\n1 == Yes, 0 == No\n") == '1'
-    resp = False
+    resp = input("\nDo you want walk down?\n1 == Yes, 0 == No\n") == '1'
+    # resp = False
     if resp:
         print("Walking down ", songDir, "...")
         for dirPath, subDirName, fileNames in (os.walk(songDir, topdown=True)):
@@ -67,6 +67,3 @@ def start():
 
 
 start()
-
-# ex = 'Samuel &amp; Akanksha/Samuel &amp; Akanksha &amp; Jubin Nautiyal/Jubin Nautiyal'
-# print(re.findall(r'', ex))

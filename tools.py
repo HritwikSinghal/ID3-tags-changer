@@ -2,6 +2,68 @@ import os
 import re
 
 
+def removeDjX(oldName):
+    # for DJMXXX
+
+    x = re.compile(r'''
+    (
+    \s*-*\s*                                # for foo - bar
+    \[*                                     # for foo [bar or foo [bar]
+    w*\.*                                   # for www.foobar
+    [dD][jJ][mM]aza
+    .*                                   # for foobar.XXX XXX XXX
+    )
+    ''', re.VERBOSE)
+
+    newName = x.sub('', oldName)
+    return newName
+
+
+def removeSonX(oldName):
+    # for SongsXX
+
+    x = re.compile(r'''
+    (
+    \s*-*\s*                                # for foo - bar
+    \[*                                     # for foo[bar or foo[bar]
+    w*\.*                                   # for www.foobar
+    [sS]ongs
+    .*                                   # for foobar.XXX XXX XXX
+    )
+    ''', re.VERBOSE)
+
+    newName = x.sub('', oldName)
+    return newName
+
+
+def removeMPXX(oldName):
+    # for MPXX
+
+    x = re.compile(r'''
+    (
+    \s*-*\s*                                # for foo - bar
+    \[*                                     # for foo[bar or foo[bar]
+    w*\.*                                   # for www.foobar
+    [mM][pP]3[kK]
+    .*                                   # for foobar.XXX XXX XXX
+    )
+    ''', re.VERBOSE)
+
+    newName = x.sub('', oldName)
+    return newName
+
+
+def removeSiteName(oldName):
+    # supportes SonXXX, DjXXX, MPXX as of now
+    # and removes everything after site name
+    # including .mp3 extension. So re-add it.
+
+    newName = removeDjX(oldName)
+    newName = removeSonX(newName)
+    newName = removeMPXX(newName)
+    return newName
+
+
 def removeBitrate(oldName):
     # old method
     # x = re.compile(r'\s*\[*(\d+(.*kbps|Kbps|KBPS|KBps))\]*')
@@ -19,25 +81,6 @@ def removeBitrate(oldName):
 
 def removeNonUtf8(oldName):
     newName = re.sub(r'&quot;', '', oldName)
-    return newName
-
-
-def removeSiteName(oldName):
-    # only supported DJMXXX as of now
-    # and removes everything after djmaza including
-    # .mp3 extension. So re-add it.
-
-    x = re.compile(r'''
-    (
-    \s*-*\s*                                # for foo - bar
-    \[*                                     # for foo [bar or foo [bar]
-    w*\.*                                   # for www.foobar
-    (d|D)(j|J)(m|M)aza
-    .*                                   # for foobar.XXX XXX XXX
-    )
-    ''', re.VERBOSE)
-
-    newName = x.sub('', oldName)
     return newName
 
 

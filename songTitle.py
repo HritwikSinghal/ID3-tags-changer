@@ -8,6 +8,7 @@ def modifyTitle(tags):
 
     oldTitle = tags['title'][0]
     newTitle = removeSiteName(oldTitle)
+    newTitle = removeNonUtf8(newTitle)
 
     if oldTitle != newTitle:
         tags['title'] = newTitle
