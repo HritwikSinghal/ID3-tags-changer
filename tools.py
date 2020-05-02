@@ -1,5 +1,4 @@
-import os
-import re
+import os, re
 
 
 def removeDjX(oldName):
@@ -71,7 +70,7 @@ def removeBitrate(oldName):
     x = re.compile(r'''
     \s*-*\s*                            # for foo - bar
     \[*                                 # for foo [bar
-    (\d+(.*kbps|Kbps|KBPS|KBps))        # for KBps or KBPS or kbps or Kbps
+    \d*\s*[kK][bB][pP][sS]         # for KBps or KBPS or kbps or Kbps
     \]*                                 # for foo bar]
     ''', re.VERBOSE)
 
@@ -79,8 +78,16 @@ def removeBitrate(oldName):
     return newName
 
 
-def removeNonUtf8(oldName):
-    newName = re.sub(r'&quot;', '', oldName)
+def removeGibberish(oldName):
+    newName = re.sub(r'&*quot;*', '', oldName)
+    return newName
+
+
+def removeYear(oldName):
+    # it removes any number in
+    # string within () and brackets itself
+
+    newName = re.sub(r' \(\d*\)', '', oldName)
     return newName
 
 
@@ -88,17 +95,22 @@ def removeTrailingExtras(oldName):
     pass
 
 
-def removeYear(oldName):
-    newName = re.sub(r' \(\d*\)', '', oldName)
-    return newName
+def getSongNameWithoutPath(songNameWithPath):
+    songNameWithoutPath = re.findall(r'[^\\]+\.mp3', songNameWithPath)
+    return songNameWithoutPath[0]
 
 
-def print_list(my):
+def print_list(myList):
     print('--------------')
-    for _ in my:
-        print(_)
+    for item in myList:
+        print(item)
     print('--------------\n')
 
 
 def changeDir(songDir):
     os.chdir(songDir)
+
+
+def divideBySColon(oldName):
+    namesDivided = re.sub(r'\s*[&/,]\s*', ';', oldName)
+    return namesDivided

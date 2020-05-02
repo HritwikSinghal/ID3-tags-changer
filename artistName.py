@@ -1,20 +1,25 @@
 import re
+from tools import *
 
 
 def filterIndArtist(tags):
-    currArtist = tags['artist']
-    print("Curr Artist: ", currArtist[0])
-
-    currArtist[0] = re.sub(r'\s*&\s*|\s*/\s*|\s*,\s*', ';', currArtist[0])
-    currArtist[0] = re.sub(r';\s*;\s*|;\s*', '; ', currArtist[0])
+    oldArtist = tags['artist'][0]
+    print("Curr Artist: ", oldArtist)
 
     # old one
-    # currArtist[0] = ';'.join(re.split(r'/|,|& ', currArtist[0]))
+    # oldArtist = ';'.join(re.split(r'/|,|& ', oldArtist))
 
-    if currArtist[0] != tags['artist'][0]:
-        tags['artist'] = currArtist[0]
+    # 2nd old method
+    # oldArtist = re.sub(r'\s*&\s*|\s*/\s*|\s*,\s*', ';', oldArtist)
+    # oldArtist = re.sub(r';\s*;\s*|;\s*', '; ', oldArtist)
+
+    # new method
+    newArtist = divideBySColon(oldArtist)
+
+    if newArtist != oldArtist:
+        tags['artist'] = newArtist
         tags.save()
-        print("New Artist: ", tags['artist'][0])
+        print("New Artist: ", newArtist)
 
 
 def start(tags):

@@ -6,7 +6,7 @@ def modifyAlbum(tags):
 
     oldAlbumName = tags['album'][0]
     newName = removeYear(oldAlbumName)
-    newName = removeNonUtf8(newName)
+    newName = removeGibberish(newName)
 
     newAlbumName = newName + ' (' + tags['date'][0] + ')'
 

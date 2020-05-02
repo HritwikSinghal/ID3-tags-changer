@@ -1,7 +1,9 @@
 import os, re, traceback
-import albumName, artistName, composerName, songName, songTitle
 from mutagen.easyid3 import EasyID3 as easyid3
+
 from tools import *
+import albumName, artistName, composerName
+import songName, songTitle, retrieveTags
 
 
 def inputSongDir():
@@ -12,7 +14,7 @@ def inputSongDir():
     return songDir
 
 
-def getFullPath(songDir):
+def getFullPathOfSongsInDir(songDir):
     files_in_dir = os.listdir(songDir)
 
     full_path_of_songs = []
@@ -30,32 +32,35 @@ def changeSongName(songDir, full_path_of_songs):
     print()
 
 
-def changeSongTags(tags):
-    artistName.start(tags)
-    albumName.start(tags)
-    composerName.start(tags)
-    songTitle.start(tags)
-    print()
-
-
-def handleSongs(songDir):
-    full_path_of_songs = getFullPath(songDir)
-    print('Now in ', songDir)
-
-    changeSongName(songDir, full_path_of_songs)
-
+def changeSongTags(full_path_of_songs):
     for songNameWithPath in full_path_of_songs:
         tags = easyid3(songNameWithPath)
         print("Song title: ", tags['title'][0])
-        changeSongTags(tags)
+
+        # artistName.start(tags)
+        # albumName.start(tags)
+        # composerName.start(tags)
+        # songTitle.start(tags)
+
+        retrieveTags.start(tags)
+
+        print()
+
+
+def handleSongs(songDir):
+    full_path_of_songs = getFullPathOfSongsInDir(songDir)
+    print('Now in ', songDir)
+
+    # changeSongName(songDir, full_path_of_songs)
+    changeSongTags(full_path_of_songs)
 
 
 def start():
     # taking songs directory
     songDir = inputSongDir()
 
-    resp = input("\nDo you want walk down?\n1 == Yes, 0 == No\n") == '1'
-    # resp = False
+    # resp = input("\nDo you want walk down?\n1 == Yes, 0 == No\n") == '1'
+    resp = False
     if resp:
         print("Walking down ", songDir, "...")
         for dirPath, subDirName, fileNames in (os.walk(songDir, topdown=True)):
@@ -67,3 +72,5 @@ def start():
 
 
 start()
+
+

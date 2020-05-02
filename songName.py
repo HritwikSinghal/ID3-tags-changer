@@ -1,4 +1,5 @@
 from tools import *
+from tools import getSongNameWithoutPath
 
 
 def joinPathAndRename(oldNameWithPath, newName, full_path_of_songs):
@@ -11,17 +12,17 @@ def joinPathAndRename(oldNameWithPath, newName, full_path_of_songs):
 
 
 def fixName(full_path_of_songs, songNameWithPath):
-    oldName = re.findall(r'[^\\]+\.mp3', songNameWithPath)
-    print("Current Name: ", oldName[0])
+    oldName = getSongNameWithoutPath(songNameWithPath)
+    print("Current Name: ", oldName)
 
-    newName = removeBitrate(oldName[0])
-    newName = removeNonUtf8(newName)
+    newName = removeBitrate(oldName)
+    newName = removeGibberish(newName)
     newName = removeSiteName(newName)
 
     if '.mp3' not in newName:
         newName = newName + '.mp3'
 
-    if oldName[0] != newName:
+    if oldName != newName:
         print("New Name    : ", newName)
         joinPathAndRename(songNameWithPath, newName, full_path_of_songs)
 
