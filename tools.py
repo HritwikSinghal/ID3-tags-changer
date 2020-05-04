@@ -100,11 +100,18 @@ def getSongNameWithoutPath(songNameWithPath):
     return songNameWithoutPath[0]
 
 
-def print_list(myList):
+def printList(myList):
     print('--------------')
     for item in myList:
         print(item)
     print('--------------\n')
+
+
+def printDict(myDict):
+    print('-----------')
+    for key, value in myDict.items():
+        print(key, ':', value)
+    print('-----------')
 
 
 def changeDir(songDir):
