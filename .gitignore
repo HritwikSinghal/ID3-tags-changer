@@ -1,6 +1,7 @@
 .idea/
 __pycache__/
 apiKey.py
+song.txt
 
 # PyBuilder
 target/
@@ -29,3 +30,4 @@ venv.bak/
 # Spyder project settings
 .spyderproject
 .spyproject
+

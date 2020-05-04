@@ -1,9 +1,15 @@
-import os, re, traceback
+import os
+import re
+import traceback
 from mutagen.easyid3 import EasyID3 as easyid3
 
 from tools import *
-import albumName, artistName, composerName
-import songName, songTitle, retrieveTags
+import albumName
+import artistName
+import composerName
+import songName
+import songTitle
+import retrieveTags
 
 
 def inputSongDir():
@@ -43,7 +49,7 @@ def changeSongTags(full_path_of_songs):
         # songTitle.start(tags)
 
         retrieveTags.start(tags)
-        break
+        # break
 
         print()
 
@@ -70,8 +76,4 @@ def start():
     else:
         print("Only changing attributes in: ", songDir, "...\n")
         handleSongs(songDir)
-
-
-start()
-
 
