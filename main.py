@@ -43,6 +43,7 @@ def changeSongTags(full_path_of_songs):
         # songTitle.start(tags)
 
         retrieveTags.start(tags)
+        break
 
         print()
 

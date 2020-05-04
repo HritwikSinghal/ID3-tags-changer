@@ -1,7 +1,12 @@
-import requests, ssl, re, html5lib
+import requests
+import ssl
+import re
+import json
 from bs4 import BeautifulSoup as beautifulsoup
 
 from tools import *
+from apiKey import getApiKey
+from json import JSONDecoder as json_decoder
 
 # Ignore SSL certificate errors
 ctx = ssl.create_default_context()
@@ -10,27 +15,37 @@ ctx.verify_mode = ssl.CERT_NONE
 
 
 def getTags(songTags):
-    baseUrl = 'https://www.jiosaavn.com/search/'
-
-    # url = baseUrl + songTags['title'][0]
-    url = 'https://www.flipkart.com/fortune-sunlite-refined-sunflower-oil-pouch/p/itmf8phyytkfbuy7'
-
-    r = requests.get(url)
-    r.raise_for_status()
-
-    soup = beautifulsoup(r.text, "html5lib")
     # cssPath = ''
+    # use getApiKey function to get api key
 
-    cssPath = 'html.fonts-loaded body div#container div div.t-0M7P._3GgMx1._2doH3V div._3e7xtJ div._1HmYoV.hCUpcT div._1HmYoV._35HD7C.col-8-12 div.bhgxx2.col-12-12 div._29OxBi div._3iZgFn div._2i1QSc div._1uv9Cb div._1vC4OE._3qQ9m1'
+    user_agent = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0'
+    }
+    baseUrl = "https://www.jiosaavn.com/search/"
 
-    x = soup.select(cssPath)
-    print(x)
-    # x = soup.find_all('a')
-    # # printList(x)
-    # for a in x:
-    #     if a.get('href') is not None:
-    #         print(a.get('href'))
+    url = baseUrl + songTags['title'][0]
+    # url = "https://www.jiosaavn.com/search/" + 'bhula dunga'
 
+    # res = requests.get(url, headers=user_agent, data=[('bitrate', '320')])
+    res = requests.get(url, headers=user_agent)
+    res.raise_for_status()
+    print(res.url)
+
+    soup = beautifulsoup(res.text, "html5lib")
+    all_song_divs = soup.find_all('div', attrs={"class": "hide song-json"})
+
+    songs = []
+
+    for info in all_song_divs:
+        try:
+            songInfo = json.loads(str(info.text))
+            print(json.dumps(songInfo, indent=2))
+        except:
+            songInfo = re.sub(r'.\(\bFrom .*?"\)', "", str(info.text))
+            print('for this, above failed')
+
+            songInfo = json.dumps(str(songInfo))
+            print(songInfo)
 
 def start(tags):
     getTags(tags)

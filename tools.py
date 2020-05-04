@@ -121,3 +121,8 @@ def changeDir(songDir):
 def divideBySColon(oldName):
     namesDivided = re.sub(r'\s*[&/,]\s*', ';', oldName)
     return namesDivided
+
+
+def fixImageUrl(oldUrl):
+    url = oldUrl.replace('150x150', '500x500')
+    return url
