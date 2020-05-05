@@ -42,21 +42,23 @@ def getTags(songTags, song_name, tag_name='none'):
     baseUrl = "https://www.jiosaavn.com/search/"
     max_songs_to_show = 1
 
-    song_name = tools.removeBitrate(song_name)
     song_number = 0
 
+    # Search using album tag
     if tools.isTagPresent(songTags, 'album') and \
             tools.removeYear(songTags['album'][0]) != song_name and tag_name != 'album':
         url = baseUrl + song_name + ' ' + songTags['album'][0]
         song_list = jioSaavnApi.fetchInfo(url, max_songs_to_show)
 
+    # search using artist tag if no album tag or
+    # both album and song name are same or
+    # we have to get album tag itself
     elif tools.isTagPresent(songTags, 'artist'):
         url = baseUrl + song_name + ' ' + tools.removeGibberish(songTags['artist'][0])
         song_list = jioSaavnApi.fetchInfo(url, max_songs_to_show)
 
+    # show list of songs and make user select from it
     else:
-        # show list of songs and make user select from it
-
         url = baseUrl + song_name
         max_songs_to_show = 5
         song_list = jioSaavnApi.fetchInfo(url, max_songs_to_show)
@@ -72,19 +74,21 @@ def getTags(songTags, song_name, tag_name='none'):
 
         song_number = int(input("Enter your song number from above list: ")) - 1
 
-    # get all the deatils of song
+    # get all the details of chosen song
     full_song_info = song_list[song_number]
 
-    # get useful details of song
+    # get useful details of chosen song
     song_info = getCertainKeys(full_song_info)
 
-    # if tag is provided, append that tag otherwise append all tags
-    if tag_name == 'none':
-        # todo : implement this
-        pass
-    else:
-        songTags[tag_name] = song_info[tag_name]
-        songTags.save()
+    return song_info
+
+    # # if tag is provided, append that tag otherwise append all tags
+    # if tag_name == 'none':
+    #     # todo : implement this
+    #     pass
+    # else:
+    #     songTags[tag_name] = song_info[tag_name]
+    #     songTags.save()
 
 
 def start(tags, song_name, tag_name='none'):

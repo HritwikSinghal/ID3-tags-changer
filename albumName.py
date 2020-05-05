@@ -16,6 +16,6 @@ def modifyAlbum(tags):
         print("New Album Name : ", newAlbumName)
 
 
-def start(tags, song_name):
-    tools.addIfTagMissing(tags, 'album', song_name)
+def start(tags, song_name, song_info):
+    tools.addIfTagMissing(tags, 'album', song_name, song_info)
     modifyAlbum(tags)

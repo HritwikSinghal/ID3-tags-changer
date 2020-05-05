@@ -15,9 +15,9 @@ def modifyComposer(tags):
     if new_composer != old_composer:
         tags['composer'] = new_composer
         tags.save()
-        print("New Artist: ", new_composer)
+        print("New Composer: ", new_composer)
 
 
-def start(tags, song_name):
-    tools.addIfTagMissing(tags, 'composer', song_name)
+def start(tags, song_name, song_info):
+    tools.addIfTagMissing(tags, 'composer', song_name, song_info)
     modifyComposer(tags)

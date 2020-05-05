@@ -38,32 +38,30 @@ def changeSongName(songDir, full_path_of_songs):
     print()
 
 
-def changeSongTags(full_path_of_songs):
-    for songNameWithPath in full_path_of_songs:
-        tags = easyid3(songNameWithPath)
-
-        song_name = tools.getSongNameWithoutPath(songNameWithPath)
-        song_name = song_name.replace('.mp3', '')
-
-        print("Song Name: ", song_name)
-
-        # artistName.start(tags, song_name)
-        # albumName.start(tags, song_name)
-        # composerName.start(tags, song_name)
-        # songTitle.start(tags, song_name)
-
-        # retrieveTags.start(tags, song_name)
-        # break
-
-        print()
-
-
 def handleSongs(songDir):
     full_path_of_songs = getFullPathOfSongsInDir(songDir)
     print('Now in ', songDir)
 
     # changeSongName(songDir, full_path_of_songs)
-    changeSongTags(full_path_of_songs)
+
+    # Change song tags
+    for songNameWithPath in full_path_of_songs:
+        tags = easyid3(songNameWithPath)
+
+        song_name = tools.getSongNameWithoutPath(songNameWithPath)
+        song_name = tools.removeBitrate(song_name)
+        song_name = song_name.replace('.mp3', '')
+
+        print("Song Name: ", song_name)
+
+        song_info = retrieveTags.start(tags, song_name)
+
+        albumName.start(tags, song_name, song_info['album'])
+        artistName.start(tags, song_name, song_info['artist'])
+        composerName.start(tags, song_name, song_info['composer'])
+        songTitle.start(tags, song_name, song_info['title'])
+
+        print()
 
 
 def start():

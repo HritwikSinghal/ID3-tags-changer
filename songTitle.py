@@ -15,7 +15,6 @@ def modifyTitle(tags):
         print("New Title : ", newTitle)
 
 
-def start(tags, song_name):
-    tools.addIfTagMissing(tags, 'title', song_name)
+def start(tags, song_name, song_info):
+    tools.addIfTagMissing(tags, 'title', song_name, song_info)
     modifyTitle(tags)
-
