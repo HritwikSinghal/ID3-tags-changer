@@ -1,19 +1,39 @@
+import requests
+import shutil
+import os
+
 from Base import tools
+from mutagen.id3 import ID3, APIC
 
 
-def modifyTitle(tags):
-    print("Curr Title: ", tags['title'][0])
+def addAlbumArt(song_name, song_info, songNameWithPath):
+    # for k, v in song_info.items():
+    #     print(k, ' ', v)
 
-    oldTitle = tags['title'][0]
-    newTitle = tools.removeSiteName(oldTitle)
-    newTitle = tools.removeGibberish(newTitle)
+    url = song_info['image_url'].strip()
+    # print(url)
 
-    if oldTitle != newTitle:
-        tags['title'] = newTitle
-        tags.save()
-        print("New Title : ", newTitle)
+    response = requests.get(url, stream=True)
+    with open('img.jpg', 'wb') as out_file:
+        shutil.copyfileobj(response.raw, out_file)
+    del response
+
+    print("Adding Album Art to", song_name, "...")
+
+    audio = ID3(songNameWithPath)
+    with open('img.jpg', 'rb') as albumart:
+        audio['APIC'] = APIC(
+            encoding=3,
+            mime='image/jpeg',
+            type=3, desc=u'Cover',
+            data=albumart.read()
+        )
+    audio.save()
+
+    print("Album Art Added.")
+    os.remove('img.jpg')
 
 
-def start(tags, song_name, album_name):
-    tools.addIfTagMissing(tags, 'title', song_name, album_name)
-    modifyTitle(tags)
+def start(song_name, song_info, songDir, songNameWithPath):
+    tools.changeDir(songDir)
+    addAlbumArt(song_name, song_info, songNameWithPath)

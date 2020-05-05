@@ -71,7 +71,7 @@ def handleSongs(songDir):
         # songTitle.start(tags, song_name, song_info['title'])
 
         # addDateLenOrg.start(tags, song_name, song_info)
-        albumImage.start(tags, song_name, song_info)
+        albumImage.start(song_name, song_info, songDir, songNameWithPath)
 
         print()
 

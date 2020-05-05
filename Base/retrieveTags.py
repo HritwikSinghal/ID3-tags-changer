@@ -36,12 +36,11 @@ def getCertainKeys(song_info):
                 rinfo['length'] = info[key]
             elif key == 'label':
                 rinfo['organization'] = info[key]
+            elif key == 'image_url':
+                rinfo['image_url'] = tools.fixImageUrl(info[key])
 
             else:
                 rinfo[key] = info[key]
-
-    # for x in rinfo:
-    #     print(x, ': ', rinfo[x])
 
     return rinfo
 
