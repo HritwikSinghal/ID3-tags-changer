@@ -11,13 +11,13 @@ def addDate(tags, song_name, song_info):
         if old_date != new_date:
             tags['date'] = new_date
             tags.save()
-            print("Added new 'date' to '" + song_name + "'")
+            print("Added new date='" + new_date + "' to '" + song_name + "'")
     else:
         new_date = song_info['date']
 
         tags['date'] = new_date
         tags.save()
-        print("Added new 'date' to '" + song_name + "'")
+        print("Added new date='" + new_date + "' to '" + song_name + "'")
 
 
 def addLen(tags, song_name, song_info):
@@ -30,14 +30,14 @@ def addLen(tags, song_name, song_info):
         if old_len != new_len:
             tags['length'] = new_len
             tags.save()
-            print("Added new 'length' value to '" + song_name + "'")
+            print("Added new length='" + new_len + "' value to '" + song_name + "'")
 
     else:
         new_len = song_info['length']
 
         tags['length'] = new_len
         tags.save()
-        print("Added new 'length' value to '" + song_name + "'")
+        print("Added new length='" + new_len + "' value to '" + song_name + "'")
 
 
 def addOrg(tags, song_name, song_info):
@@ -50,13 +50,13 @@ def addOrg(tags, song_name, song_info):
         if old_org != new_org:
             tags['organization'] = new_org
             tags.save()
-            print("Added new 'Label' value to '" + song_name + "'")
+            print("Added new Label='" + new_org + "' value to '" + song_name + "'")
     else:
         new_org = song_info['organization']
 
         tags['organization'] = new_org
         tags.save()
-        print("Added new 'Label' value to '" + song_name + "'")
+        print("Added new Label='" + new_org + "' value to '" + song_name + "'")
 
 
 def start(tags, song_name, song_info):

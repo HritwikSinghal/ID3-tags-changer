@@ -57,9 +57,9 @@ def handleSongs(songDir):
 
         song_info = retrieveTags.start(tags, song_name)
 
+        #     # todo : implement this
         # # if tag is provided, append that tag otherwise append all tags
         # if tag_name == 'none':
-        #     # todo : implement this
         #     pass
         # else:
         #     songTags[tag_name] = song_info[tag_name]
@@ -70,8 +70,8 @@ def handleSongs(songDir):
         # composerName.start(tags, song_name, song_info['composer'])
         # songTitle.start(tags, song_name, song_info['title'])
 
-        addDateLenOrg.start(tags, song_name, song_info)
-        # albumImage.start(tags, song_name, song_info)
+        # addDateLenOrg.start(tags, song_name, song_info)
+        albumImage.start(tags, song_name, song_info)
 
         print()
 
@@ -80,7 +80,7 @@ def start():
     # taking songs directory
     all_song_dir = inputSongDir()
 
-    # walk_down_curr_dir = input("\nDo you want walk down?\n1 == Yes, 0 == No\n") == '1'
+    # walk_down_curr_dir = input("\nDo you want walk down all sub-dir?\n1 == Yes, 0 == No\n") == '1'
     walk_down_curr_dir = False
     if walk_down_curr_dir:
         print("Walking down ", all_song_dir, "...")
