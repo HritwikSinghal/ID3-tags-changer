@@ -160,7 +160,7 @@ def isTagPresent(tags, tag_name):
 
 
 def addIfTagMissing(tags, tag_name, song_name, tag_value):
-    if not isTagPresent(tags, tag_name) or tag_value == '':
+    if not isTagPresent(tags, tag_name):
         tags[tag_name] = tag_value
         tags.save()
         print("Added '" + tag_name + "' to '" + song_name + "'")

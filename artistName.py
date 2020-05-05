@@ -26,7 +26,7 @@ def filterIndArtist(tags, flag=1):
         print("New Artist: ", newArtist)
 
 
-def start(tags, song_name, artist_name):
+def start(tags, song_name, song_info):
+    artist_name = song_info['artist']
     tools.addIfTagMissing(tags, 'artist', song_name, artist_name)
     filterIndArtist(tags)
-

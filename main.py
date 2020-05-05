@@ -65,12 +65,12 @@ def handleSongs(songDir):
         #     songTags[tag_name] = song_info[tag_name]
         #     songTags.save()
 
-        # albumName.start(tags, song_name, song_info['album'])
-        # artistName.start(tags, song_name, song_info['artist'])
-        # composerName.start(tags, song_name, song_info['composer'])
-        # songTitle.start(tags, song_name, song_info['title'])
+        albumName.start(tags, song_name, song_info)
+        artistName.start(tags, song_name, song_info['artist'])
+        composerName.start(tags, song_name, song_info['composer'])
+        songTitle.start(tags, song_name, song_info['title'])
 
-        # addDateLenOrg.start(tags, song_name, song_info)
+        addDateLenOrg.start(tags, song_name, song_info)
         albumArt.start(song_name, song_info, songDir, songNameWithPath)
 
         print()

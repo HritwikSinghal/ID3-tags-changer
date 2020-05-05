@@ -36,7 +36,7 @@ def addAlbumArt(song_name, song_info, songNameWithPath):
         audio.save(v2_version=3)
 
         # if we save like below, win explorer wont recognize albumArt
-        # since it uses v2 tags and ID3 saves v3.
+        # since it uses v2.3 tags and ID3 saves v2.4.
         # audio.save()
 
         # # method 2
@@ -52,7 +52,6 @@ def addAlbumArt(song_name, song_info, songNameWithPath):
         #     text='title')
         # )
         # audio.save(v2_version=3)
-        # audio.save()
 
     print("Album Art Added.")
     os.remove('img.jpg')
