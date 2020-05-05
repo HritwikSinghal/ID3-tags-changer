@@ -6,7 +6,7 @@ import composerName
 import songTitle
 import songName
 import addDateLenOrg
-import albumImage
+import albumArt
 
 from Base import tools
 from Base import retrieveTags
@@ -71,7 +71,7 @@ def handleSongs(songDir):
         # songTitle.start(tags, song_name, song_info['title'])
 
         # addDateLenOrg.start(tags, song_name, song_info)
-        albumImage.start(song_name, song_info, songDir, songNameWithPath)
+        albumArt.start(song_name, song_info, songDir, songNameWithPath)
 
         print()
 
