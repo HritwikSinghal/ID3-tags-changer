@@ -1,30 +1,39 @@
-import requests
-import ssl
 import re
-import json
 from traceback import print_exc
-from bs4 import BeautifulSoup as beautifulsoup, BeautifulSoup
+import json
+from json import JSONDecoder as jsondecoder
 
-from tools import *
-from jioSaavnApi import *
-from apiKey import getApiKey
-from json import JSONDecoder as json_decoder
-
-# Ignore SSL certificate errors
-ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
+import tools
+import jioSaavnApi
 
 
-def getTags(songTags, tagName='def'):
+def getTags(songTags, song_name, tag_name='none'):
     baseUrl = "https://www.jiosaavn.com/search/"
-    if songTags['album'][0] != songTags['title'][0]:
-        url = baseUrl + songTags['title'][0] + ' ' + songTags['album'][0]
+    number = 1
+
+    if tools.isTagPresent(songTags, 'album') and \
+            tools.removeYear(songTags['album'][0]) != song_name and tag_name != 'album':
+        url = baseUrl + song_name + ' ' + songTags['album'][0]
+        song_list = jioSaavnApi.fetchInfo(url, number)
+
+    elif tools.isTagPresent(songTags, 'artist'):
+        url = baseUrl + songTags['title'][0] + ' ' + tools.removeGibberish(songTags['artist'][0])
+        song_list = jioSaavnApi.fetchInfo(url, number)
+
     else:
-        url = baseUrl + songTags['title'][0] + ' ' + songTags['artist'][0]
+        # todo : show list of songs and make user select from it
+        url = ''
+        number = 5
+        song_list = jioSaavnApi.fetchInfo(url, number)
 
-    downloadInfo(url)
+    song_info = song_list[0]
+    print(song_info)
+
+    if tag_name == 'none':
+        pass
+    else:
+        pass
 
 
-def start(tags):
-    getTags(tags)
+def start(tags, song_name, tag_name='none'):
+    getTags(tags, song_name, tag_name)

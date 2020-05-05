@@ -1,5 +1,11 @@
-import os, re
+import os
+import re
 
+import retrieveTags
+
+
+# -----------------------------------------------------#
+# Website Name Specifics
 
 def removeDjX(oldName):
     # for DJMXXX
@@ -63,6 +69,9 @@ def removeSiteName(oldName):
     return newName
 
 
+# ----------------------------------------------#
+
+
 def removeBitrate(oldName):
     # old method
     # x = re.compile(r'\s*\[*(\d+(.*kbps|Kbps|KBPS|KBps))\]*')
@@ -78,11 +87,6 @@ def removeBitrate(oldName):
     return newName
 
 
-def removeGibberish(oldName):
-    newName = re.sub(r'&*quot;*', '', oldName)
-    return newName
-
-
 def removeYear(oldName):
     # it removes any number in
     # string within () and brackets itself
@@ -91,9 +95,34 @@ def removeYear(oldName):
     return newName
 
 
-def removeTrailingExtras(oldName):
-    pass
+def removeGibberish(oldName):
+    newName = re.sub(r'&quot;|&*amp', '', oldName)
+    return newName
 
+
+def removeTrailingExtras(oldName):
+    # newName = re.sub(r'&quot;|&*amp', '', oldName)
+    newName = re.sub(r';\s*;\s*', '; ', oldName)
+    return newName
+
+
+def divideBySColon(oldName):
+    namesDivided = re.sub(r'\s*[&/,]\s*', ';', oldName)
+    return namesDivided
+
+
+def removeDup(old_name):
+    new_name = old_name.split(';')
+    new_name = map(str.strip, new_name)
+
+    new_name = list(set(new_name))
+    new_name = ';'.join(new_name)
+
+    return new_name
+
+
+# ------------------------------------------#
+# Extras
 
 def getSongNameWithoutPath(songNameWithPath):
     songNameWithoutPath = re.findall(r'[^\\]+\.mp3', songNameWithPath)
@@ -118,11 +147,20 @@ def changeDir(songDir):
     os.chdir(songDir)
 
 
-def divideBySColon(oldName):
-    namesDivided = re.sub(r'\s*[&/,]\s*', ';', oldName)
-    return namesDivided
-
-
 def fixImageUrl(oldUrl):
     url = oldUrl.replace('150x150', '500x500')
     return url
+
+
+# ---------------------------------------------#
+
+
+def isTagPresent(song_tags, tag_name):
+    if tag_name in song_tags.keys() and song_tags[tag_name] != '':
+        return True
+    return False
+
+
+def addIfTagMissing(tags, tag_name, song_name):
+    if not isTagPresent(tags, tag_name):
+        retrieveTags.start(tags, song_name, tag_name)

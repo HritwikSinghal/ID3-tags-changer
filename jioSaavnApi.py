@@ -3,9 +3,9 @@ import ssl
 import re
 import json
 from traceback import print_exc
-from bs4 import BeautifulSoup as beautifulsoup, BeautifulSoup
+from bs4 import BeautifulSoup as beautifulsoup
 
-from tools import *
+import tools
 from apiKey import getApiKey
 from json import JSONDecoder as json_decoder
 
@@ -15,7 +15,7 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 
-def downloadInfo(url):
+def fetchInfo(url, max=5):
     # cssPath = ''
     # use getApiKey function to get api key
 
@@ -26,26 +26,31 @@ def downloadInfo(url):
     res = requests.get(url, headers=user_agent)
     res.raise_for_status()
 
-    print(res.url)
-
     soup = beautifulsoup(res.text, "html5lib")
     all_songs_info = soup.find_all('div', attrs={"class": "hide song-json"})
 
     song_list = []
+    i = 0
 
     for info in all_songs_info:
         try:
             songInfo = json.loads(str(info.text))
             x = (json.dumps(songInfo, indent=2))
-            print(x)
-            break
+
+            song_list.append(x)
         except:
             # the error is caused by quotation marks in songs title as shown below
             # (From "XXX")
             # so just remove the whole thing inside parenthesis
 
-            songInfo = re.sub(r'.\(\bFrom .*?"\)', "", str(info.text))
+            songInfo = tools.re.sub(r'.\(\bFrom .*?"\)', "", str(info.text))
             songInfo = json.loads(str(songInfo))
             x = (json.dumps(songInfo, indent=2))
-            print(x)
+
+            song_list.append(x)
+
+        if i >= max - 1:
             break
+        i += 1
+
+    return song_list

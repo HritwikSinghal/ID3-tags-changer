@@ -1,10 +1,10 @@
-import re
-from tools import *
+import tools
 
 
-def filterIndArtist(tags):
+def filterIndArtist(tags, flag=1):
     oldArtist = tags['artist'][0]
-    print("Curr Artist: ", oldArtist)
+    if flag == 1:
+        print("Curr Artist: ", oldArtist)
 
     # old one
     # oldArtist = ';'.join(re.split(r'/|,|& ', oldArtist))
@@ -14,13 +14,19 @@ def filterIndArtist(tags):
     # oldArtist = re.sub(r';\s*;\s*|;\s*', '; ', oldArtist)
 
     # new method
-    newArtist = divideBySColon(oldArtist)
+    newArtist = tools.removeGibberish(oldArtist)
+    newArtist = tools.divideBySColon(newArtist)
+
+    newArtist = tools.removeTrailingExtras(newArtist)
+    newArtist = tools.removeDup(newArtist)
 
     if newArtist != oldArtist:
         tags['artist'] = newArtist
         tags.save()
-        print("New Artist: ", newArtist)
+        if flag == 1:
+            print("New Artist: ", newArtist)
 
 
-def start(tags):
-    filterIndArtist(tags)
+def start(tags, song_name, flag=1):
+    tools.addIfTagMissing(tags, 'artist', song_name)
+    filterIndArtist(tags, flag)

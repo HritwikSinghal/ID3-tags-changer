@@ -1,14 +1,13 @@
-from mutagen.easyid3 import EasyID3 as easyid3
 import re
-from tools import *
+import tools
 
 
 def modifyTitle(tags):
     print("Curr Title: ", tags['title'][0])
 
     oldTitle = tags['title'][0]
-    newTitle = removeSiteName(oldTitle)
-    newTitle = removeGibberish(newTitle)
+    newTitle = tools.removeSiteName(oldTitle)
+    newTitle = tools.removeGibberish(newTitle)
 
     if oldTitle != newTitle:
         tags['title'] = newTitle
@@ -16,6 +15,7 @@ def modifyTitle(tags):
         print("New Title : ", newTitle)
 
 
-def start(tags):
+def start(tags, song_name):
+    tools.addIfTagMissing(tags, 'title', song_name)
     modifyTitle(tags)
 
