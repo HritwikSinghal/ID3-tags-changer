@@ -164,3 +164,4 @@ def isTagPresent(song_tags, tag_name):
 def addIfTagMissing(tags, tag_name, song_name):
     if not isTagPresent(tags, tag_name):
         retrieveTags.start(tags, song_name, tag_name)
+        print("Added '" + tag_name + "' to '" + song_name + "'")

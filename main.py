@@ -47,7 +47,7 @@ def changeSongTags(full_path_of_songs):
 
         print("Song Name: ", song_name)
 
-        artistName.start(tags, song_name)
+        # artistName.start(tags, song_name)
         # albumName.start(tags, song_name)
         # composerName.start(tags, song_name)
         # songTitle.start(tags, song_name)

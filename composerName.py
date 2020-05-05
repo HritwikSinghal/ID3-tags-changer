@@ -1,17 +1,23 @@
-from mutagen.easyid3 import EasyID3 as easyid3
-import re, artistName
+import re
+import tools
 
 
-def modifyComposer(tags, song_name):
-    if 'composer' in tags.keys() and tags['composer'][0] != '':
-        print("Composer: ", tags['composer'][0])
-    else:
-        print("Curr Composer: None")
-        artistName.start(tags, song_name, 0)
-        tags['composer'] = tags['artist'][0]
+def modifyComposer(tags):
+    old_composer = tags['composer'][0]
+    print("Composer: ", old_composer)
+
+    new_composer = tools.removeGibberish(old_composer)
+    new_composer = tools.divideBySColon(new_composer)
+
+    new_composer = tools.removeTrailingExtras(new_composer)
+    new_composer = tools.removeDup(new_composer)
+
+    if new_composer != old_composer:
+        tags['composer'] = new_composer
         tags.save()
-        print("New Composer: ", tags['composer'][0])
+        print("New Artist: ", new_composer)
 
 
 def start(tags, song_name):
-    modifyComposer(tags, song_name)
+    tools.addIfTagMissing(tags, 'composer', song_name)
+    modifyComposer(tags)

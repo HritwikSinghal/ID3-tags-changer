@@ -3,8 +3,8 @@ import tools
 
 def filterIndArtist(tags, flag=1):
     oldArtist = tags['artist'][0]
-    if flag == 1:
-        print("Curr Artist: ", oldArtist)
+
+    print("Curr Artist: ", oldArtist)
 
     # old one
     # oldArtist = ';'.join(re.split(r'/|,|& ', oldArtist))
@@ -23,10 +23,9 @@ def filterIndArtist(tags, flag=1):
     if newArtist != oldArtist:
         tags['artist'] = newArtist
         tags.save()
-        if flag == 1:
-            print("New Artist: ", newArtist)
+        print("New Artist: ", newArtist)
 
 
-def start(tags, song_name, flag=1):
+def start(tags, song_name):
     tools.addIfTagMissing(tags, 'artist', song_name)
-    filterIndArtist(tags, flag)
+    filterIndArtist(tags)
