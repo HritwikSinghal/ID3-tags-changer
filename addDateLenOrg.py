@@ -1,50 +1,65 @@
 from Base import tools
 
 
-def addDate(tags):
-    print("Curr Title: ", tags['title'][0])
+def addDate(tags, song_name, song_info):
+    if tools.isTagPresent(tags, 'date'):
+        print("Curr Year: ", tags['date'][0])
+        old_date = tags['date'][0]
 
-    oldTitle = tags['title'][0]
-    newTitle = tools.removeSiteName(oldTitle)
-    newTitle = tools.removeGibberish(newTitle)
+        new_date = song_info['date']
 
-    if oldTitle != newTitle:
-        tags['title'] = newTitle
-        # tags.save()
-        print("New Title : ", newTitle)
+        if old_date != new_date:
+            tags['date'] = new_date
+            tags.save()
+            print("Added new 'date' to '" + song_name + "'")
+    else:
+        new_date = song_info['date']
 
-
-def addLen(tags):
-    print("Curr Title: ", tags['title'][0])
-
-    oldTitle = tags['title'][0]
-    newTitle = tools.removeSiteName(oldTitle)
-    newTitle = tools.removeGibberish(newTitle)
-
-    if oldTitle != newTitle:
-        tags['title'] = newTitle
-        # tags.save()
-        print("New Title : ", newTitle)
+        tags['date'] = new_date
+        tags.save()
+        print("Added new 'date' to '" + song_name + "'")
 
 
-def addOrg(tags):
-    print("Curr Title: ", tags['title'][0])
+def addLen(tags, song_name, song_info):
+    if tools.isTagPresent(tags, 'length'):
+        print("Curr Length Value: ", tags['length'][0])
 
-    oldTitle = tags['title'][0]
-    newTitle = tools.removeSiteName(oldTitle)
-    newTitle = tools.removeGibberish(newTitle)
+        old_len = tags['length'][0]
+        new_len = song_info['length']
 
-    if oldTitle != newTitle:
-        tags['title'] = newTitle
-        # tags.save()
-        print("New Title : ", newTitle)
+        if old_len != new_len:
+            tags['length'] = new_len
+            tags.save()
+            print("Added new 'length' value to '" + song_name + "'")
+
+    else:
+        new_len = song_info['length']
+
+        tags['length'] = new_len
+        tags.save()
+        print("Added new 'length' value to '" + song_name + "'")
+
+
+def addOrg(tags, song_name, song_info):
+    if tools.isTagPresent(tags, 'organization'):
+        print("Curr  Label: ", tags['organization'][0])
+
+        old_org = tags['organization'][0]
+        new_org = song_info['organization']
+
+        if old_org != new_org:
+            tags['organization'] = new_org
+            tags.save()
+            print("Added new 'Label' value to '" + song_name + "'")
+    else:
+        new_org = song_info['organization']
+
+        tags['organization'] = new_org
+        tags.save()
+        print("Added new 'Label' value to '" + song_name + "'")
 
 
 def start(tags, song_name, song_info):
-    tools.addIfTagMissing(tags, 'len', song_name, song_info)
-    tools.addIfTagMissing(tags, 'organization', song_name, song_info)
-    tools.addIfTagMissing(tags, 'date', song_name, song_info)
-
-    addOrg(tags)
-    addDate(tags)
-    addLen(tags)
+    addDate(tags, song_name, song_info)
+    addLen(tags, song_name, song_info)
+    addOrg(tags, song_name, song_info)

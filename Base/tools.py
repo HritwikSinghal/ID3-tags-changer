@@ -153,16 +153,14 @@ def fixImageUrl(oldUrl):
 # ---------------------------------------------#
 
 
-def isTagPresent(song_tags, tag_name):
-    if tag_name in song_tags.keys() and song_tags[tag_name] != '':
+def isTagPresent(tags, tag_name):
+    if tag_name in tags.keys() and tags[tag_name] != '':
         return True
     return False
 
 
-def addIfTagMissing(tags, tag_name, song_name, song_info):
-    if not isTagPresent(tags, tag_name):
-        # retrieveTags.start(tags, song_name, tag_name)
-
-        tags[tag_name] = song_info
+def addIfTagMissing(tags, tag_name, song_name, tag_value):
+    if not isTagPresent(tags, tag_name) or tag_value == '':
+        tags[tag_name] = tag_value
         tags.save()
         print("Added '" + tag_name + "' to '" + song_name + "'")

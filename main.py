@@ -56,10 +56,6 @@ def handleSongs(songDir):
         print("Song Name: ", song_name)
 
         song_info = retrieveTags.start(tags, song_name)
-        # print(song_info)
-
-        # for x in tags.keys():
-        #     print(x, ": ", tags.valid_keys[x])
 
         # # if tag is provided, append that tag otherwise append all tags
         # if tag_name == 'none':
