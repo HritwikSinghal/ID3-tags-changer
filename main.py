@@ -1,4 +1,7 @@
 from mutagen.easyid3 import EasyID3 as easyid3
+from traceback import print_exc
+
+from mutagen.id3 import ID3NoHeaderError
 
 import albumName
 import artistName
@@ -47,7 +50,23 @@ def handleSongs(songDir):
 
     # Change song tags
     for songNameWithPath in full_path_of_songs:
-        tags = easyid3(songNameWithPath)
+
+        try:
+            tags = easyid3(songNameWithPath)
+        except ID3NoHeaderError():
+            print_exc()
+
+        # See below from https://github.com/quodlibet/mutagen/issues/327
+        # from mutagen.id3 import ID3, ID3NoHeaderError
+        #
+        # try:
+        #     tags = ID3("song.mp3")
+        # except ID3NoHeaderError:
+        #     tags = ID3()
+        #
+        # # to something with tags
+        #
+        # tags.save("song.mp3")
 
         song_name = tools.getSongNameWithoutPath(songNameWithPath)
         song_name = tools.removeBitrate(song_name)
@@ -57,6 +76,9 @@ def handleSongs(songDir):
 
         song_info = retrieveTags.start(tags, song_name)
 
+        for k, v in song_info.items():
+            print(k, " ", v)
+
         #     # todo : implement this
         # # if tag is provided, append that tag otherwise append all tags
         # if tag_name == 'none':
@@ -65,13 +87,13 @@ def handleSongs(songDir):
         #     songTags[tag_name] = song_info[tag_name]
         #     songTags.save()
 
-        albumName.start(tags, song_name, song_info)
-        artistName.start(tags, song_name, song_info['artist'])
-        composerName.start(tags, song_name, song_info['composer'])
-        songTitle.start(tags, song_name, song_info['title'])
+        # albumName.start(tags, song_name, song_info)
+        # artistName.start(tags, song_name, song_info)
+        composerName.start(tags, song_name, song_info)
+        # songTitle.start(tags, song_name, song_info)
 
-        addDateLenOrg.start(tags, song_name, song_info)
-        albumArt.start(song_name, song_info, songDir, songNameWithPath)
+        # addDateLenOrg.start(tags, song_name, song_info)
+        # albumArt.start(song_name, song_info, songDir, songNameWithPath)
 
         print()
 
