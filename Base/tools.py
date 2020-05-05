@@ -1,10 +1,6 @@
 import os
 import re
 
-from mutagen.easyid3 import EasyID3 as easyid3
-
-import retrieveTags
-
 
 # -----------------------------------------------------#
 # Website Name Specifics
@@ -166,5 +162,7 @@ def isTagPresent(song_tags, tag_name):
 def addIfTagMissing(tags, tag_name, song_name, song_info):
     if not isTagPresent(tags, tag_name):
         # retrieveTags.start(tags, song_name, tag_name)
+
         tags[tag_name] = song_info
+        tags.save()
         print("Added '" + tag_name + "' to '" + song_name + "'")

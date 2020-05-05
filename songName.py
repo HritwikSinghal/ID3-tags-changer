@@ -1,5 +1,5 @@
-from tools import *
-from tools import getSongNameWithoutPath
+from Base.tools import *
+from Base.tools import getSongNameWithoutPath
 
 
 def joinPathAndRename(oldNameWithPath, newName, full_path_of_songs):

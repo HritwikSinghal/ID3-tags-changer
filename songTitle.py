@@ -1,5 +1,4 @@
-import re
-import tools
+from Base import tools
 
 
 def modifyTitle(tags):

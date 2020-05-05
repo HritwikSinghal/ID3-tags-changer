@@ -1,4 +1,4 @@
-import tools
+from Base import tools
 
 
 def filterIndArtist(tags, flag=1):
@@ -29,3 +29,4 @@ def filterIndArtist(tags, flag=1):
 def start(tags, song_name, song_info):
     tools.addIfTagMissing(tags, 'artist', song_name, song_info)
     filterIndArtist(tags)
+

@@ -1,15 +1,15 @@
-import os
-import re
-import traceback
 from mutagen.easyid3 import EasyID3 as easyid3
 
-import tools
 import albumName
 import artistName
 import composerName
-import songName
 import songTitle
-import retrieveTags
+import songName
+import addDateLenOrg
+import albumImage
+
+from Base import tools
+from Base import retrieveTags
 
 
 def inputSongDir():
@@ -42,6 +42,7 @@ def handleSongs(songDir):
     full_path_of_songs = getFullPathOfSongsInDir(songDir)
     print('Now in ', songDir)
 
+    # fix song name
     # changeSongName(songDir, full_path_of_songs)
 
     # Change song tags
@@ -55,11 +56,26 @@ def handleSongs(songDir):
         print("Song Name: ", song_name)
 
         song_info = retrieveTags.start(tags, song_name)
+        # print(song_info)
 
-        albumName.start(tags, song_name, song_info['album'])
-        artistName.start(tags, song_name, song_info['artist'])
-        composerName.start(tags, song_name, song_info['composer'])
-        songTitle.start(tags, song_name, song_info['title'])
+        # for x in tags.keys():
+        #     print(x, ": ", tags.valid_keys[x])
+
+        # # if tag is provided, append that tag otherwise append all tags
+        # if tag_name == 'none':
+        #     # todo : implement this
+        #     pass
+        # else:
+        #     songTags[tag_name] = song_info[tag_name]
+        #     songTags.save()
+
+        # albumName.start(tags, song_name, song_info['album'])
+        # artistName.start(tags, song_name, song_info['artist'])
+        # composerName.start(tags, song_name, song_info['composer'])
+        # songTitle.start(tags, song_name, song_info['title'])
+
+        addDateLenOrg.start(tags, song_name, song_info)
+        # albumImage.start(tags, song_name, song_info)
 
         print()
 

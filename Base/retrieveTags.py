@@ -1,10 +1,7 @@
-import re
-from traceback import print_exc
 import json
-from json import JSONDecoder as jsondecoder
 
-import tools
-import jioSaavnApi
+from Base import tools
+from Base import jioSaavnApi
 
 
 def getCertainKeys(song_info):
@@ -13,8 +10,10 @@ def getCertainKeys(song_info):
         'album',
         'singers',
         'music',
+
         'year',
         'label',
+        'duration',
 
         'e_songid',
         'image_url',
@@ -24,11 +23,20 @@ def getCertainKeys(song_info):
     rinfo = {}
 
     for key in info:
+        # print(key, " ", info[key])
+
         if key in rel_keys:
             if key == 'singers':
                 rinfo['artist'] = info[key]
             elif key == 'music':
                 rinfo['composer'] = info[key]
+            elif key == 'year':
+                rinfo['date'] = info[key]
+            elif key == 'duration':
+                rinfo['length'] = info[key]
+            elif key == 'label':
+                rinfo['organization'] = info[key]
+
             else:
                 rinfo[key] = info[key]
 
@@ -38,23 +46,22 @@ def getCertainKeys(song_info):
     return rinfo
 
 
-def getTags(songTags, song_name, tag_name='none'):
+def getTags(tags, song_name):
     baseUrl = "https://www.jiosaavn.com/search/"
     max_songs_to_show = 1
 
     song_number = 0
 
     # Search using album tag
-    if tools.isTagPresent(songTags, 'album') and \
-            tools.removeYear(songTags['album'][0]) != song_name and tag_name != 'album':
-        url = baseUrl + song_name + ' ' + songTags['album'][0]
+    if tools.isTagPresent(tags, 'album') and \
+            tools.removeYear(tags['album'][0]) != song_name:
+        url = baseUrl + song_name + ' ' + tags['album'][0]
         song_list = jioSaavnApi.fetchInfo(url, max_songs_to_show)
 
     # search using artist tag if no album tag or
-    # both album and song name are same or
-    # we have to get album tag itself
-    elif tools.isTagPresent(songTags, 'artist'):
-        url = baseUrl + song_name + ' ' + tools.removeGibberish(songTags['artist'][0])
+    # both album and song name are same
+    elif tools.isTagPresent(tags, 'artist'):
+        url = baseUrl + song_name + ' ' + tools.removeGibberish(tags['artist'][0])
         song_list = jioSaavnApi.fetchInfo(url, max_songs_to_show)
 
     # show list of songs and make user select from it
@@ -82,14 +89,6 @@ def getTags(songTags, song_name, tag_name='none'):
 
     return song_info
 
-    # # if tag is provided, append that tag otherwise append all tags
-    # if tag_name == 'none':
-    #     # todo : implement this
-    #     pass
-    # else:
-    #     songTags[tag_name] = song_info[tag_name]
-    #     songTags.save()
 
-
-def start(tags, song_name, tag_name='none'):
-    getTags(tags, song_name, tag_name)
+def start(tags, song_name):
+    return getTags(tags, song_name)

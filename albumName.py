@@ -1,4 +1,4 @@
-import tools
+from Base import tools
 
 
 def modifyAlbum(tags):
@@ -19,3 +19,4 @@ def modifyAlbum(tags):
 def start(tags, song_name, song_info):
     tools.addIfTagMissing(tags, 'album', song_name, song_info)
     modifyAlbum(tags)
+
