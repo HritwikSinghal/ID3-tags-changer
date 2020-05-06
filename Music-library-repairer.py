@@ -35,7 +35,7 @@ if x == 0:
     exit(0)
 
 print("Starting Program....")
-main.start(test=1)
+main.start(test=0)
 
 print("""
     If there were errors during running this program, please upload log file
