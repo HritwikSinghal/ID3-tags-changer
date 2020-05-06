@@ -4,9 +4,9 @@ from Modules import main
 #  or download song tags
 
 
-#     # todo : implement this
-# # if tag is provided, append that tag otherwise append all tags
+# todo : implement this
+# # if tag name is provided, append that tag otherwise append all tags
 
-
+# todo add fix for duplicate file names
 
 main.start()

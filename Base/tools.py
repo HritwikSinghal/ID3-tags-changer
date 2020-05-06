@@ -123,7 +123,7 @@ def removeDup(old_name):
 # Extras
 
 def getSongNameWithoutPath(songNameWithPath):
-    songNameWithoutPath = re.findall(r'[^\\]+\.mp3', songNameWithPath)
+    songNameWithoutPath = re.findall(r'[^\\/]+\.mp3', songNameWithPath)
     return songNameWithoutPath[0]
 
 

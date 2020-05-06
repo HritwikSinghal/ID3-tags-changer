@@ -18,7 +18,7 @@ def fixName(full_path_of_songs, songNameWithPath):
     newName = removeBitrate(oldName)
     newName = removeGibberish(newName)
     newName = removeSiteName(newName)
-    newName = newName.strip()
+    newName = (newName.replace('.mp3', '')).strip()
 
     if '.mp3' not in newName:
         newName = newName + '.mp3'
