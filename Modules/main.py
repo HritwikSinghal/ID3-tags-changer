@@ -3,6 +3,8 @@
 
 from mutagen.easyid3 import EasyID3 as easyid3
 from os.path import isfile
+
+import traceback
 from traceback import print_exc
 
 import os
@@ -35,6 +37,14 @@ def inputSongDir(test=0):
             print("No such Dir exist, Please enter Dir again...")
 
 
+def createLogFile(song_dir):
+    tools.changeDir(song_dir)
+    with open('Music-library-repairer_LOGS.txt', 'w+') as log_file:
+        log_file.write("this is log file for current dir\n\n")
+    log_file = open('Music-library-repairer_LOGS.txt', 'a')
+    return log_file
+
+
 def getSongList(files):
     songs = []
     for x in files:
@@ -63,14 +73,21 @@ def handleSongs(song_dir, files, flag=1):
         if int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
             return
 
+    log_file = createLogFile(song_dir)
+
+    #
+    #
+    #
     song_list = getSongList(files)
 
     # fix song name
     try:
         changeSongName(song_dir, song_list)
     except:
-        print("XXX---There Was some error fixing this tag. Moving to next")
-        print_exc()
+        print("XXX---There Was some error fixing name. Moving to next")
+
+        log_file.write('\n\nXXX---error fixing name.\n')
+        traceback.print_exc(file=log_file)
 
     # fix tags
     for song in song_list:
@@ -80,12 +97,20 @@ def handleSongs(song_dir, files, flag=1):
             tags = easyid3(song_with_path)
         except:
             print("This Song has no tags. Creating tags...")
+            try:
+                tags = mutagen.File(song_with_path, easy=True)
+                tags.add_tags()
+                print("Tags created.")
+            except:
+                print("XXX---There Was some error fixing name. Moving to next")
 
-            tags = mutagen.File(song_with_path, easy=True)
-            tags.add_tags()
+                log_file.write('\n\nXXX---error creating tags\n')
+                traceback.print_exc(file=log_file)
+                continue
 
-            print("Tags created.")
-
+        #
+        #
+        #
         song_name = tools.removeBitrate(song)
         song_name = song_name.replace('.mp3', '')
         song_name = song_name.strip()
@@ -97,8 +122,11 @@ def handleSongs(song_dir, files, flag=1):
         except:
             found_data = 0
             json_data = ''
-            print("Cannot find data for selected song. Fixing tags locally")
-            print_exc()
+            print("XXX---Cannot find data for selected song. Make sure song name is correct and then retry\n"
+                  "If still this error exists, there is no data on server. Fixing tags locally")
+
+            log_file.write('\n\nXXX---error Cannot find data for selected song\n')
+            traceback.print_exc(file=log_file)
 
         #
         #
@@ -109,35 +137,49 @@ def handleSongs(song_dir, files, flag=1):
                   "Make sure year is there in song tags. if not,"
                   "add it manually and re-run this program.\n"
                   "Moving to next")
-            print_exc()
+
+            log_file.write('\n\nXXX---error in fixing albumname\n')
+            traceback.print_exc(file=log_file)
+
         try:
             artistName.start(tags, json_data, found_data)
         except:
             print("XXX---There Was some error fixing this tag. Moving to next")
-            print_exc()
+
+            log_file.write('\n\nXXX---error in artistnaem\n')
+            traceback.print_exc(file=log_file)
+
         try:
             composerName.start(tags, json_data, found_data)
         except:
             print("XXX---There Was some error fixing this tag. Moving to next")
-            print_exc()
+
+            log_file.write('\n\nXXX---error in composer\n')
+            traceback.print_exc(file=log_file)
 
         try:
             songTitle.start(tags, json_data, found_data)
         except:
             print("XXX---There Was some error fixing this tag. Moving to next")
-            print_exc()
+
+            log_file.write('\n\nXXX---error in title\n')
+            traceback.print_exc(file=log_file)
 
         try:
             addDateLenOrg.start(tags, json_data, found_data)
         except:
             print("XXX---There Was some error fixing this tag. Moving to next")
-            print_exc()
+
+            log_file.write('\n\nXXX---error in date\n')
+            traceback.print_exc(file=log_file)
 
         try:
             albumArt.start(json_data, song_dir, song_with_path, found_data)
         except:
             print("XXX---There Was some error fixing this tag. Moving to next")
-            print_exc()
+
+            log_file.write('\n\nXXX---error in ART\n')
+            traceback.print_exc(file=log_file)
 
         print()
 
@@ -148,7 +190,7 @@ def start(test=0):
     if test == 1:
         flag = -1
     else:
-        flag = int(input("\nDo you want to run in all sub-dirs?\n"
+        flag = int(input("\nDo you want to run this program in all sub-dirs?\n"
                          "1 == Yes,\n-1 == No,\n0 == Ask in each Dir\n"))
 
     if flag == -1:
