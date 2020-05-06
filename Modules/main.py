@@ -39,7 +39,7 @@ def inputSongDir(test=0):
 def createLogFile(song_dir):
     tools.changeDir(song_dir)
     with open('Music-library-repairer_LOGS.txt', 'w+') as log_file:
-        log_file.write("This is log file for" + song_dir + "\n\n")
+        log_file.write("This is log file for " + song_dir + "\n\n")
     log_file = open('Music-library-repairer_LOGS.txt', 'a')
     return log_file
 
@@ -108,7 +108,7 @@ def fixTags(log_file, song_dir, song_list):
                   "If still this error exists, there is no data on server.\n"
                   "Fixing tags locally\n")
 
-            log_file.write('\n\nXXX---error Cannot find data for selected song = ' + song_name + '\n')
+            log_file.write('\n\nXXX---error Cannot find data for selected song = ' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
 
         try:
@@ -119,7 +119,7 @@ def fixTags(log_file, song_dir, song_list):
                   "add it manually and re-run this program.\n"
                   "Moving to next\n")
 
-            log_file.write('\n\nXXX---error in fixing albumname\n json data =' + json_data + '\n')
+            log_file.write('\n\nXXX---error in fixing albumname\n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
             # traceback.print_exc()
 
@@ -128,7 +128,7 @@ def fixTags(log_file, song_dir, song_list):
         except:
             print("\nXXX---There Was some error fixing artistName. Moving to next\n")
 
-            log_file.write('\n\nXXX---error in artistnaem\n')
+            log_file.write('\n\nXXX---error in artistname \n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
 
         try:
@@ -136,7 +136,7 @@ def fixTags(log_file, song_dir, song_list):
         except:
             print("\nXXX---There Was some error fixing composerName. Moving to next\n")
 
-            log_file.write('\n\nXXX---error in composer\n')
+            log_file.write('\n\nXXX---error in composer\n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
 
         try:
@@ -144,7 +144,7 @@ def fixTags(log_file, song_dir, song_list):
         except:
             print("\nXXX---There Was some error fixing songTitle. Moving to next\n")
 
-            log_file.write('\n\nXXX---error in title\n')
+            log_file.write('\n\nXXX---error in title\n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
 
         try:
@@ -152,7 +152,7 @@ def fixTags(log_file, song_dir, song_list):
         except:
             print("\nXXX---There Was some error fixing Date, Len, Org. Moving to next\n")
 
-            log_file.write('\n\nXXX---error in date\n')
+            log_file.write('\n\nXXX---error in date\n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
 
         try:
@@ -160,7 +160,7 @@ def fixTags(log_file, song_dir, song_list):
         except:
             print("\nXXX---There Was some error fixing albumArt. Moving to next\n")
 
-            log_file.write('\n\nXXX---error in albumART\n')
+            log_file.write('\n\nXXX---error in albumART\n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
 
         print()

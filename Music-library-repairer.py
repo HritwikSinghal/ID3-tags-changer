@@ -55,4 +55,15 @@ def start(test=0):
         ''')
 
 
-start(test=0)
+start(test=1)
+
+# todo:
+''' 
+-the breakup song
+
+-make more verbose logs
+-improve song recognization
+-it recognized wrong album name for dilbara since it was released as single
+    its saavn api fault, maybe change to gaana or spitify api
+
+'''

@@ -52,8 +52,6 @@ def fetchList(url, max=5):
             json_data = re.sub(r'.\[\b.*?"\]', "", json_data)
 
             #######################
-            # json_data = re.sub(r'title', '', info.text)
-            # json_data = re.sub(r'.\(.*?"\)', "", str(info.text))
             # print(json_data)
             #######################
 

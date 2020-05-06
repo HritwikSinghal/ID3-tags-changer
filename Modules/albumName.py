@@ -24,5 +24,5 @@ def start(tags, json_data, found_data):
         fixAlbum(tags, date)
 
     else:
-        date = tags['date']
+        date = tags['date'][0]
         fixAlbum(tags, date)
