@@ -1,6 +1,6 @@
 import os
 import re
-
+import platform
 
 # -----------------------------------------------------#
 # Website Name Specifics
@@ -123,7 +123,10 @@ def removeDup(old_name):
 # Extras
 
 def getSongNameWithoutPath(songNameWithPath):
-    songNameWithoutPath = re.findall(r'[^\\/]+\.mp3', songNameWithPath)
+    if platform.system() == 'Windows':
+        songNameWithoutPath = re.findall(r'[^\\]+\.mp3', songNameWithPath)
+    else:
+        songNameWithoutPath = re.findall(r'[^/]+\.mp3', songNameWithPath)
     return songNameWithoutPath[0]
 
 

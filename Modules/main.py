@@ -59,41 +59,41 @@ def handleSongs(songDir, flag=1):
             return
 
     # fix song name
-    changeSongName(songDir, full_path_of_songs)
+    # changeSongName(songDir, full_path_of_songs)
 
     # Change song tags
-    # for songNameWithPath in full_path_of_songs:
-    #     try:
-    #         tags = easyid3(songNameWithPath)
-    #     except:
-    #         print("This file has no tags. Creating tags...")
-    #
-    #         tags = mutagen.File(songNameWithPath, easy=True)
-    #         tags.add_tags()
-    #
-    #         print("Tags created.")
-    #
-    #     song_name = tools.getSongNameWithoutPath(songNameWithPath)
-    #     song_name = tools.removeBitrate(song_name)
-    #     song_name = song_name.replace('.mp3', '')
-    #     song_name = song_name.strip()
-    #
-    #     print("Song Name: ", song_name)
-    #
-    #     song_info = retrieveTags.start(tags, song_name)
-    #
-    #     # for k, v in song_info.items():
-    #     #     print(k, " ", v)
-    #
-    #     albumName.start(tags, song_name, song_info)
-    #     artistName.start(tags, song_name, song_info)
-    #     composerName.start(tags, song_name, song_info)
-    #     songTitle.start(tags, song_name, song_info)
-    #
-    #     addDateLenOrg.start(tags, song_name, song_info)
-    #     albumArt.start(song_name, song_info, songDir, songNameWithPath)
-    #
-    #     print()
+    for songNameWithPath in full_path_of_songs:
+        try:
+            tags = easyid3(songNameWithPath)
+        except:
+            print("This file has no tags. Creating tags...")
+
+            tags = mutagen.File(songNameWithPath, easy=True)
+            tags.add_tags()
+
+            print("Tags created.")
+
+        song_name = tools.getSongNameWithoutPath(songNameWithPath)
+        song_name = tools.removeBitrate(song_name)
+        song_name = song_name.replace('.mp3', '')
+        song_name = song_name.strip()
+
+        print("Song Name: ", song_name)
+
+        # song_info = retrieveTags.start(tags, song_name)
+        #
+        # # for k, v in song_info.items():
+        # #     print(k, " ", v)
+        #
+        # albumName.start(tags, song_name, song_info)
+        # artistName.start(tags, song_name, song_info)
+        # composerName.start(tags, song_name, song_info)
+        # songTitle.start(tags, song_name, song_info)
+        #
+        # addDateLenOrg.start(tags, song_name, song_info)
+        # albumArt.start(song_name, song_info, songDir, songNameWithPath)
+        #
+        # print()
 
 
 def start():
@@ -104,7 +104,7 @@ def start():
     #                            "1 == Yes,\n-1 == No,\n0 == Some (Will ask in each Dir)\n")
     walk_down_curr_dir = -1
     if walk_down_curr_dir != -1:
-        print("Walking down ", all_song_dir, "...")
+        print("Walking down ", all_song_dir, "\b...")
         for dirPath, subDirName, fileNames in tools.os.walk(all_song_dir, topdown=True):
             curr_songs_dir = dirPath
             handleSongs(curr_songs_dir, int(walk_down_curr_dir))
