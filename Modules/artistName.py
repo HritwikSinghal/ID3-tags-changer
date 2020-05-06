@@ -1,7 +1,7 @@
 from Base import tools
 
 
-def filterIndArtist(tags, flag=1):
+def fixArtist(tags, flag=1):
     oldArtist = tags['artist'][0]
 
     print("Curr Artist: ", oldArtist)
@@ -26,7 +26,8 @@ def filterIndArtist(tags, flag=1):
         print("New Artist: ", newArtist)
 
 
-def start(tags, song_name, song_info):
-    artist_name = song_info['artist']
-    tools.addIfTagMissing(tags, 'artist', song_name, artist_name)
-    filterIndArtist(tags)
+def start(tags, json_data, ask_flag=0):
+    artist_name = json_data['artist']
+
+    tools.checkAndFixTag(tags, 'artist', artist_name, ask_flag)
+    fixArtist(tags)

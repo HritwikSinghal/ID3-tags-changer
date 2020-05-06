@@ -14,7 +14,8 @@ def modifyTitle(tags):
         print("New Title : ", newTitle)
 
 
-def start(tags, song_name, song_info):
-    title_value = song_info['title']
-    tools.addIfTagMissing(tags, 'title', song_name, title_value)
+def start(tags, json_data, ask_flag=0):
+    title_value = json_data['title']
+    tools.checkAndFixTag(tags, 'title', title_value, ask_flag)
+
     modifyTitle(tags)

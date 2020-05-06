@@ -1,33 +1,37 @@
 from Base.tools import *
-from Base.tools import getSongNameWithoutPath
+from Base.tools import join
 
 
-def joinPathAndRename(oldNameWithPath, newName, full_path_of_songs):
-    i = full_path_of_songs.index(oldNameWithPath)
+def joinPathAndRename(old_name, newName, songDir, song_list):
+    index = song_list.index(old_name)
 
-    newNameWithPath = os.path.join(os.getcwd(), newName)
-    full_path_of_songs[i] = newNameWithPath
+    newNameWithPath = join(songDir, newName)
+    song_list[index] = newName
+
     try:
-        os.rename(oldNameWithPath, newNameWithPath)
+        os.rename(join(songDir, old_name), newNameWithPath)
     except FileExistsError:
         print("File with name '" + newName + "' already exists")
-        x = int(input("do you want to delete that file?"
-                      "\n1 == Yes,\n"
+        x = int(input("Do you want to PERMANENTLY delete the "
+                      "old file?"
+                      "\n1 == Yes,"
                       "0 == NO\n"))
         if x == 1:
             os.remove(newNameWithPath)
             print("File removed successfully. Now renaming new file.")
-            os.rename(oldNameWithPath, newNameWithPath)
+
+            os.rename(join(songDir, old_name), newNameWithPath)
             print("File renamed successfully.")
+
+            del song_list[index]
         else:
             print("Moving on to next file...")
 
 
-def fixName(full_path_of_songs, songNameWithPath):
-    oldName = getSongNameWithoutPath(songNameWithPath)
-    print("Current Name: ", oldName)
+def fixName(songDir, old_name, song_list):
+    print("Current Name: ", old_name)
 
-    newName = removeBitrate(oldName)
+    newName = removeBitrate(old_name)
     newName = removeGibberish(newName)
     newName = removeSiteName(newName)
     newName = (newName.replace('.mp3', '')).strip()
@@ -35,11 +39,12 @@ def fixName(full_path_of_songs, songNameWithPath):
     if '.mp3' not in newName:
         newName = newName + '.mp3'
 
-    if oldName != newName:
+    if old_name != newName:
         print("New Name    : ", newName)
-        joinPathAndRename(songNameWithPath, newName, full_path_of_songs)
+        joinPathAndRename(old_name, newName, songDir, song_list)
 
 
-def start(songDir, full_path_of_songs, songNameWithPath):
+def start(songDir, song, song_list):
     changeDir(songDir)
-    fixName(full_path_of_songs, songNameWithPath)
+
+    fixName(songDir, song, song_list)

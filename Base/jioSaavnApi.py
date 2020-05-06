@@ -11,7 +11,7 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 
-def fetchInfo(url, max=5):
+def fetchList(url, max=5):
     # cssPath = ''
     # use getApiKey function to get api key
 
@@ -26,27 +26,25 @@ def fetchInfo(url, max=5):
     all_songs_info = soup.find_all('div', attrs={"class": "hide song-json"})
 
     song_list = []
-    i = 0
 
     for info in all_songs_info:
         try:
-            songInfo = json.loads(str(info.text))
-            x = (json.dumps(songInfo, indent=2))
+            json_data = json.loads(str(info.text))
 
+            x = json.dumps(json_data, indent=2)
             song_list.append(x)
         except:
             # the error is caused by quotation marks in songs title as shown below
             # (From "XXX")
             # so just remove the whole thing inside parenthesis
 
-            songInfo = tools.re.sub(r'.\(\bFrom .*?"\)', "", str(info.text))
-            songInfo = json.loads(str(songInfo))
-            x = (json.dumps(songInfo, indent=2))
+            json_data = tools.re.sub(r'.\(\bFrom .*?"\)', "", str(info.text))
+            json_data = json.loads(str(json_data))
 
+            x = json.dumps(json_data, indent=2)
             song_list.append(x)
 
-        if i >= max - 1:
+        if len(song_list) >= max:
             break
-        i += 1
 
     return song_list

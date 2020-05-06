@@ -1,7 +1,7 @@
 from Base import tools
 
 
-def modifyComposer(tags):
+def fixComposer(tags):
     old_composer = tags['composer'][0]
     print("Composer: ", old_composer)
 
@@ -17,7 +17,7 @@ def modifyComposer(tags):
         print("New Composer: ", new_composer)
 
 
-def start(tags, song_name, song_info):
-    composer_name = song_info['composer']
-    tools.addIfTagMissing(tags, 'composer', song_name, composer_name)
-    modifyComposer(tags)
+def start(tags, json_data, ask_flag=0):
+    composer_name = json_data['composer']
+    tools.checkAndFixTag(tags, 'composer', composer_name, ask_flag)
+    fixComposer(tags)

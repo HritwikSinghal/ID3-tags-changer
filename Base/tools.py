@@ -2,6 +2,7 @@ import os
 import re
 import platform
 
+
 # -----------------------------------------------------#
 # Website Name Specifics
 
@@ -114,6 +115,7 @@ def removeDup(old_name):
     new_name = map(str.strip, new_name)
 
     new_name = list(set(new_name))
+    new_name.sort()
     new_name = ';'.join(new_name)
 
     return new_name
@@ -122,14 +124,13 @@ def removeDup(old_name):
 # ------------------------------------------#
 # Extras
 
-def getSongNameWithoutPath(songNameWithPath):
-    if platform.system() == 'Windows':
-        # Dont know why '[^\\]+\.mp3' works.
-        songNameWithoutPath = re.findall(r'[^\\]+\.mp3', songNameWithPath)
-    else:
-        songNameWithoutPath = re.findall(r'[^/]+\.mp3', songNameWithPath)
-    return songNameWithoutPath[0]
-
+# def getSongNameWithoutPath(songNameWithPath):
+#     if platform.system() == 'Windows':
+#         # Dont know why '[^\\]+\.mp3' works.
+#         songNameWithoutPath = re.findall(r'[^\\]+\.mp3', songNameWithPath)
+#     else:
+#         songNameWithoutPath = re.findall(r'[^/]+\.mp3', songNameWithPath)
+#     return songNameWithoutPath[0]
 
 def printList(myList):
     print('--------------')
@@ -154,6 +155,10 @@ def fixImageUrl(oldUrl):
     return url
 
 
+def join(a, b):
+    return os.path.join(a, b)
+
+
 # ---------------------------------------------#
 
 
@@ -163,8 +168,26 @@ def isTagPresent(tags, tag_name):
     return False
 
 
-def addIfTagMissing(tags, tag_name, song_name, tag_value):
+def saveTags(tag_name, tag_value_from_json, tags):
+    tags[tag_name] = tag_value_from_json
+    tags.save()
+    print("Added " + tag_name)
+
+
+def checkAndFixTag(tags, tag_name, tag_value_from_json, ask_flag=1):
     if not isTagPresent(tags, tag_name):
-        tags[tag_name] = tag_value
-        tags.save()
-        print("Added '" + tag_name + "' to '" + song_name + "'")
+        saveTags(tag_name, tag_value_from_json, tags)
+    elif tag_value_from_json != tags[tag_name]:
+        if ask_flag == 1:
+            print("{} retrieved and current {} do not match, Select the one "
+                  "you want to keep. \nFirst one is retrieved from web, "
+                  "2nd is current one".format(tag_name, tag_name))
+            print("1) {}\n2) {}".format(tag_value_from_json, tags[tag_name][0]))
+
+            x = int(input())
+            if x == 1:
+                saveTags(tag_name, tag_value_from_json, tags)
+            else:
+                print("No change")
+        else:
+            saveTags(tag_name, tag_value_from_json, tags)

@@ -1,14 +1,14 @@
 from Base import tools
 
 
-def modifyAlbum(tags, song_info):
+def fixAlbum(tags, json_data):
     print("Curr Album Name: ", tags['album'][0])
 
     oldAlbumName = tags['album'][0]
     newName = tools.removeYear(oldAlbumName)
     newName = tools.removeGibberish(newName)
 
-    newAlbumName = newName + ' (' + song_info['date'] + ')'
+    newAlbumName = newName + ' (' + json_data['date'] + ')'
 
     if oldAlbumName != newAlbumName:
         tags['album'] = newAlbumName
@@ -16,8 +16,7 @@ def modifyAlbum(tags, song_info):
         print("New Album Name : ", newAlbumName)
 
 
-def start(tags, song_name, song_info):
-    album_name = song_info['album']
-    tools.addIfTagMissing(tags, 'album', song_name, album_name)
-    modifyAlbum(tags, song_info)
-
+def start(tags, json_data, ask_flag=1):
+    album_name = json_data['album']
+    tools.checkAndFixTag(tags, 'album', album_name, ask_flag)
+    fixAlbum(tags, json_data)
