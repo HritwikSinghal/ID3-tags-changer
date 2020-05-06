@@ -19,28 +19,28 @@ def getCertainKeys(song_info):
         'image_url',
     ]
 
-    info = json.loads(song_info)
+    json_data = json.loads(song_info)
     rinfo = {}
 
-    for key in info:
-        # print(key, " ", info[key])
+    for key in json_data:
+        # print(key, " ", json_data[key])
 
         if key in rel_keys:
             if key == 'singers':
-                rinfo['artist'] = info[key]
+                rinfo['artist'] = json_data[key]
             elif key == 'music':
-                rinfo['composer'] = info[key]
+                rinfo['composer'] = json_data[key]
             elif key == 'year':
-                rinfo['date'] = info[key]
+                rinfo['date'] = json_data[key]
             elif key == 'duration':
-                rinfo['length'] = info[key]
+                rinfo['length'] = json_data[key]
             elif key == 'label':
-                rinfo['organization'] = info[key]
+                rinfo['organization'] = json_data[key]
             elif key == 'image_url':
-                rinfo['image_url'] = tools.fixImageUrl(info[key])
+                rinfo['image_url'] = tools.fixImageUrl(json_data[key])
 
             else:
-                rinfo[key] = info[key]
+                rinfo[key] = json_data[key]
 
     return rinfo
 
@@ -48,7 +48,6 @@ def getCertainKeys(song_info):
 def getTags(tags, song_name):
     baseUrl = "https://www.jiosaavn.com/search/"
     max_songs_to_show = 1
-
     song_number = 0
 
     # Search using album tag
