@@ -16,7 +16,7 @@ def fixAlbum(tags, json_data):
         print("New Album Name : ", newAlbumName)
 
 
-def start(tags, json_data, ask_flag=1):
+def start(tags, json_data):
     album_name = json_data['album']
-    tools.checkAndFixTag(tags, 'album', album_name, ask_flag)
+    tools.checkAndFixTag(tags, 'album', album_name)
     fixAlbum(tags, json_data)

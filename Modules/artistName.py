@@ -26,8 +26,8 @@ def fixArtist(tags, flag=1):
         print("New Artist: ", newArtist)
 
 
-def start(tags, json_data, ask_flag=0):
+def start(tags, json_data):
     artist_name = json_data['artist']
 
-    tools.checkAndFixTag(tags, 'artist', artist_name, ask_flag)
+    tools.checkAndFixTag(tags, 'artist', artist_name)
     fixArtist(tags)

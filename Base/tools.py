@@ -124,14 +124,6 @@ def removeDup(old_name):
 # ------------------------------------------#
 # Extras
 
-# def getSongNameWithoutPath(songNameWithPath):
-#     if platform.system() == 'Windows':
-#         # Dont know why '[^\\]+\.mp3' works.
-#         songNameWithoutPath = re.findall(r'[^\\]+\.mp3', songNameWithPath)
-#     else:
-#         songNameWithoutPath = re.findall(r'[^/]+\.mp3', songNameWithPath)
-#     return songNameWithoutPath[0]
-
 def printList(myList):
     print('--------------')
     for item in myList:
@@ -155,8 +147,8 @@ def fixImageUrl(oldUrl):
     return url
 
 
-def join(a, b):
-    return os.path.join(a, b)
+def join(dir, file):
+    return os.path.join(dir, file)
 
 
 # ---------------------------------------------#
@@ -174,20 +166,8 @@ def saveTags(tag_name, tag_value_from_json, tags):
     print("Added " + tag_name)
 
 
-def checkAndFixTag(tags, tag_name, tag_value_from_json, ask_flag=1):
-    if not isTagPresent(tags, tag_name):
-        saveTags(tag_name, tag_value_from_json, tags)
-    elif tag_value_from_json != tags[tag_name]:
-        if ask_flag == 1:
-            print("{} retrieved and current {} do not match, Select the one "
-                  "you want to keep. \nFirst one is retrieved from web, "
-                  "2nd is current one".format(tag_name, tag_name))
-            print("1) {}\n2) {}".format(tag_value_from_json, tags[tag_name][0]))
+def checkAndFixTag(tags, tag_name, tag_value_from_json):
+    if (not isTagPresent(tags, tag_name)) or \
+            tag_value_from_json != tags[tag_name]:
 
-            x = int(input())
-            if x == 1:
-                saveTags(tag_name, tag_value_from_json, tags)
-            else:
-                print("No change")
-        else:
-            saveTags(tag_name, tag_value_from_json, tags)
+        saveTags(tag_name, tag_value_from_json, tags)

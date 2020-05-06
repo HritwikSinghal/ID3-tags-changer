@@ -17,7 +17,7 @@ def fixComposer(tags):
         print("New Composer: ", new_composer)
 
 
-def start(tags, json_data, ask_flag=0):
+def start(tags, json_data):
     composer_name = json_data['composer']
-    tools.checkAndFixTag(tags, 'composer', composer_name, ask_flag)
+    tools.checkAndFixTag(tags, 'composer', composer_name)
     fixComposer(tags)

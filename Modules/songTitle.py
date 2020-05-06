@@ -14,8 +14,8 @@ def modifyTitle(tags):
         print("New Title : ", newTitle)
 
 
-def start(tags, json_data, ask_flag=0):
+def start(tags, json_data):
     title_value = json_data['title']
-    tools.checkAndFixTag(tags, 'title', title_value, ask_flag)
+    tools.checkAndFixTag(tags, 'title', title_value)
 
     modifyTitle(tags)

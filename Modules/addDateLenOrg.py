@@ -7,17 +7,12 @@ def addDate(tags, json_data):
         old_date = tags['date'][0]
 
         new_date = json_data['date']
-
         if old_date != new_date:
-            tags['date'] = new_date
-            tags.save()
-            print("Added new date='" + new_date)
+            tools.saveTags('date', new_date, tags)
+
     else:
         new_date = json_data['date']
-
-        tags['date'] = new_date
-        tags.save()
-        print("Added new date='" + new_date)
+        tools.saveTags('date', new_date, tags)
 
 
 def addLen(tags, json_data):
@@ -28,16 +23,11 @@ def addLen(tags, json_data):
         new_len = json_data['length']
 
         if old_len != new_len:
-            tags['length'] = new_len
-            tags.save()
-            print("Added new length='" + new_len)
+            tools.saveTags('length', new_len, tags)
 
     else:
         new_len = json_data['length']
-
-        tags['length'] = new_len
-        tags.save()
-        print("Added new length='" + new_len)
+        tools.saveTags('length', new_len, tags)
 
 
 def addOrg(tags, json_data):
@@ -48,15 +38,11 @@ def addOrg(tags, json_data):
         new_org = json_data['organization']
 
         if old_org != new_org:
-            tags['organization'] = new_org
-            tags.save()
-            print("Added new Label='" + new_org)
+            tools.saveTags('organization', new_org, tags)
+
     else:
         new_org = json_data['organization']
-
-        tags['organization'] = new_org
-        tags.save()
-        print("Added new Label='" + new_org)
+        tools.saveTags('organization', new_org, tags)
 
 
 def start(tags, json_data):

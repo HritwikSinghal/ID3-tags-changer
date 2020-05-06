@@ -20,16 +20,18 @@ from Base.tools import printList
 from Base import retrieveTags
 
 
-def inputSongDir():
+def inputSongDir(test=0):
     while True:
-        # songDir = input("Enter song dir:  ")
-        songDir = r'C:\Users\hritwik\Pictures\Camera Roll'
+        if test == 1:
+            songDir = r'C:\Users\hritwik\Pictures\Camera Roll'
+        else:
+            songDir = input("Enter song dir:  ")
 
         if os.path.isdir(songDir):
             print("Song dir is: ", songDir)
             return songDir
         else:
-            print("No such Dir exist, Please enter again...")
+            print("No such Dir exist, Please enter Dir again...")
 
 
 def getSongList(files):
@@ -55,7 +57,7 @@ def changeSongName(songDir, song_list):
 def handleSongs(song_dir, files, flag=1):
     print('Now in ', song_dir)
 
-    # Ask user permission to fix songs in curr dir
+    # Ask user permission to fix songs in curr dir if flag is set to 0
     if flag == 0:
         if int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
             return
@@ -65,13 +67,14 @@ def handleSongs(song_dir, files, flag=1):
     # fix song name
     changeSongName(song_dir, song_list)
 
+    # fix tags
     for song in song_list:
         song_with_path = tools.join(song_dir, song)
 
         try:
             tags = easyid3(song_with_path)
         except:
-            print("This file has no tags. Creating tags...")
+            print("This Song has no tags. Creating tags...")
 
             tags = mutagen.File(song_with_path, easy=True)
             tags.add_tags()
@@ -81,45 +84,42 @@ def handleSongs(song_dir, files, flag=1):
         song_name = tools.removeBitrate(song)
         song_name = song_name.replace('.mp3', '')
         song_name = song_name.strip()
-        #
+
         print("Song Name: ", song_name)
-        print(tags['artist'][0])
 
         json_data = retrieveTags.start(tags, song_name)
 
-        # albumName.start(tags, json_data)
-        # artistName.start(tags, json_data)
-        # composerName.start(tags, json_data)
-        # songTitle.start(tags, json_data)
-        # addDateLenOrg.start(tags, json_data)
+        albumName.start(tags, json_data)
+        artistName.start(tags, json_data)
+        composerName.start(tags, json_data)
+        songTitle.start(tags, json_data)
+        addDateLenOrg.start(tags, json_data)
 
-        # albumArt.start(json_data, song_dir, song_with_path)
+        albumArt.start(json_data, song_dir, song_with_path)
         print()
 
 
-def start():
-    # input songs directory
-    song_dir = inputSongDir()
+def start(test=0):
+    song_dir = inputSongDir(test)
 
-    # flag = int(input("\nDo you want to run in all sub-dirs?\n"
-    #                  "1 == Yes,\n-1 == No,\n0 == Ask in each Dir\n"))
-    flag = -1
+    if test == 1:
+        flag = -1
+    else:
+        flag = int(input("\nDo you want to run in all sub-dirs?\n"
+                         "1 == Yes,\n-1 == No,\n0 == Ask in each Dir\n"))
 
     if flag == -1:
-        # todo: see and fix this
-        print("Only changing attributes in: ", song_dir, "...\n")
+        print("Only changing attributes in:", song_dir, "...\n")
 
         files = [
             x
             for x in os.listdir(song_dir)
             if isfile(tools.join(song_dir, x))
         ]
-        # printList(files)
+
         handleSongs(song_dir, files)
 
     else:
         print("Walking down ", song_dir, "\b...")
-
         for curr_dir, sub_dirs, files in tools.os.walk(song_dir, topdown=True):
-            # printList(files)
             handleSongs(curr_dir, files, flag)
