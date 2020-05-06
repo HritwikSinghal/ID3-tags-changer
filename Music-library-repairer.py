@@ -55,4 +55,4 @@ def start(test=0):
         ''')
 
 
-start(0)
+start(test=0)

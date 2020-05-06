@@ -32,6 +32,10 @@ def fetchList(url, max=5):
         try:
             json_data = json.loads(str(info.text))
 
+            #######################
+            # print("IN TRY")
+            #######################
+
             x = json.dumps(json_data, indent=2)
             song_list.append(x)
         except:
@@ -39,10 +43,27 @@ def fetchList(url, max=5):
             # (foo bar "XXX")
             # so just remove the whole thing inside parenthesis
 
+            #######################
+            # print("IN EXCEPT")
+            # # print(info.text)
+            #######################
+
             json_data = re.sub(r'.\(\b.*?"\)', "", str(info.text))
+            json_data = re.sub(r'.\[\b.*?"\]', "", json_data)
+
+            #######################
+            # json_data = re.sub(r'title', '', info.text)
+            # json_data = re.sub(r'.\(.*?"\)', "", str(info.text))
+            # print(json_data)
+            #######################
+
             json_data = json.loads(str(json_data))
             x = json.dumps(json_data, indent=2)
-
             song_list.append(x)
+
+            #######################
+            # print(x)
+            # print(url)
+            #######################
 
     return song_list

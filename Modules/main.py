@@ -97,7 +97,6 @@ def fixTags(log_file, song_dir, song_list):
 
         print("Song Name: ", song_name)
 
-        json_data = str
         try:
             json_data = retrieveTags.start(tags, song_name)
             found_data = 1
@@ -120,8 +119,9 @@ def fixTags(log_file, song_dir, song_list):
                   "add it manually and re-run this program.\n"
                   "Moving to next\n")
 
-            log_file.write('\n\nXXX---error in fixing albumname\n')
+            log_file.write('\n\nXXX---error in fixing albumname\n json data =' + json_data + '\n')
             traceback.print_exc(file=log_file)
+            # traceback.print_exc()
 
         try:
             artistName.start(tags, json_data, found_data)

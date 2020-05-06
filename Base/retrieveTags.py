@@ -46,11 +46,12 @@ def getCertainKeys(song_info):
     return rinfo
 
 
-def getSong(song_list, song_name):
+def getSong(song_list, song_name, tags):
     for song in song_list:
         data = json.loads(song)
         if data['title'] == song_name:
-            return song
+            if tools.isTagPresent(tags, 'album') and data['album'] == tools.removeYear(tags['album'][0]).strip():
+                return song
 
     # This Asks user to select Song since no song was matched using title and name
     i = 0
@@ -79,7 +80,7 @@ def getTags(tags, song_name):
 
     list_of_songs_with_info = jioSaavnApi.fetchList(url)
 
-    song = str(getSong(list_of_songs_with_info, song_name))
+    song = str(getSong(list_of_songs_with_info, song_name, tags))
     song_info = getCertainKeys(song)
 
     return song_info
