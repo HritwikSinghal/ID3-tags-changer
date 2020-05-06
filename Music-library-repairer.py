@@ -34,8 +34,8 @@ if x == 0:
     print("Exiting....")
     exit(0)
 
-
-# main.start(test=1)
+print("Starting Program....")
+main.start(test=1)
 
 print("""
     If there were errors during running this program, please upload log file

@@ -122,8 +122,8 @@ def handleSongs(song_dir, files, flag=1):
         except:
             found_data = 0
             json_data = ''
-            print("XXX---Cannot find data for selected song. Make sure song name is correct and then retry\n"
-                  "If still this error exists, there is no data on server. Fixing tags locally")
+            print("\nXXX---Cannot find data for selected song. Make sure song name is correct and then retry\n"
+                  "If still this error exists, there is no data on server. Fixing tags locally\n")
 
             log_file.write('\n\nXXX---error Cannot find data for selected song\n')
             traceback.print_exc(file=log_file)
@@ -133,10 +133,10 @@ def handleSongs(song_dir, files, flag=1):
         try:
             albumName.start(tags, json_data, found_data)
         except:
-            print("XXX---There Was some error fixing this tag.\n"
+            print("\nXXX---There Was some error fixing albumName.\n"
                   "Make sure year is there in song tags. if not,"
                   "add it manually and re-run this program.\n"
-                  "Moving to next")
+                  "Moving to next\n")
 
             log_file.write('\n\nXXX---error in fixing albumname\n')
             traceback.print_exc(file=log_file)
@@ -144,7 +144,7 @@ def handleSongs(song_dir, files, flag=1):
         try:
             artistName.start(tags, json_data, found_data)
         except:
-            print("XXX---There Was some error fixing this tag. Moving to next")
+            print("\nXXX---There Was some error fixing artistName. Moving to next\n")
 
             log_file.write('\n\nXXX---error in artistnaem\n')
             traceback.print_exc(file=log_file)
@@ -152,7 +152,7 @@ def handleSongs(song_dir, files, flag=1):
         try:
             composerName.start(tags, json_data, found_data)
         except:
-            print("XXX---There Was some error fixing this tag. Moving to next")
+            print("\nXXX---There Was some error fixing composerName. Moving to next\n")
 
             log_file.write('\n\nXXX---error in composer\n')
             traceback.print_exc(file=log_file)
@@ -160,7 +160,7 @@ def handleSongs(song_dir, files, flag=1):
         try:
             songTitle.start(tags, json_data, found_data)
         except:
-            print("XXX---There Was some error fixing this tag. Moving to next")
+            print("\nXXX---There Was some error fixing songTitle. Moving to next\n")
 
             log_file.write('\n\nXXX---error in title\n')
             traceback.print_exc(file=log_file)
@@ -168,7 +168,7 @@ def handleSongs(song_dir, files, flag=1):
         try:
             addDateLenOrg.start(tags, json_data, found_data)
         except:
-            print("XXX---There Was some error fixing this tag. Moving to next")
+            print("\nXXX---There Was some error fixing Date, Len, Org. Moving to next\n")
 
             log_file.write('\n\nXXX---error in date\n')
             traceback.print_exc(file=log_file)
@@ -176,9 +176,9 @@ def handleSongs(song_dir, files, flag=1):
         try:
             albumArt.start(json_data, song_dir, song_with_path, found_data)
         except:
-            print("XXX---There Was some error fixing this tag. Moving to next")
+            print("\nXXX---There Was some error fixing albumArt. Moving to next\n")
 
-            log_file.write('\n\nXXX---error in ART\n')
+            log_file.write('\n\nXXX---error in albumART\n')
             traceback.print_exc(file=log_file)
 
         print()
