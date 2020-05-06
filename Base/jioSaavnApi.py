@@ -44,7 +44,4 @@ def fetchList(url, max=5):
             x = json.dumps(json_data, indent=2)
             song_list.append(x)
 
-        if len(song_list) >= max:
-            break
-
     return song_list
