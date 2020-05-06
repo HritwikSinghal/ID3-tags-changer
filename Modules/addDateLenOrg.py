@@ -45,7 +45,8 @@ def addOrg(tags, json_data):
         tools.saveTags('organization', new_org, tags)
 
 
-def start(tags, json_data):
-    addDate(tags, json_data)
-    addLen(tags, json_data)
-    addOrg(tags, json_data)
+def start(tags, json_data, found_data):
+    if found_data:
+        addDate(tags, json_data)
+        addLen(tags, json_data)
+        addOrg(tags, json_data)

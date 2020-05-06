@@ -3,6 +3,7 @@
 
 from mutagen.easyid3 import EasyID3 as easyid3
 from os.path import isfile
+from traceback import print_exc
 
 import os
 import mutagen
@@ -65,7 +66,11 @@ def handleSongs(song_dir, files, flag=1):
     song_list = getSongList(files)
 
     # fix song name
-    changeSongName(song_dir, song_list)
+    try:
+        changeSongName(song_dir, song_list)
+    except:
+        print("XXX---There Was some error fixing this tag. Moving to next")
+        print_exc()
 
     # fix tags
     for song in song_list:
@@ -86,16 +91,54 @@ def handleSongs(song_dir, files, flag=1):
         song_name = song_name.strip()
 
         print("Song Name: ", song_name)
+        try:
+            json_data = retrieveTags.start(tags, song_name)
+            found_data = 1
+        except:
+            found_data = 0
+            json_data = ''
+            print("Cannot find data for selected song. Fixing tags locally")
+            print_exc()
 
-        json_data = retrieveTags.start(tags, song_name)
+        #
+        #
+        try:
+            albumName.start(tags, json_data, found_data)
+        except:
+            print("XXX---There Was some error fixing this tag.\n"
+                  "Make sure year is there in song tags. if not,"
+                  "add it manually and re-run this program.\n"
+                  "Moving to next")
+            print_exc()
+        try:
+            artistName.start(tags, json_data, found_data)
+        except:
+            print("XXX---There Was some error fixing this tag. Moving to next")
+            print_exc()
+        try:
+            composerName.start(tags, json_data, found_data)
+        except:
+            print("XXX---There Was some error fixing this tag. Moving to next")
+            print_exc()
 
-        albumName.start(tags, json_data)
-        artistName.start(tags, json_data)
-        composerName.start(tags, json_data)
-        songTitle.start(tags, json_data)
-        addDateLenOrg.start(tags, json_data)
+        try:
+            songTitle.start(tags, json_data, found_data)
+        except:
+            print("XXX---There Was some error fixing this tag. Moving to next")
+            print_exc()
 
-        albumArt.start(json_data, song_dir, song_with_path)
+        try:
+            addDateLenOrg.start(tags, json_data, found_data)
+        except:
+            print("XXX---There Was some error fixing this tag. Moving to next")
+            print_exc()
+
+        try:
+            albumArt.start(json_data, song_dir, song_with_path, found_data)
+        except:
+            print("XXX---There Was some error fixing this tag. Moving to next")
+            print_exc()
+
         print()
 
 

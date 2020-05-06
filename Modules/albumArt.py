@@ -52,7 +52,7 @@ def addAlbumArt(json_data, songNameWithPath):
     os.remove('img.jpg')
 
 
-def start(json_data, songDir, songNameWithPath, ask_flag=0):
-    tools.changeDir(songDir)
-
-    addAlbumArt(json_data, songNameWithPath)
+def start(json_data, songDir, songNameWithPath, found_data):
+    if found_data:
+        tools.changeDir(songDir)
+        addAlbumArt(json_data, songNameWithPath)

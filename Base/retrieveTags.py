@@ -53,7 +53,6 @@ def getSong(song_list, song_name):
             return song
 
     # This Asks user to select Song since no song was matched using title and name
-
     i = 0
     for song in song_list:
         rel_keys = getCertainKeys(song)
@@ -62,7 +61,8 @@ def getSong(song_list, song_name):
             print('\t', key, ':', rel_keys[key])
         print()
         i += 1
-    song_number = int(input("Enter your song number from above list: ")) - 1
+    song_number = int(input("Enter your song number from above list, "
+                            "if none matches, enter 'none': ")) - 1
 
     return song_list[song_number]
 
