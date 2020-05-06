@@ -1,50 +1,58 @@
 from Modules import main
 
-# todo: implement caching using e_songid
 
-list_of_tags = [
-    'Album',
-    'Artist',
-    'Composer',
-    'Title',
-    'Date, Length(tag) & Label',
-    'AlbumArt',
-    'Song Name'
-]
+def start(test=0):
+    # todo: implement caching using e_songid
 
-print("""
-    This program will fix the following tags for each song in your Music library
-""")
+    if test:
+        main.start(1)
+    else:
+        list_of_tags = [
+            'Album',
+            'Artist',
+            'Composer',
+            'Title',
+            'Date, Length(tag) & Label',
+            'AlbumArt',
+            'Song Name'
+        ]
 
-i = 0
-for ele in list_of_tags:
-    print('\t', i + 1, '-', ele)
-    i += 1
+        print("""
+            This program will fix the following tags for each song in your Music library
+        """)
 
-print('''
-    Warning: This program is in early stages so it may mess up a little bit
-            Please make a backup of your songs somewhere in case anything goes wrong.
-            I WILL NOT BE RESPONSIBLE FOR ANY MESS.
-            PLEASE ENTER '1' TO CONFIRM RUNNING THIS PROGRAM OR '0' TO EXIT
-''')
+        i = 0
+        for ele in list_of_tags:
+            print('\t', i + 1, '-', ele)
+            i += 1
 
-x = int(input())
+        print('''
+            Warning: This program is in early stages so it may mess up a little bit
+                    Please make a backup of your songs somewhere in case anything goes wrong.
+                    I WILL NOT BE RESPONSIBLE FOR ANY MESS.
+                    PLEASE ENTER '1' TO CONFIRM RUNNING THIS PROGRAM OR '0' TO EXIT
+        ''')
 
-if x == 0:
-    print("Exiting....")
-    exit(0)
+        x = int(input())
 
-print("Starting Program....")
-main.start(test=0)
+        if x == 0:
+            print("Exiting....")
+            exit(0)
 
-print("""
-    If there were errors during running this program, please upload log file
-    named 'Music-library-repairer_LOGS.txt' in each dir and open an issue on github
-    you can find those log files by using default search in folders or by manually
-    finding each.
-""")
-print('''
-    Thank you for Using this program....
-    By Hritwik
-    https://github.com/HritwikSinghal
-''')
+        print("Starting Program....")
+        main.start(test)
+
+        print("""
+            If there were errors during running this program, please upload log file
+            named 'Music-library-repairer_LOGS.txt' in each dir and open an issue on github
+            you can find those log files by using default search in folders or by manually
+            finding each.
+        """)
+        print('''
+            Thank you for Using this program....
+            By Hritwik
+            https://github.com/HritwikSinghal
+        ''')
+
+
+start(0)

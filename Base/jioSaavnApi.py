@@ -1,6 +1,7 @@
 import requests
 import ssl
 import json
+import re
 from bs4 import BeautifulSoup as beautifulsoup
 
 from Base import tools
@@ -35,13 +36,13 @@ def fetchList(url, max=5):
             song_list.append(x)
         except:
             # the error is caused by quotation marks in songs title as shown below
-            # (From "XXX")
+            # (foo bar "XXX")
             # so just remove the whole thing inside parenthesis
 
-            json_data = tools.re.sub(r'.\(\bFrom .*?"\)', "", str(info.text))
+            json_data = re.sub(r'.\(\b.*?"\)', "", str(info.text))
             json_data = json.loads(str(json_data))
-
             x = json.dumps(json_data, indent=2)
+
             song_list.append(x)
 
     return song_list

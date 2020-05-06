@@ -5,7 +5,6 @@ from mutagen.easyid3 import EasyID3 as easyid3
 from os.path import isfile
 
 import traceback
-from traceback import print_exc
 
 import os
 import mutagen
@@ -40,7 +39,7 @@ def inputSongDir(test=0):
 def createLogFile(song_dir):
     tools.changeDir(song_dir)
     with open('Music-library-repairer_LOGS.txt', 'w+') as log_file:
-        log_file.write("this is log file for current dir\n\n")
+        log_file.write("This is log file for" + song_dir + "\n\n")
     log_file = open('Music-library-repairer_LOGS.txt', 'a')
     return log_file
 
@@ -56,40 +55,24 @@ def getSongList(files):
     return songs
 
 
-def changeSongName(songDir, song_list):
-    print("Fixing song names....")
-
-    for song in song_list:
-        songName.start(songDir, song, song_list)
-        print()
-    print()
-
-
-def handleSongs(song_dir, files, flag=1):
-    print('Now in ', song_dir)
-
-    # Ask user permission to fix songs in curr dir if flag is set to 0
-    if flag == 0:
-        if int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
-            return
-
-    log_file = createLogFile(song_dir)
-
-    #
-    #
-    #
-    song_list = getSongList(files)
-
-    # fix song name
+def changeSongName(songDir, song_list, log_file):
+    curr = str
     try:
-        changeSongName(song_dir, song_list)
+        print("Fixing song names....")
+
+        for song in song_list:
+            curr = song
+            songName.start(songDir, song, song_list)
+            print()
+        print()
     except:
         print("XXX---There Was some error fixing name. Moving to next")
 
-        log_file.write('\n\nXXX---error fixing name.\n')
+        log_file.write('\n\nXXX---error fixing name== ' + curr + '\n')
         traceback.print_exc(file=log_file)
 
-    # fix tags
+
+def fixTags(log_file, song_dir, song_list):
     for song in song_list:
         song_with_path = tools.join(song_dir, song)
 
@@ -102,34 +85,33 @@ def handleSongs(song_dir, files, flag=1):
                 tags.add_tags()
                 print("Tags created.")
             except:
-                print("XXX---There Was some error fixing name. Moving to next")
+                print("XXX---There Was some error creating tags. Moving to next")
 
-                log_file.write('\n\nXXX---error creating tags\n')
+                log_file.write('\n\nXXX---error creating tags= ' + song_with_path + '\n')
                 traceback.print_exc(file=log_file)
                 continue
 
-        #
-        #
-        #
         song_name = tools.removeBitrate(song)
         song_name = song_name.replace('.mp3', '')
         song_name = song_name.strip()
 
         print("Song Name: ", song_name)
+
+        json_data = str
         try:
             json_data = retrieveTags.start(tags, song_name)
             found_data = 1
         except:
             found_data = 0
             json_data = ''
-            print("\nXXX---Cannot find data for selected song. Make sure song name is correct and then retry\n"
-                  "If still this error exists, there is no data on server. Fixing tags locally\n")
+            print("\nXXX---Cannot find data for selected song.\n"
+                  "Make sure song name is correct and then retry\n"
+                  "If still this error exists, there is no data on server.\n"
+                  "Fixing tags locally\n")
 
-            log_file.write('\n\nXXX---error Cannot find data for selected song\n')
+            log_file.write('\n\nXXX---error Cannot find data for selected song = ' + song_name + '\n')
             traceback.print_exc(file=log_file)
 
-        #
-        #
         try:
             albumName.start(tags, json_data, found_data)
         except:
@@ -182,6 +164,19 @@ def handleSongs(song_dir, files, flag=1):
             traceback.print_exc(file=log_file)
 
         print()
+
+
+def handleSongs(song_dir, files, flag=1):
+    print('Now in ', song_dir)
+    if flag == 0:
+        if int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
+            return
+
+    log_file = createLogFile(song_dir)
+    song_list = getSongList(files)
+
+    changeSongName(song_dir, song_list, log_file)
+    fixTags(log_file, song_dir, song_list)
 
 
 def start(test=0):

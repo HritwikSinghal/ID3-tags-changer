@@ -167,7 +167,5 @@ def saveTags(tag_name, tag_value_from_json, tags):
 
 
 def checkAndFixTag(tags, tag_name, tag_value_from_json):
-    if (not isTagPresent(tags, tag_name)) or \
-            tag_value_from_json != tags[tag_name]:
-
+    if (not isTagPresent(tags, tag_name)) or (tag_value_from_json != tags[tag_name] and tag_value_from_json != ''):
         saveTags(tag_name, tag_value_from_json, tags)
