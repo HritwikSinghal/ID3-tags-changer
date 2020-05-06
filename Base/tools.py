@@ -124,6 +124,7 @@ def removeDup(old_name):
 
 def getSongNameWithoutPath(songNameWithPath):
     if platform.system() == 'Windows':
+        # Dont know why '[^\\]+\.mp3' works.
         songNameWithoutPath = re.findall(r'[^\\]+\.mp3', songNameWithPath)
     else:
         songNameWithoutPath = re.findall(r'[^/]+\.mp3', songNameWithPath)

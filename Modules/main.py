@@ -59,7 +59,7 @@ def handleSongs(songDir, flag=1):
             return
 
     # fix song name
-    # changeSongName(songDir, full_path_of_songs)
+    changeSongName(songDir, full_path_of_songs)
 
     # Change song tags
     for songNameWithPath in full_path_of_songs:

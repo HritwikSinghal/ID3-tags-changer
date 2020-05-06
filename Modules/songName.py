@@ -7,8 +7,20 @@ def joinPathAndRename(oldNameWithPath, newName, full_path_of_songs):
 
     newNameWithPath = os.path.join(os.getcwd(), newName)
     full_path_of_songs[i] = newNameWithPath
-
-    os.rename(oldNameWithPath, newNameWithPath)
+    try:
+        os.rename(oldNameWithPath, newNameWithPath)
+    except FileExistsError:
+        print("File with name '" + newName + "' already exists")
+        x = int(input("do you want to delete that file?"
+                      "\n1 == Yes,\n"
+                      "0 == NO\n"))
+        if x == 1:
+            os.remove(newNameWithPath)
+            print("File removed successfully. Now renaming new file.")
+            os.rename(oldNameWithPath, newNameWithPath)
+            print("File renamed successfully.")
+        else:
+            print("Moving on to next file...")
 
 
 def fixName(full_path_of_songs, songNameWithPath):
