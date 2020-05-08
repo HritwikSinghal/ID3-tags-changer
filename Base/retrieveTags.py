@@ -101,8 +101,17 @@ def getSong(song_info_list, song_name, tags):
                 print('\t', key, ':', rel_keys[key])
         print()
         i += 1
-    song_number = int(input("Enter your song number from above list, "
-                            "if none matches, enter 'n': ")) - 1
+    try:
+        song_number = int(input("Enter your song number from above list, "
+                                "if none matches, enter 'n': ")) - 1
+    except IndexError:
+        try:
+            song_number = int(input("Oops..You mistyped, please enter number within above range\n"
+                                    "if none matches, enter 'n': ")) - 1
+        except ValueError:
+            return -1
+    except ValueError:
+        return -1
 
     return song_info_list[song_number]
 
@@ -113,7 +122,7 @@ def start(tags, song_name):
     url = getURL(baseUrl, song_name, tags)
 
     ###########################
-    # print(url)
+    print(url)
     # x = input()
     ###########################
 
@@ -125,6 +134,14 @@ def start(tags, song_name):
     ###########################
 
     song = str(getSong(list_of_songs_with_info, song_name, tags))
+
+    if song == '-1':
+        list_of_songs_with_info.clear()
+
+        url = "https://www.jiosaavn.com/search/" + song_name
+        list_of_songs_with_info = jioSaavnApi.fetchList(url)
+        song = str(getSong(list_of_songs_with_info, song_name, tags))
+
     song_info = getCertainKeys(song)
 
     return song_info
