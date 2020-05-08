@@ -61,28 +61,33 @@ def getCertainKeys(song_info):
 
 
 def getSong(song_info_list, song_name, tags):
+    # automatch song
+
     for song in song_info_list:
         data = json.loads(song)
 
-        al = tools.removeYear(tags['album'][0]).strip()
-        if data['title'].lower() == song_name.lower() and tools.isTagPresent(tags, 'album'):
-            if data['album'] == al:
-                return song
-            elif data['actual_album'] != '' and data['actual_album'] == al:
+        if data['title'].lower().strip() == song_name.lower().strip() and tools.isTagPresent(tags, 'album'):
+            if data['album'].lower().strip() == tools.removeYear(tags['album'][0]).lower().strip():
                 return song
 
-    # This Asks user to select Song since no song was matched using title and name
+    #############################
+    # print("STOP")
+    # x = input()
+    #############################
+
+    # if no song was matched, Ask user
+
     i = 0
     for song in song_info_list:
         rel_keys = getCertainKeys(song)
         print(i + 1, end=' ) \n')
         for key in rel_keys:
-            # if key != 'actual_album':
-            print('\t', key, ':', rel_keys[key])
+            if key != 'actual_album':
+                print('\t', key, ':', rel_keys[key])
         print()
         i += 1
     song_number = int(input("Enter your song number from above list, "
-                            "if none matches, enter 'none': ")) - 1
+                            "if none matches, enter 'n': ")) - 1
 
     return song_info_list[song_number]
 
@@ -93,7 +98,7 @@ def start(tags, song_name):
     url = getURL(baseUrl, song_name, tags)
 
     ###########################
-    print(url)
+    # print(url)
     # x = input()
     ###########################
 

@@ -20,6 +20,7 @@ def start(test=0):
 
         print("""
             This program will fix the following tags for each song in your Music library
+            For more info, visit https://github.com/HritwikSinghal/Music-library-repairer
         """)
 
         i = 0
@@ -31,29 +32,29 @@ def start(test=0):
             Warning: This program is in early stages so it may mess up a little bit
                     Please make a backup of your songs somewhere in case anything goes wrong.
                     I WILL NOT BE RESPONSIBLE FOR ANY MESS.
-                    PLEASE ENTER '1' TO CONFIRM RUNNING THIS PROGRAM OR '0' TO EXIT
+                    PLEASE ENTER IN LOWER CASE 'yes' TO RUN OR 'no' TO EXIT
         ''')
 
-        x = int(input())
+        x = input()
 
-        if x == 0:
+        if x == 'yes':
+            print("Starting Program....")
+            main.start(test)
+
+            print("""
+                    If there were errors during running this program, please upload log file
+                    named 'Music-library-repairer_LOGS.txt' in each dir and open an issue on github
+                    you can find those log files by using default search in folders or by manually
+                    finding each.
+                """)
+            print('''
+                    Thank you for Using this program....
+                    By Hritwik
+                    https://github.com/HritwikSinghal
+                ''')
+        else:
             print("Exiting....")
             exit(0)
-
-        print("Starting Program....")
-        main.start(test)
-
-        print("""
-            If there were errors during running this program, please upload log file
-            named 'Music-library-repairer_LOGS.txt' in each dir and open an issue on github
-            you can find those log files by using default search in folders or by manually
-            finding each.
-        """)
-        print('''
-            Thank you for Using this program....
-            By Hritwik
-            https://github.com/HritwikSinghal
-        ''')
 
 
 os.chdir(os.getcwd())
@@ -64,10 +65,7 @@ else:
 
 start(test=test_bit)
 
-# # todo: ask only if multiple songs are found with some title and album
-#   fix for multiple albumart
-#   fix for wrong album art
-#   improve data detection logic
+# # todo: if user selects 'n', try searching with artist or year
 
 ''' 
 -code cleanup

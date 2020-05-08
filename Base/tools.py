@@ -83,23 +83,23 @@ def removeBitrate(oldName):
     ''', re.VERBOSE)
 
     newName = x.sub('', oldName)
-    return newName
+    return newName.strip()
 
 
 def removeYear(oldName):
     newName = re.sub(r' \(\d*\)', '', oldName)
-    return newName
+    return newName.strip()
 
 
 def removeGibberish(oldName):
     newName = re.sub(r'&quot;|&*amp', '', oldName)
-    return newName
+    return newName.strip()
 
 
 def removeTrailingExtras(oldName):
     # newName = re.sub(r'&quot;|&*amp', '', oldName)
     newName = re.sub(r';\s*;\s*', '; ', oldName)
-    return newName
+    return newName.strip()
 
 
 def divideBySColon(oldName):
@@ -164,5 +164,5 @@ def saveTags(tag_name, tag_value_from_json, tags):
 
 
 def checkAndFixTag(tags, tag_name, tag_value_from_json):
-    if (not isTagPresent(tags, tag_name)) or (tag_value_from_json != tags[tag_name] and tag_value_from_json != ''):
+    if (not isTagPresent(tags, tag_name)) or (tag_value_from_json != '' and tag_value_from_json != tags[tag_name]):
         saveTags(tag_name, tag_value_from_json, tags)

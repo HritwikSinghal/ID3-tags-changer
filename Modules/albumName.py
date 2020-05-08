@@ -18,7 +18,11 @@ def fixAlbum(tags, date):
 
 def start(tags, json_data, found_data):
     if found_data:
-        album_name = json_data['album']
+        try:
+            album_name = json_data['actual_album']
+        except KeyError:
+            album_name = json_data['album']
+
         tools.checkAndFixTag(tags, 'album', album_name)
         date = json_data['date']
         fixAlbum(tags, date)

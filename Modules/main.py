@@ -102,6 +102,7 @@ def fixTags(song_dir, song_list, log_file):
 
             log_file.write('\n\nXXX---error Cannot find data for selected song = ' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
+            # traceback.print_exc()
 
         #
         #
