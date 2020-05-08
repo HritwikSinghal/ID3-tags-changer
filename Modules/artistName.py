@@ -1,7 +1,7 @@
 from Base import tools
 
 
-def fixArtist(tags, flag=1):
+def fixArtist(tags):
     oldArtist = tags['artist'][0]
 
     print("Curr Artist: ", oldArtist)

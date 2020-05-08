@@ -65,9 +65,10 @@ else:
 
 start(test=test_bit)
 
-# # todo: if user selects 'n', try searching with artist or year
+# # todo: fix from fucking logs first
 
 ''' 
+if user selects 'n', try searching with artist or year
 -code cleanup
 -make more verbose logs
 - rename song name as song title after retrieving it from web

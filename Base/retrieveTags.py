@@ -6,10 +6,25 @@ from Base import jioSaavnApi
 
 
 def getURL(baseUrl, song_name, tags):
-    if tools.isTagPresent(tags, 'album') and tools.removeYear(tags['album'][0]) != song_name:
-        url = baseUrl + song_name + ' ' + tools.removeYear(tags['album'][0])
+    song_name = song_name.lower().strip()
+
+    if tools.isTagPresent(tags, 'album') and tools.removeYear(
+            tags['album'][0]).lower().strip() != song_name:
+
+        album = tools.removeYear(tags['album'][0])
+        album = tools.removeGibberish(album)
+        url = baseUrl + song_name.strip() + ' ' + album
+
     elif tools.isTagPresent(tags, 'artist'):
-        url = baseUrl + song_name + ' ' + tools.removeGibberish(tags['artist'][0])
+
+        oldArtist = tools.removeGibberish(tags['artist'][0])
+        newArtist = tools.divideBySColon(oldArtist)
+
+        newArtist = tools.removeTrailingExtras(newArtist)
+        newArtist = tools.removeDup(newArtist)
+
+        url = baseUrl + song_name + ' ' + newArtist
+
     elif tools.isTagPresent(tags, 'date'):
         url = baseUrl + song_name + ' ' + tags['date'][0]
     else:

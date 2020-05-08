@@ -102,62 +102,62 @@ def fixTags(song_dir, song_list, log_file):
 
             log_file.write('\n\nXXX---error Cannot find data for selected song = ' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
-            # traceback.print_exc()
+            traceback.print_exc()
 
+        # #
+        # #
+        # #
+        # try:
+        #     albumName.start(tags, json_data, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing albumName.\n"
+        #           "Make sure year is there in song tags. if not,"
+        #           "add it manually and re-run this program.\n"
+        #           "Moving to next\n")
         #
+        #     log_file.write('\n\nXXX---error in fixing albumname\n song_with_path =' + song_with_path + '\n')
+        #     traceback.print_exc(file=log_file)
+        #     # traceback.print_exc()
         #
+        # try:
+        #     artistName.start(tags, json_data, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing artistName. Moving to next\n")
         #
-        try:
-            albumName.start(tags, json_data, found_data)
-        except:
-            print("\nXXX---There Was some error fixing albumName.\n"
-                  "Make sure year is there in song tags. if not,"
-                  "add it manually and re-run this program.\n"
-                  "Moving to next\n")
-
-            log_file.write('\n\nXXX---error in fixing albumname\n song_with_path =' + song_with_path + '\n')
-            traceback.print_exc(file=log_file)
-            # traceback.print_exc()
-
-        try:
-            artistName.start(tags, json_data, found_data)
-        except:
-            print("\nXXX---There Was some error fixing artistName. Moving to next\n")
-
-            log_file.write('\n\nXXX---error in artistname \n song_with_path =' + song_with_path + '\n')
-            traceback.print_exc(file=log_file)
-
-        try:
-            composerName.start(tags, json_data, found_data)
-        except:
-            print("\nXXX---There Was some error fixing composerName. Moving to next\n")
-
-            log_file.write('\n\nXXX---error in composer\n song_with_path =' + song_with_path + '\n')
-            traceback.print_exc(file=log_file)
-
-        try:
-            songTitle.start(tags, json_data, found_data)
-        except:
-            print("\nXXX---There Was some error fixing songTitle. Moving to next\n")
-
-            log_file.write('\n\nXXX---error in title\n song_with_path =' + song_with_path + '\n')
-            traceback.print_exc(file=log_file)
-
-        try:
-            addDateLenOrg.start(tags, json_data, found_data)
-        except:
-            print("\nXXX---There Was some error fixing Date, Len, Org. Moving to next\n")
-
-            log_file.write('\n\nXXX---error in date\n song_with_path =' + song_with_path + '\n')
-            traceback.print_exc(file=log_file)
-
-        try:
-            albumArt.start(json_data, song_dir, song_with_path, found_data)
-        except:
-            print("\nXXX---There Was some error fixing albumArt. Moving to next\n")
-
-            log_file.write('\n\nXXX---error in albumART\n song_with_path =' + song_with_path + '\n')
-            traceback.print_exc(file=log_file)
+        #     log_file.write('\n\nXXX---error in artistname \n song_with_path =' + song_with_path + '\n')
+        #     traceback.print_exc(file=log_file)
+        #
+        # try:
+        #     composerName.start(tags, json_data, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing composerName. Moving to next\n")
+        #
+        #     log_file.write('\n\nXXX---error in composer\n song_with_path =' + song_with_path + '\n')
+        #     traceback.print_exc(file=log_file)
+        #
+        # try:
+        #     songTitle.start(tags, json_data, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing songTitle. Moving to next\n")
+        #
+        #     log_file.write('\n\nXXX---error in title\n song_with_path =' + song_with_path + '\n')
+        #     traceback.print_exc(file=log_file)
+        #
+        # try:
+        #     addDateLenOrg.start(tags, json_data, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing Date, Len, Org. Moving to next\n")
+        #
+        #     log_file.write('\n\nXXX---error in date\n song_with_path =' + song_with_path + '\n')
+        #     traceback.print_exc(file=log_file)
+        #
+        # try:
+        #     albumArt.start(json_data, song_dir, song_with_path, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing albumArt. Moving to next\n")
+        #
+        #     log_file.write('\n\nXXX---error in albumART\n song_with_path =' + song_with_path + '\n')
+        #     traceback.print_exc(file=log_file)
 
         print()
 
