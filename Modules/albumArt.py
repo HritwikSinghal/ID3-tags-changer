@@ -4,8 +4,10 @@
 import requests
 import shutil
 import os
+import traceback
 
 from Base import tools
+import mutagen
 from mutagen.id3 import ID3, APIC, TIT2
 
 
@@ -23,10 +25,12 @@ def addAlbumArt(json_data, songNameWithPath):
     audio = ID3(songNameWithPath)
     with open('img.jpg', 'rb') as albumart:
         # method 1
+
+        audio.delall("APIC")  # Delete every APIC tag (Cover art)
         audio['APIC'] = APIC(
             encoding=3,
             mime='image/jpeg',
-            type=3, desc='Cover',
+            type=3, desc='Cover (Front)',
             data=albumart.read()
         )
         audio.save(v2_version=3)

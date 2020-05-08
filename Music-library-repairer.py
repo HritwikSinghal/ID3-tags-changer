@@ -64,15 +64,17 @@ else:
 
 start(test=test_bit)
 
-# # todo: the part after ("fromxxx") is correct album name
+# # todo: ask only if multiple songs are found with some title and album
+#   fix for multiple albumart
+#   fix for wrong album art
+#   improve data detection logic
 
 ''' 
--change the asking logic to : if more than one song is found
-    with same album
 -code cleanup
 -make more verbose logs
+- rename song name as song title after retrieving it from web
 
--improve song recognization
+-get songs from multiple pages or api's
 -it recognized wrong album name for dilbara since it was released as single
     its saavn api fault, maybe change to spitify api
     or gaana (if songs are not available on spotify)

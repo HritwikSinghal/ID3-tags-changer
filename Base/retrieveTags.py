@@ -1,4 +1,5 @@
 import json
+import traceback
 
 from Base import tools
 from Base import jioSaavnApi
@@ -6,7 +7,7 @@ from Base import jioSaavnApi
 
 def getURL(baseUrl, song_name, tags):
     if tools.isTagPresent(tags, 'album') and tools.removeYear(tags['album'][0]) != song_name:
-        url = baseUrl + song_name + ' ' + tags['album'][0]
+        url = baseUrl + song_name + ' ' + tools.removeYear(tags['album'][0])
     elif tools.isTagPresent(tags, 'artist'):
         url = baseUrl + song_name + ' ' + tools.removeGibberish(tags['artist'][0])
     elif tools.isTagPresent(tags, 'date'):
@@ -29,6 +30,7 @@ def getCertainKeys(song_info):
 
         'e_songid',
         'image_url',
+        'actual_album'
     ]
 
     json_data = json.loads(song_info)
@@ -58,26 +60,31 @@ def getCertainKeys(song_info):
     return rinfo
 
 
-def getSong(song_list, song_name, tags):
-    for song in song_list:
+def getSong(song_info_list, song_name, tags):
+    for song in song_info_list:
         data = json.loads(song)
-        if data['title'] == song_name:
-            if tools.isTagPresent(tags, 'album') and data['album'] == tools.removeYear(tags['album'][0]).strip():
+
+        al = tools.removeYear(tags['album'][0]).strip()
+        if data['title'].lower() == song_name.lower() and tools.isTagPresent(tags, 'album'):
+            if data['album'] == al:
+                return song
+            elif data['actual_album'] != '' and data['actual_album'] == al:
                 return song
 
     # This Asks user to select Song since no song was matched using title and name
     i = 0
-    for song in song_list:
+    for song in song_info_list:
         rel_keys = getCertainKeys(song)
         print(i + 1, end=' ) \n')
         for key in rel_keys:
+            # if key != 'actual_album':
             print('\t', key, ':', rel_keys[key])
         print()
         i += 1
     song_number = int(input("Enter your song number from above list, "
                             "if none matches, enter 'none': ")) - 1
 
-    return song_list[song_number]
+    return song_info_list[song_number]
 
 
 def start(tags, song_name):
@@ -86,7 +93,7 @@ def start(tags, song_name):
     url = getURL(baseUrl, song_name, tags)
 
     ###########################
-    # print(url)
+    print(url)
     # x = input()
     ###########################
 

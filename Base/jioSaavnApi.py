@@ -21,7 +21,6 @@ def fetchList(url, max=5):
     }
 
     res = requests.get(url, headers=user_agent)
-    res.raise_for_status()
 
     soup = beautifulsoup(res.text, "html5lib")
     all_songs_info = soup.find_all('div', attrs={"class": "hide song-json"})
@@ -52,7 +51,7 @@ def fetchList(url, max=5):
                 x = re.compile(r'''
                 (
                 [(\]]
-                .*          # 'featured in' or 'from'
+                .*          # 'featured in' or 'from' or any other shit in quotes
                 "(.*)"      # album name
                 [)\]]
                 )
@@ -61,7 +60,7 @@ def fetchList(url, max=5):
 
                 rem_str = x.findall(info.text)
 
-                # old method
+                # old method, dont know why this wont work
                 # json_data = re.sub(rem_str[0][0], '', str(info.text))
 
                 json_data = info.text.replace(rem_str[0][0], '')
@@ -73,24 +72,24 @@ def fetchList(url, max=5):
                 #######################
 
                 if len(rem_str[0]) > 1:
-                    album_name = rem_str[0][1]
+                    actual_album = rem_str[0][1]
                 else:
-                    album_name = ''
+                    actual_album = ''
 
             except:
                 # old method
                 json_data = re.sub(r'.\(\b.*?"\)', "", str(info.text))
                 json_data = re.sub(r'.\[\b.*?"\]', "", json_data)
-                album_name = ''
+                actual_album = ''
 
             json_data = json.loads(str(json_data))
-            if album_name != '':
-                json_data['album'] = album_name
+            if actual_album != '':
+                json_data['actual_album'] = actual_album
 
             x = json.dumps(json_data, indent=2)
 
             #######################
-            # print(album_name)
+            # print(actual_album)
             # print(x)
             # a = input()
             #######################
