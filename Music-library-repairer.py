@@ -59,24 +59,20 @@ def start(test=0):
 
 os.chdir(os.getcwd())
 if os.path.isfile(os.path.join("Base", "test_bit.py")):
-    test_bit = 1
+    test = 1
 else:
-    test_bit = 0
+    test = 0
 
-start(test=test_bit)
+start(test=test)
 
-# # todo: fix from fucking logs first
+# # todo: just fucking study today you moron
 
 ''' 
-if user selects 'n', try searching with artist or year
--code cleanup
--make more verbose logs
+- code cleanup
+- make more fucking useful logs
 - rename song name as song title after retrieving it from web
 
--get songs from multiple pages or api's
--it recognized wrong album name for dilbara since it was released as single
-    its saavn api fault, maybe change to spitify api
-    or gaana (if songs are not available on spotify)
+- get songs from multiple pages or api's
+- maybe change to spitify api or gaana (if songs are not available on spotify)
     or make it search from all 3
-
 '''

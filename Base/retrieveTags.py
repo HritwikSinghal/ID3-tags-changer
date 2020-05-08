@@ -75,9 +75,8 @@ def getCertainKeys(song_info):
     return rinfo
 
 
-def getSong(song_info_list, song_name, tags):
+def getSong(song_info_list, song_name, tags, bit=0):
     # automatch song
-
     for song in song_info_list:
         data = json.loads(song)
 
@@ -92,6 +91,8 @@ def getSong(song_info_list, song_name, tags):
 
     # if no song was matched, Ask user
 
+    if bit == 1:
+        print('\n------------------------------------------------------\nEnter number from below...')
     i = 0
     for song in song_info_list:
         rel_keys = getCertainKeys(song)
@@ -102,11 +103,15 @@ def getSong(song_info_list, song_name, tags):
         print()
         i += 1
     try:
-        song_number = int(input("Enter your song number from above list, "
-                                "if none matches, enter 'n': ")) - 1
+        if bit == 1:
+            song_number = int(input("\nI've searched again! Please enter your song number from above list,\n"
+                                    "if none matches, enter 'n': ")) - 1
+        else:
+            song_number = int(input("\nEnter your song number from above list, "
+                                    "if none matches, enter 'n': ")) - 1
     except IndexError:
         try:
-            song_number = int(input("Oops..You mistyped, please enter number within above range\n"
+            song_number = int(input("\nOops..You mistyped, please enter number within above range\n"
                                     "if none matches, enter 'n': ")) - 1
         except ValueError:
             return -1
@@ -116,13 +121,14 @@ def getSong(song_info_list, song_name, tags):
     return song_info_list[song_number]
 
 
-def start(tags, song_name):
+def start(tags, song_name, test=0):
     baseUrl = "https://www.jiosaavn.com/search/"
 
     url = getURL(baseUrl, song_name, tags)
+    if test:
+        print(url)
 
     ###########################
-    print(url)
     # x = input()
     ###########################
 
@@ -133,14 +139,20 @@ def start(tags, song_name):
     # x = input()
     ###########################
 
-    song = str(getSong(list_of_songs_with_info, song_name, tags))
+    if len(list_of_songs_with_info) != 0:
+        song = str(getSong(list_of_songs_with_info, song_name, tags))
+    else:
+        print("Oops...Couldn't find the song in this turn, lemme retry :p ..... ")
+        song = '-1'
 
     if song == '-1':
         list_of_songs_with_info.clear()
-
         url = "https://www.jiosaavn.com/search/" + song_name
+        if test:
+            print(url)
+
         list_of_songs_with_info = jioSaavnApi.fetchList(url)
-        song = str(getSong(list_of_songs_with_info, song_name, tags))
+        song = str(getSong(list_of_songs_with_info, song_name, tags, 1))
 
     song_info = getCertainKeys(song)
 

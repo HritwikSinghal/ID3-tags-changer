@@ -65,7 +65,7 @@ def changeSongName(songDir, song_list, log_file):
         traceback.print_exc(file=log_file)
 
 
-def fixTags(song_dir, song_list, log_file):
+def fixTags(song_dir, song_list, log_file, test=0):
     for song in song_list:
         song_with_path = tools.join(song_dir, song)
 
@@ -90,7 +90,7 @@ def fixTags(song_dir, song_list, log_file):
         print("Song Name: ", song_name)
 
         try:
-            json_data = retrieveTags.start(tags, song_name)
+            json_data = retrieveTags.start(tags, song_name, test=test)
             found_data = 1
         except:
             found_data = 0
@@ -102,10 +102,9 @@ def fixTags(song_dir, song_list, log_file):
 
             log_file.write('\n\nXXX---error Cannot find data for selected song = ' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
-            traceback.print_exc()
+            if test:
+                traceback.print_exc()
 
-        #
-        #
         #
         try:
             albumName.start(tags, json_data, found_data)
@@ -117,7 +116,8 @@ def fixTags(song_dir, song_list, log_file):
 
             log_file.write('\n\nXXX---error in fixing albumname\n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
-            # traceback.print_exc()
+            if test:
+                traceback.print_exc()
 
         try:
             artistName.start(tags, json_data, found_data)
@@ -126,6 +126,8 @@ def fixTags(song_dir, song_list, log_file):
 
             log_file.write('\n\nXXX---error in artistname \n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
+            if test:
+                traceback.print_exc()
 
         try:
             composerName.start(tags, json_data, found_data)
@@ -134,6 +136,8 @@ def fixTags(song_dir, song_list, log_file):
 
             log_file.write('\n\nXXX---error in composer\n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
+            if test:
+                traceback.print_exc()
 
         try:
             songTitle.start(tags, json_data, found_data)
@@ -142,6 +146,8 @@ def fixTags(song_dir, song_list, log_file):
 
             log_file.write('\n\nXXX---error in title\n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
+            if test:
+                traceback.print_exc()
 
         try:
             addDateLenOrg.start(tags, json_data, found_data)
@@ -150,6 +156,8 @@ def fixTags(song_dir, song_list, log_file):
 
             log_file.write('\n\nXXX---error in date\n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
+            if test:
+                traceback.print_exc()
 
         try:
             albumArt.start(json_data, song_dir, song_with_path, found_data)
@@ -158,11 +166,13 @@ def fixTags(song_dir, song_list, log_file):
 
             log_file.write('\n\nXXX---error in albumART\n song_with_path =' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
+            if test:
+                traceback.print_exc()
 
         print()
 
 
-def handleSongs(song_dir, files, flag=1):
+def handleSongs(song_dir, files, flag=1, test=0):
     print('Now in ', song_dir)
 
     if flag == 0:
@@ -173,7 +183,7 @@ def handleSongs(song_dir, files, flag=1):
     song_list = getSongList(files)
 
     changeSongName(song_dir, song_list, log_file)
-    fixTags(song_dir, song_list, log_file)
+    fixTags(song_dir, song_list, log_file, test=test)
 
 
 def start(test=0):
@@ -194,9 +204,9 @@ def start(test=0):
             if isfile(tools.join(song_dir, x))
         ]
 
-        handleSongs(song_dir, files)
+        handleSongs(song_dir, files, test=test)
 
     else:
         print("Walking down ", song_dir, "\b...")
         for curr_dir, sub_dirs, files in tools.os.walk(song_dir, topdown=True):
-            handleSongs(curr_dir, files, flag)
+            handleSongs(curr_dir, files, flag, test=test)
