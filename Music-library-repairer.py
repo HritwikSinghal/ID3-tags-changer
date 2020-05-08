@@ -1,3 +1,4 @@
+import os
 from Modules import main
 
 
@@ -55,15 +56,27 @@ def start(test=0):
         ''')
 
 
-start(test=0)
+os.chdir(os.getcwd())
+if os.path.isfile(os.path.join("Base", "test_bit.py")):
+    test_bit = 1
+else:
+    test_bit = 0
+
+print(test_bit)
+start(test=test_bit)
 
 # todo:
 ''' 
--the breakup song
-
+-change the asking logic to : if more than one song is found
+    with same album
+-code cleanup
 -make more verbose logs
+
+- the part after ("fromxxx") is correct album name
 -improve song recognization
 -it recognized wrong album name for dilbara since it was released as single
-    its saavn api fault, maybe change to gaana or spitify api
+    its saavn api fault, maybe change to spitify api
+    or gaana (if songs are not available on spotify)
+    or make it search from all 3
 
 '''

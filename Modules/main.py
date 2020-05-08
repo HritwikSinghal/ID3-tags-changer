@@ -1,13 +1,11 @@
 # This was a major help
 # https://stackoverflow.com/questions/42231932/writing-id3-tags-using-easyid3
 
-from mutagen.easyid3 import EasyID3 as easyid3
-from os.path import isfile
-
-import traceback
-
 import os
 import mutagen
+import traceback
+from os.path import isfile
+from mutagen.easyid3 import EasyID3 as easyid3
 
 from Modules import albumName
 from Modules import artistName
@@ -18,7 +16,6 @@ from Modules import addDateLenOrg
 from Modules import albumArt
 
 from Base import tools
-from Base.tools import printList
 from Base import retrieveTags
 
 
@@ -39,7 +36,7 @@ def inputSongDir(test=0):
 def createLogFile(song_dir):
     tools.changeDir(song_dir)
     with open('Music-library-repairer_LOGS.txt', 'w+') as log_file:
-        log_file.write("This is log file for " + song_dir + "\n\n")
+        log_file.write("This is log file for Music-library-repairer_LOGS. SongDir = " + song_dir + "\n\n")
     log_file = open('Music-library-repairer_LOGS.txt', 'a')
     return log_file
 
@@ -49,8 +46,6 @@ def getSongList(files):
     for x in files:
         x = tools.re.findall(r'(.+\.mp3)', x)
         if len(x) != 0:
-            # name = tools.os.path.join(files, x[0])
-            # songs.append(name)
             songs.append(x[0])
     return songs
 
@@ -67,7 +62,6 @@ def changeSongName(songDir, song_list, log_file):
         print()
     except:
         print("XXX---There Was some error fixing name. Moving to next")
-
         log_file.write('\n\nXXX---error fixing name== ' + curr + '\n')
         traceback.print_exc(file=log_file)
 
