@@ -4,6 +4,18 @@ from Base import tools
 from Base import jioSaavnApi
 
 
+def getURL(baseUrl, song_name, tags):
+    if tools.isTagPresent(tags, 'album') and tools.removeYear(tags['album'][0]) != song_name:
+        url = baseUrl + song_name + ' ' + tags['album'][0]
+    elif tools.isTagPresent(tags, 'artist'):
+        url = baseUrl + song_name + ' ' + tools.removeGibberish(tags['artist'][0])
+    elif tools.isTagPresent(tags, 'date'):
+        url = baseUrl + song_name + ' ' + tags['date'][0]
+    else:
+        url = baseUrl + song_name
+    return url
+
+
 def getCertainKeys(song_info):
     rel_keys = [
         'title',
@@ -68,23 +80,24 @@ def getSong(song_list, song_name, tags):
     return song_list[song_number]
 
 
-def getTags(tags, song_name):
+def start(tags, song_name):
     baseUrl = "https://www.jiosaavn.com/search/"
 
-    if tools.isTagPresent(tags, 'album') and tools.removeYear(tags['album'][0]) != song_name:
-        url = baseUrl + song_name + ' ' + tags['album'][0]
-    elif tools.isTagPresent(tags, 'artist'):
-        url = baseUrl + song_name + ' ' + tools.removeGibberish(tags['artist'][0])
-    else:
-        url = baseUrl + song_name
+    url = getURL(baseUrl, song_name, tags)
+
+    ###########################
+    # print(url)
+    # x = input()
+    ###########################
 
     list_of_songs_with_info = jioSaavnApi.fetchList(url)
+
+    ###########################
+    # tools.printList(list_of_songs_with_info)
+    # x = input()
+    ###########################
 
     song = str(getSong(list_of_songs_with_info, song_name, tags))
     song_info = getCertainKeys(song)
 
     return song_info
-
-
-def start(tags, song_name):
-    return getTags(tags, song_name)

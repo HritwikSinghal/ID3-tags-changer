@@ -58,7 +58,6 @@ def changeSongName(songDir, song_list, log_file):
         for song in song_list:
             curr = song
             songName.start(songDir, song, song_list)
-            print()
         print()
     except:
         print("XXX---There Was some error fixing name. Moving to next")
@@ -66,7 +65,7 @@ def changeSongName(songDir, song_list, log_file):
         traceback.print_exc(file=log_file)
 
 
-def fixTags(log_file, song_dir, song_list):
+def fixTags(song_dir, song_list, log_file):
     for song in song_list:
         song_with_path = tools.join(song_dir, song)
 
@@ -88,7 +87,6 @@ def fixTags(log_file, song_dir, song_list):
         song_name = tools.removeBitrate(song)
         song_name = song_name.replace('.mp3', '')
         song_name = song_name.strip()
-
         print("Song Name: ", song_name)
 
         try:
@@ -105,6 +103,9 @@ def fixTags(log_file, song_dir, song_list):
             log_file.write('\n\nXXX---error Cannot find data for selected song = ' + song_with_path + '\n')
             traceback.print_exc(file=log_file)
 
+        #
+        #
+        #
         try:
             albumName.start(tags, json_data, found_data)
         except:
@@ -162,6 +163,7 @@ def fixTags(log_file, song_dir, song_list):
 
 def handleSongs(song_dir, files, flag=1):
     print('Now in ', song_dir)
+
     if flag == 0:
         if int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
             return
@@ -170,7 +172,7 @@ def handleSongs(song_dir, files, flag=1):
     song_list = getSongList(files)
 
     changeSongName(song_dir, song_list, log_file)
-    fixTags(log_file, song_dir, song_list)
+    fixTags(song_dir, song_list, log_file)
 
 
 def start(test=0):
@@ -183,7 +185,7 @@ def start(test=0):
                          "1 == Yes,\n-1 == No,\n0 == Ask in each Dir\n"))
 
     if flag == -1:
-        print("Only changing attributes in:", song_dir, "...\n")
+        print("Only changing attributes in:", song_dir + "...\n")
 
         files = [
             x

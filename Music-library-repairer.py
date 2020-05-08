@@ -62,17 +62,16 @@ if os.path.isfile(os.path.join("Base", "test_bit.py")):
 else:
     test_bit = 0
 
-print(test_bit)
 start(test=test_bit)
 
-# todo:
+# # todo: the part after ("fromxxx") is correct album name
+
 ''' 
 -change the asking logic to : if more than one song is found
     with same album
 -code cleanup
 -make more verbose logs
 
-- the part after ("fromxxx") is correct album name
 -improve song recognization
 -it recognized wrong album name for dilbara since it was released as single
     its saavn api fault, maybe change to spitify api

@@ -87,9 +87,6 @@ def removeBitrate(oldName):
 
 
 def removeYear(oldName):
-    # it removes any number in
-    # string within () and brackets itself
-
     newName = re.sub(r' \(\d*\)', '', oldName)
     return newName
 

@@ -45,23 +45,56 @@ def fetchList(url, max=5):
 
             #######################
             # print("IN EXCEPT")
-            # # print(info.text)
+            # print(info.text)
             #######################
 
-            json_data = re.sub(r'.\(\b.*?"\)', "", str(info.text))
-            json_data = re.sub(r'.\[\b.*?"\]', "", json_data)
+            try:
+                x = re.compile(r'''
+                (
+                [(\]]
+                .*          # 'featured in' or 'from'
+                "(.*)"      # album name
+                [)\]]
+                )
+                ","album.*"
+                ''', re.VERBOSE)
 
-            #######################
-            # print(json_data)
-            #######################
+                rem_str = x.findall(info.text)
+
+                # old method
+                # json_data = re.sub(rem_str[0][0], '', str(info.text))
+
+                json_data = info.text.replace(rem_str[0][0], '')
+
+                #######################
+                # print(rem_str[0][0])
+                # print(json_data)
+                # a = input()
+                #######################
+
+                if len(rem_str[0]) > 1:
+                    album_name = rem_str[0][1]
+                else:
+                    album_name = ''
+
+            except:
+                # old method
+                json_data = re.sub(r'.\(\b.*?"\)', "", str(info.text))
+                json_data = re.sub(r'.\[\b.*?"\]', "", json_data)
+                album_name = ''
 
             json_data = json.loads(str(json_data))
+            if album_name != '':
+                json_data['album'] = album_name
+
             x = json.dumps(json_data, indent=2)
-            song_list.append(x)
 
             #######################
+            # print(album_name)
             # print(x)
-            # print(url)
+            # a = input()
             #######################
+
+            song_list.append(x)
 
     return song_list

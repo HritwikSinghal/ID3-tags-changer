@@ -46,5 +46,4 @@ def fixName(songDir, old_name, song_list):
 
 def start(songDir, song, song_list):
     changeDir(songDir)
-
     fixName(songDir, song, song_list)

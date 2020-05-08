@@ -7,6 +7,7 @@ def modifyTitle(tags):
     oldTitle = tags['title'][0]
     newTitle = tools.removeSiteName(oldTitle)
     newTitle = tools.removeGibberish(newTitle)
+    newTitle = newTitle.strip()
 
     if oldTitle != newTitle:
         tags['title'] = newTitle
