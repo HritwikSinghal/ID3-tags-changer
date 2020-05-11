@@ -3,6 +3,7 @@ from Base.tools import join
 
 
 def joinPathAndRename(old_name, newName, songDir, song_list):
+    # get index of current song from list
     index = song_list.index(old_name)
 
     newNameWithPath = join(songDir, newName)
@@ -12,10 +13,8 @@ def joinPathAndRename(old_name, newName, songDir, song_list):
         os.rename(join(songDir, old_name), newNameWithPath)
     except FileExistsError:
         print("File with name '" + newName + "' already exists")
-        x = int(input("Do you want to PERMANENTLY delete the "
-                      "old file?"
-                      "\n1 == Yes,"
-                      "0 == NO\n"))
+        x = int(input("Do you want to PERMANENTLY delete this old file?"
+                      "\n1 == Yes, 0 == NO\n"))
         if x == 1:
             os.remove(newNameWithPath)
             print("File removed successfully. Now renaming new file.")

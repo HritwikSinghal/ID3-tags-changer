@@ -65,9 +65,10 @@ else:
 
 start(test=test)
 
-# # todo: just fucking study today you moron
+# # todo:
 
 ''' 
+- make it less ask from user (add support for old songs with no metadata)
 - code cleanup
 - make more fucking useful logs
 - rename song name as song title after retrieving it from web

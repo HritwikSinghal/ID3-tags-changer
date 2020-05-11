@@ -37,6 +37,7 @@ def fetchList(url, max=5):
 
             x = json.dumps(json_data, indent=2)
             song_list.append(x)
+
         except:
             # the error is caused by quotation marks in songs title as shown below
             # (foo bar "XXX")
@@ -71,13 +72,17 @@ def fetchList(url, max=5):
                 # a = input()
                 #######################
 
+                # actually that thing in () is the correct album name, so save it.
+                # since saavn uses song names as album names, this will be useful
+
                 if len(rem_str[0]) > 1:
                     actual_album = rem_str[0][1]
                 else:
                     actual_album = ''
 
             except:
-                # old method
+                # old method, if above wont work, this will 90% work.
+
                 json_data = re.sub(r'.\(\b.*?"\)', "", str(info.text))
                 json_data = re.sub(r'.\[\b.*?"\]', "", json_data)
                 actual_album = ''

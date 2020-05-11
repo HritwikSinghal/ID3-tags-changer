@@ -6,6 +6,8 @@ from Base import jioSaavnApi
 
 
 def getURL(baseUrl, song_name, tags):
+    # get the search url using album or artist or year or only name
+
     song_name = song_name.lower().strip()
 
     if tools.isTagPresent(tags, 'album') and tools.removeYear(
@@ -13,7 +15,8 @@ def getURL(baseUrl, song_name, tags):
 
         album = tools.removeYear(tags['album'][0])
         album = tools.removeGibberish(album)
-        url = baseUrl + song_name.strip() + ' ' + album
+
+        url = baseUrl + song_name + ' ' + album
 
     elif tools.isTagPresent(tags, 'artist'):
 
@@ -33,6 +36,8 @@ def getURL(baseUrl, song_name, tags):
 
 
 def getCertainKeys(song_info):
+    # these are the keys which are useful to us
+
     rel_keys = [
         'title',
         'album',
@@ -49,6 +54,8 @@ def getCertainKeys(song_info):
     ]
 
     json_data = json.loads(song_info)
+
+    # this will store all relevant keys and their values
     rinfo = {}
 
     # for k, v in json_data.items():
@@ -127,11 +134,9 @@ def start(tags, song_name, test=0):
     url = getURL(baseUrl, song_name, tags)
     if test:
         print(url)
+        # x = input()
 
-    ###########################
-    # x = input()
-    ###########################
-
+    # get a list of songs which match search
     list_of_songs_with_info = jioSaavnApi.fetchList(url)
 
     ###########################
@@ -140,20 +145,26 @@ def start(tags, song_name, test=0):
     ###########################
 
     if len(list_of_songs_with_info) != 0:
+        # means songs were found! move to getting the correct song from that list
         song = str(getSong(list_of_songs_with_info, song_name, tags))
     else:
-        print("Oops...Couldn't find the song in this turn, lemme retry :p ..... ")
+        # retry, but search only using song name
+        print("Oops...Couldn't find the song in this turn, let me retry :p ..... ")
         song = '-1'
 
+    # retry, but search only using song name
     if song == '-1':
         list_of_songs_with_info.clear()
-        url = "https://www.jiosaavn.com/search/" + song_name
+        url = baseUrl + song_name
         if test:
             print(url)
 
         list_of_songs_with_info = jioSaavnApi.fetchList(url)
         song = str(getSong(list_of_songs_with_info, song_name, tags, 1))
 
+    # the info we got had too much info,
+    # we will save only certain keys like artist from it
     song_info = getCertainKeys(song)
 
+    # return those selected keys
     return song_info
