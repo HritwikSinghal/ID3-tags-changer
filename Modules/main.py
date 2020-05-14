@@ -50,7 +50,7 @@ def getSongList(files):
     return songs
 
 
-def changeSongName(songDir, song_list, log_file):
+def changeSongName(songDir, song_list, log_file, test=0):
     curr = str
     try:
         print("Fixing song names....")
@@ -62,10 +62,13 @@ def changeSongName(songDir, song_list, log_file):
     except:
         print("XXX---There Was some error fixing name. Moving to next")
         log_file.write('\n\nXXX---error fixing name== ' + curr + '\n')
+
         traceback.print_exc(file=log_file)
+        if test:
+            traceback.print_exc()
 
 
-def fixTags(song_dir, song_list, log_file, get_from_web, test=0):
+def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
     for song in song_list:
         song_with_path = tools.join(song_dir, song)
 
@@ -82,6 +85,8 @@ def fixTags(song_dir, song_list, log_file, get_from_web, test=0):
 
                 log_file.write('\n\nXXX---error creating tags= ' + song_with_path + '\n')
                 traceback.print_exc(file=log_file)
+                if test:
+                    traceback.print_exc()
                 continue
 
         song_name = tools.removeBitrate(song)
@@ -89,9 +94,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web, test=0):
         song_name = song_name.strip()
         print("Song Name: ", song_name)
 
-        # todo: add if else here and ask user if he wants
-        #  to download meta from web
-        if get_from_web:
+        if get_from_web_flag:
             try:
                 json_data = retrieveTags.start(tags, song_name, test=test)
                 found_data = 1
@@ -103,6 +106,8 @@ def fixTags(song_dir, song_list, log_file, get_from_web, test=0):
                       "If still this error exists, there is no data on server.\n"
                       "Fixing tags locally\n")
 
+                # todo: log search url and all other params
+
                 log_file.write('\n\nXXX---error Cannot find data for selected song = ' + song_with_path + '\n')
                 traceback.print_exc(file=log_file)
                 if test:
@@ -111,8 +116,8 @@ def fixTags(song_dir, song_list, log_file, get_from_web, test=0):
             found_data = 0
             json_data = ''
 
-        #
-        #
+
+
 
         try:
             albumName.start(tags, json_data, found_data)
@@ -180,32 +185,31 @@ def fixTags(song_dir, song_list, log_file, get_from_web, test=0):
         print()
 
 
-def handleSongs(song_dir, files, get_from_web, flag=1, test=0):
+def handleSongs(song_dir, files, get_from_web_flag, sub_dir_flag=1, test=0):
     print('Now in ', song_dir)
 
-    if flag == 0:
-        if int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
-            return
+    if sub_dir_flag == 0 and int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
+        return
 
     log_file = createLogFile(song_dir)
     song_list = getSongList(files)
 
-    changeSongName(song_dir, song_list, log_file)
-    fixTags(song_dir, song_list, log_file, get_from_web, test=test)
+    changeSongName(song_dir, song_list, log_file, test=test)
+    fixTags(song_dir, song_list, log_file, get_from_web_flag, test=test)
 
 
 def start(test=0):
     song_dir = inputSongDir(test)
 
     if test == 1:
-        flag = -1
-        get_from_web = 1
+        sub_dir_flag = -1
+        get_from_web_flag = 1
     else:
-        flag = int(input("\nDo you want to run this program in all sub-dirs?\n"
-                         "1 == Yes,\n-1 == No,\n0 == Ask in each Dir\n"))
-        get_from_web = int(input('Do you want to retrieve missing tags from web? 0 == NO, 1 == YES'))
+        sub_dir_flag = int(input("\nDo you want to run this program in all sub-dirs?\n"
+                                 "1 == Yes,\n-1 == No,\n0 == Ask in each Dir\n"))
+        get_from_web_flag = int(input('Do you want to retrieve missing tags from web? 0 == NO, 1 == YES'))
 
-    if flag == -1:
+    if sub_dir_flag == -1:
         print("Only changing attributes in:", song_dir + "...\n")
 
         files = [
@@ -214,9 +218,9 @@ def start(test=0):
             if isfile(tools.join(song_dir, x))
         ]
 
-        handleSongs(song_dir, files, get_from_web, test=test)
+        handleSongs(song_dir, files, get_from_web_flag, test=test)
 
     else:
         print("Walking down ", song_dir, "\b...")
         for curr_dir, sub_dirs, files in tools.os.walk(song_dir, topdown=True):
-            handleSongs(curr_dir, files, flag, get_from_web, test=test)
+            handleSongs(curr_dir, files, sub_dir_flag, get_from_web_flag, test=test)

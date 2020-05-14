@@ -65,7 +65,7 @@ else:
 
 start(test=test)
 
-# # todo:
+# # todo: sort no no_data flag
 
 ''' 
 - make it less ask from user (add support for old songs with no metadata)
