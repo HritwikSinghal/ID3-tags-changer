@@ -2,9 +2,10 @@ import os
 import re
 import platform
 
-
 # -----------------------------------------------------#
 # Website Name Specifics
+import traceback
+
 
 def removeDjX(oldName):
     # for DJMXXX
@@ -167,3 +168,21 @@ def checkAndFixTag(tags, tag_name, tag_value_from_json):
     if (not isTagPresent(tags, tag_name)) or \
             (tag_value_from_json != '' and tag_value_from_json != tags[tag_name]):
         saveTags(tag_name, tag_value_from_json, tags)
+
+
+# ---------------------------------------------#
+
+
+def write_print_log(log_file, line, test=0):
+    log_file.write(line)
+    traceback.print_exc(file=log_file)
+    if test:
+        traceback.print_exc()
+
+
+def createLogFile(song_dir):
+    changeDir(song_dir)
+    with open('Music-library-repairer_LOGS.txt', 'w+') as log_file:
+        log_file.write("This is log file for Music-library-repairer_LOGS. SongDir = " + song_dir + "\n\n")
+    log_file = open('Music-library-repairer_LOGS.txt', 'a')
+    return log_file

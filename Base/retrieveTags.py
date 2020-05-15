@@ -137,7 +137,10 @@ def start(tags, song_name, test=0):
         # x = input()
 
     # get a list of songs which match search
-    list_of_songs_with_info = jioSaavnApi.fetchList(url)
+    list_of_songs_with_info = jioSaavnApi.fetchList(url, test=test)
+
+    if list_of_songs_with_info is None:
+        return None
 
     ###########################
     # tools.printList(list_of_songs_with_info)
@@ -160,28 +163,17 @@ def start(tags, song_name, test=0):
         if test:
             print(url)
 
-        list_of_songs_with_info = jioSaavnApi.fetchList(url)
+        list_of_songs_with_info = jioSaavnApi.fetchList(url, test=test)
+        if list_of_songs_with_info is None:
+            return None
+
         song = getSong(list_of_songs_with_info, song_name, tags, 1)
 
     if song == -1:
-        return
+        return None
 
     # the info we got had too much info, we will save only certain keys like artist from it
     song_info = getCertainKeys(song)
 
     # return those selected keys
     return song_info
-
-
-# todo: fix below
-'''
-Traceback (most recent call last):
-Traceback (most recent call last):
-File "E:\Py_proj\Music-library-repairer\Modules\main.py", line 99, in fixTags
-json_data = retrieveTags.start(tags, song_name, test=test)
-File "E:\Py_proj\Music-library-repairer\Base\retrieveTags.py", line 167, in start
-song_info = getCertainKeys(song)
-File "E:\Py_proj\Music-library-repairer\Base\retrieveTags.py", line 64, in getCertainKeys
-for key in json_data:
-TypeError: 'int' object is not iterable
-'''

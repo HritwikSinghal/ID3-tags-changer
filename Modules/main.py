@@ -3,20 +3,18 @@
 
 import os
 import mutagen
-import traceback
 from os.path import isfile
 from mutagen.easyid3 import EasyID3 as easyid3
+from Base import tools
 
+from Modules import addDateLenOrg
+from Modules import albumArt
 from Modules import albumName
 from Modules import artistName
 from Modules import composerName
-from Modules import songTitle
 from Modules import songName
-from Modules import addDateLenOrg
-from Modules import albumArt
-
-from Base import tools
 from Base import retrieveTags
+from Modules import songTitle
 
 
 def inputSongDir(test=0):
@@ -42,21 +40,6 @@ def getSongList(files):
     return songs
 
 
-def createLogFile(song_dir):
-    tools.changeDir(song_dir)
-    with open('Music-library-repairer_LOGS.txt', 'w+') as log_file:
-        log_file.write("This is log file for Music-library-repairer_LOGS. SongDir = " + song_dir + "\n\n")
-    log_file = open('Music-library-repairer_LOGS.txt', 'a')
-    return log_file
-
-
-def write_print_log(log_file, line, test=0):
-    log_file.write(line)
-    traceback.print_exc(file=log_file)
-    if test:
-        traceback.print_exc()
-
-
 def changeSongName(songDir, song_list, log_file, test=0):
     curr = str
     try:
@@ -68,7 +51,7 @@ def changeSongName(songDir, song_list, log_file, test=0):
         print()
     except:
         print("XXX---There Was some error fixing name. Moving to next")
-        write_print_log(log_file, '\n\nXXX---error fixing name== ' + curr + '\n', test)
+        tools.write_print_log(log_file, '\n\nXXX---error fixing name== ' + curr + '\n', test)
 
 
 def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
@@ -85,7 +68,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
                 print("Tags created.")
             except:
                 print("XXX---There Was some error creating tags. Moving to next")
-                write_print_log(log_file, '\n\nXXX---error creating tags= ' + song_with_path + '\n', test)
+                tools.write_print_log(log_file, '\n\nXXX---error creating tags= ' + song_with_path + '\n', test)
 
                 continue
 
@@ -114,9 +97,9 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
                       "Fixing tags locally\n")
 
                 # todo: log search url and all other params
-                write_print_log(log_file,
-                                '\n\nXXX---error Cannot find data for selected song = ' + song_with_path + '\n',
-                                test)
+                tools.write_print_log(log_file,
+                                      '\n\nXXX---error Cannot find data for selected song = ' + song_with_path + '\n',
+                                      test)
         else:
             found_data = 0
             json_data = ''
@@ -133,43 +116,44 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
                   "add it manually and re-run this program.\n"
                   "Moving to next\n")
 
-            write_print_log(log_file, '\n\nXXX---error in fixing albumname\n song_with_path =' + song_with_path + '\n',
-                            test)
+            tools.write_print_log(log_file,
+                                  '\n\nXXX---error in fixing albumname\n song_with_path =' + song_with_path + '\n',
+                                  test)
 
         try:
             artistName.start(tags, json_data, found_data)
         except:
             print("\nXXX---There Was some error fixing artistName. Moving to next\n")
 
-            write_print_log(log_file, '\n\nXXX---error in artistname \n song_with_path =' + song_with_path + '\n', test)
+            tools.write_print_log(log_file, '\n\nXXX---error in artistname \n song_with_path =' + song_with_path + '\n', test)
 
         try:
             composerName.start(tags, json_data, found_data)
         except:
             print("\nXXX---There Was some error fixing composerName. Moving to next\n")
 
-            write_print_log(log_file, '\n\nXXX---error in composer\n song_with_path =' + song_with_path + '\n', test)
+            tools.write_print_log(log_file, '\n\nXXX---error in composer\n song_with_path =' + song_with_path + '\n', test)
 
         try:
             songTitle.start(tags, json_data, found_data)
         except:
             print("\nXXX---There Was some error fixing songTitle. Moving to next\n")
 
-            write_print_log(log_file, '\n\nXXX---error in title\n song_with_path =' + song_with_path + '\n', test)
+            tools.write_print_log(log_file, '\n\nXXX---error in title\n song_with_path =' + song_with_path + '\n', test)
 
         try:
             addDateLenOrg.start(tags, json_data, found_data)
         except:
             print("\nXXX---There Was some error fixing Date, Len, Org. Moving to next\n")
 
-            write_print_log(log_file, '\n\nXXX---error in date\n song_with_path =' + song_with_path + '\n', test)
+            tools.write_print_log(log_file, '\n\nXXX---error in date\n song_with_path =' + song_with_path + '\n', test)
 
         try:
             albumArt.start(json_data, song_dir, song_with_path, found_data)
         except:
             print("\nXXX---There Was some error fixing albumArt. Moving to next\n")
 
-            write_print_log(log_file, '\n\nXXX---error in albumART\n song_with_path =' + song_with_path + '\n', test)
+            tools.write_print_log(log_file, '\n\nXXX---error in albumART\n song_with_path =' + song_with_path + '\n', test)
 
         print()
 
@@ -180,7 +164,7 @@ def handleSongs(song_dir, files, get_from_web_flag, sub_dir_flag=1, test=0):
     if sub_dir_flag == 0 and int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
         return
 
-    log_file = createLogFile(song_dir)
+    log_file = tools.createLogFile(song_dir)
     song_list = getSongList(files)
 
     changeSongName(song_dir, song_list, log_file, test=test)
