@@ -10,10 +10,10 @@ def getURL(baseUrl, song_name, tags):
 
     song_name = song_name.lower().strip()
 
-    if tools.isTagPresent(tags, 'album') and tools.removeYear(
-            tags['album'][0]).lower().strip() != song_name:
+    if tools.isTagPresent(tags, 'album') and \
+            tools.removeYear(tags['album'][0]).lower().strip() != song_name:
 
-        album = tools.removeYear(tags['album'][0])
+        album = tools.removeYear(tags['album'][0]).lower().strip()
         album = tools.removeGibberish(album)
 
         url = baseUrl + song_name + ' ' + album
@@ -146,25 +146,42 @@ def start(tags, song_name, test=0):
 
     if len(list_of_songs_with_info) != 0:
         # means songs were found! move to getting the correct song from that list
-        song = str(getSong(list_of_songs_with_info, song_name, tags))
+        song = getSong(list_of_songs_with_info, song_name, tags)
     else:
         # retry, but search only using song name
         print("Oops...Couldn't find the song in this turn, let me retry :p ..... ")
-        song = '-1'
+        song = -1
 
     # retry, but search only using song name
-    if song == '-1':
+    if song == -1:
         list_of_songs_with_info.clear()
         url = baseUrl + song_name
+
         if test:
             print(url)
 
         list_of_songs_with_info = jioSaavnApi.fetchList(url)
-        song = str(getSong(list_of_songs_with_info, song_name, tags, 1))
+        song = getSong(list_of_songs_with_info, song_name, tags, 1)
 
-    # the info we got had too much info,
-    # we will save only certain keys like artist from it
+    if song == -1:
+        return
+
+    # the info we got had too much info, we will save only certain keys like artist from it
     song_info = getCertainKeys(song)
 
     # return those selected keys
     return song_info
+
+
+# todo: fix below
+'''
+Traceback (most recent call last):
+Traceback (most recent call last):
+File "E:\Py_proj\Music-library-repairer\Modules\main.py", line 99, in fixTags
+json_data = retrieveTags.start(tags, song_name, test=test)
+File "E:\Py_proj\Music-library-repairer\Base\retrieveTags.py", line 167, in start
+song_info = getCertainKeys(song)
+File "E:\Py_proj\Music-library-repairer\Base\retrieveTags.py", line 64, in getCertainKeys
+for key in json_data:
+TypeError: 'int' object is not iterable
+'''

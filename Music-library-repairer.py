@@ -3,8 +3,6 @@ from Modules import main
 
 
 def start(test=0):
-    # todo: implement caching using e_songid
-
     if test:
         main.start(1)
     else:
@@ -65,7 +63,8 @@ else:
 
 start(test=test)
 
-# # todo: sort no no_data flag
+
+# todo: make log file and write_print_log global, also take better logs
 
 ''' 
 - make it less ask from user (add support for old songs with no metadata)
@@ -77,3 +76,4 @@ start(test=test)
 - maybe change to spitify api or gaana (if songs are not available on spotify)
     or make it search from all 3
 '''
+# todo: implement caching using e_songid

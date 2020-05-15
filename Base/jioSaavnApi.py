@@ -12,6 +12,8 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 
+# todo: add try statements to below
+
 def fetchList(url, max=5):
     # cssPath = ''
     # use getApiKey function to get api key
@@ -35,8 +37,8 @@ def fetchList(url, max=5):
             # print("IN TRY")
             #######################
 
-            x = json.dumps(json_data, indent=2)
-            song_list.append(x)
+            # x = json.dumps(json_data, indent=2)
+            # song_list.append(x)
 
         except:
             # the error is caused by quotation marks in songs title as shown below
@@ -81,7 +83,7 @@ def fetchList(url, max=5):
                     actual_album = ''
 
             except:
-                # old method, if above wont work, this will 90% work.
+                # old method, if above wont work, this will work 9/10 times.
 
                 json_data = re.sub(r'.\(\b.*?"\)', "", str(info.text))
                 json_data = re.sub(r'.\[\b.*?"\]', "", json_data)
@@ -91,14 +93,14 @@ def fetchList(url, max=5):
             if actual_album != '':
                 json_data['actual_album'] = actual_album
 
-            x = json.dumps(json_data, indent=2)
+        x = json.dumps(json_data, indent=2)
 
-            #######################
-            # print(actual_album)
-            # print(x)
-            # a = input()
-            #######################
+        #######################
+        # print(actual_album)
+        # print(x)
+        # a = input()
+        #######################
 
-            song_list.append(x)
+        song_list.append(x)
 
     return song_list

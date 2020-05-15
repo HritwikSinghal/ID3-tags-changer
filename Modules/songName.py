@@ -30,7 +30,6 @@ def joinPathAndRename(old_name, newName, songDir, song_list):
             song_list[old_name_index] = newName
         else:
             print("Moving on to next file...")
-            printList(song_list)
 
 
 def fixName(songDir, old_name, song_list):
