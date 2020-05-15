@@ -128,7 +128,7 @@ def getSong(song_info_list, song_name, tags, bit=0):
     return song_info_list[song_number]
 
 
-def start(tags, song_name, test=0):
+def start(tags, song_name, log_file, test=0):
     baseUrl = "https://www.jiosaavn.com/search/"
 
     url = getURL(baseUrl, song_name, tags)
@@ -137,7 +137,7 @@ def start(tags, song_name, test=0):
         # x = input()
 
     # get a list of songs which match search
-    list_of_songs_with_info = jioSaavnApi.fetchList(url, test=test)
+    list_of_songs_with_info = jioSaavnApi.fetchList(url, log_file, test=test)
 
     if list_of_songs_with_info is None:
         return None
@@ -163,7 +163,7 @@ def start(tags, song_name, test=0):
         if test:
             print(url)
 
-        list_of_songs_with_info = jioSaavnApi.fetchList(url, test=test)
+        list_of_songs_with_info = jioSaavnApi.fetchList(url, log_file, test=test)
         if list_of_songs_with_info is None:
             return None
 

@@ -64,7 +64,7 @@ else:
 start(test=test)
 
 
-# todo: make log file and write_print_log global, also take better logs
+# todo: take better logs
 
 ''' 
 - make it less ask from user (add support for old songs with no metadata)

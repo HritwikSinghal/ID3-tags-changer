@@ -7,24 +7,19 @@ import traceback
 
 from Base import tools
 
-# todo: fix this
-log_file = tools.log_file
-
 # Ignore SSL certificate errors
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 
-def fetchList(url, test=0):
+def fetchList(url, log_file, test=0):
     # cssPath = ''
     # use getApiKey function to get api key
 
     user_agent = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0'
     }
-
-    url = 'ebhubet.bhe'
 
     try:
         res = requests.get(url, headers=user_agent)
