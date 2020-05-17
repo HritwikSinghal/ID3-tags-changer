@@ -1,5 +1,4 @@
 import json
-import traceback
 
 from Base import tools
 from Base import jioSaavnApi
@@ -87,7 +86,7 @@ def getCertainKeys(song_info):
     return rinfo
 
 
-# todo: improve song detection logic
+# todo: improve song detection logic using edit distance
 def autoMatch(song_info_list, song_name, tags):
     for song in song_info_list:
         json_data = json.loads(song)
@@ -98,7 +97,6 @@ def autoMatch(song_info_list, song_name, tags):
     return None
 
 
-# todo: simplify this
 def getSong(song_info_list, song_name, tags):
     # auto-match song
     song = autoMatch(song_info_list, song_name, tags)

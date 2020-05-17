@@ -1,5 +1,6 @@
 import os
 from Modules import main
+from Base import tools
 
 
 def start(test=0):
@@ -55,7 +56,7 @@ def start(test=0):
             exit(0)
 
 
-os.chdir(os.getcwd())
+tools.changeDir(os.getcwd())
 if os.path.isfile(os.path.join("Base", "test_bit.py")):
     test = 1
 else:
@@ -66,11 +67,11 @@ start(test=test)
 ''' 
 - make it less ask from user (add support for old songs with no metadata)
 - code cleanup
-- rename song name as song title after retrieving it from web
-
-- get songs from multiple pages or api's
-- maybe change to spitify api or gaana (if songs are not available on spotify)
-    or make it search from all 3
 '''
-# todo: implement caching using e_songid
+
+# todo: rename song name as song title after retrieving it from web
 # todo: take better logs
+# todo: implement caching using e_songid
+# todo:- get songs from multiple pages or api's
+#       maybe change to spitify api or gaana (if songs are not available on spotify)
+#       or make it search from all 3
