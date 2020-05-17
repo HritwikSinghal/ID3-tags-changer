@@ -47,6 +47,7 @@ def getCertainKeys(song_info):
         'album',
         'singers',
         'music',
+        'url',
 
         'year',
         'label',
@@ -54,10 +55,16 @@ def getCertainKeys(song_info):
 
         'e_songid',
         'image_url',
+        'tiny_url',
         'actual_album'
     ]
 
     json_data = json.loads(song_info)
+
+    #########################
+    # print(song_info)
+    # x = input()
+    #########################
 
     # this will store all relevant keys and their values
     rinfo = {}
@@ -80,6 +87,10 @@ def getCertainKeys(song_info):
                 rinfo['organization'] = json_data[key]
             elif key == 'image_url':
                 rinfo['image_url'] = tools.fixImageUrl(json_data[key])
+            # elif key == 'url':
+            #     rinfo['url'] = tools.decrypt_url(json_data[key])
+            elif key == 'tiny_url':
+                rinfo['lyrics_url'] = json_data[key]
             else:
                 rinfo[key] = json_data[key]
 

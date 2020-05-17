@@ -2,6 +2,7 @@
 # https://stackoverflow.com/questions/42231932/writing-id3-tags-using-easyid3
 
 import os
+import re
 import mutagen
 from os.path import isfile, isdir
 from mutagen.easyid3 import EasyID3 as easyid3
@@ -35,7 +36,7 @@ def inputSongDir(test=0):
 def getSongList(files):
     songs = []
     for x in files:
-        x = tools.re.findall(r'(.+\.mp3)', x)
+        x = re.findall(r'(.+\.mp3)', x)
         if len(x) != 0:
             songs.append(x[0])
     return songs
@@ -166,7 +167,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
         print()
 
 
-def handleSongs(song_dir, files, get_from_web_flag, sub_dir_flag=1, test=0):
+def handleSongs(song_dir, files, get_from_web_flag, sub_dir_flag=-1, test=0):
     print('Now in ', song_dir)
 
     if sub_dir_flag == 0 and int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
@@ -203,5 +204,5 @@ def start(test=0):
 
     else:
         print("Walking down ", song_dir, "\b...")
-        for curr_dir, sub_dirs, files in tools.os.walk(song_dir, topdown=True):
+        for curr_dir, sub_dirs, files in os.walk(song_dir, topdown=True):
             handleSongs(curr_dir, files, sub_dir_flag, get_from_web_flag, test=test)

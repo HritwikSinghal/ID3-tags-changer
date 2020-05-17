@@ -1,6 +1,10 @@
 import os
 import re
 import traceback
+from pyDes import *
+import base64
+from bs4 import BeautifulSoup
+import requests
 
 
 # -----------------------------------------------------#
@@ -117,6 +121,35 @@ def removeDup(old_name):
     new_name = ';'.join(new_name)
 
     return new_name
+
+
+def decrypt_url(url):
+    base_url = 'http://h.saavncdn.com'
+    des_cipher = des(b"38346591", ECB, b"\0\0\0\0\0\0\0\0", pad=None, padmode=PAD_PKCS5)
+
+    enc_url = base64.b64decode(url.strip())
+    dec_url = des_cipher.decrypt(enc_url, padmode=PAD_PKCS5).decode('utf-8')
+    dec_url = base_url + dec_url[10:] + '_320.mp3'
+    r = requests.get(dec_url)
+    if str(r.status_code) != '200':
+        dec_url = dec_url.replace('_320.mp3', '.mp3')
+    return dec_url
+
+
+def get_lyrics(url):
+    try:
+        if '/song/' in url:
+            url = url.replace("/song/", '/lyrics/')
+            source = requests.get(url).text
+            soup = BeautifulSoup(source, 'html5lib')
+            res = soup.find('p', class_='lyrics')
+            lyrics = str(res).replace("<br/>", "\n")
+            lyrics = lyrics.replace('<p class="lyrics"> ', '')
+            lyrics = lyrics.replace("</p>", '')
+            return (lyrics)
+    except Exception:
+        traceback.print_exc()
+        return
 
 
 # ------------------------------------------#
