@@ -3,7 +3,9 @@ from Base.tools import join
 
 
 def joinPathAndRename(old_name, newName, songDir, song_list):
-    # get index of current song from list
+    # get index of current song from list, so that after we rename,
+    # we can edit the entry in list
+
     old_name_index = song_list.index(old_name)
     newNameWithPath = join(songDir, newName)
 

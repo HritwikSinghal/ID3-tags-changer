@@ -126,12 +126,12 @@ def getSong(song_info_list, song_name, tags):
         i += 1
 
     # now asking user
-
     song_number = input("\nEnter your song number from above list, if none matches, enter 'n': ")
 
     try:
-        # check if the user entered an index number which was out of range of list
-        # if yes, ask user again
+        # if user entered 'n' or any letter, then conversion to int will fail and it jumps to 'except'
+
+        # check if the user entered an index number which was out of range of list, if yes, ask user again
         if int(song_number) > len(song_info_list):
             song_number = int(input("\nOops..You mistyped, \n"
                                     "Please enter number within above range. If none matches, enter 'n': ")) - 1
@@ -139,7 +139,7 @@ def getSong(song_info_list, song_name, tags):
             if song_number > len(song_info_list):
                 return -1
 
-    # if it was a alphabet, return -1
+    # if user entered 'n' or any letter, return -1 (since no song was matched correctly)
     except ValueError:
         return -1
 
@@ -168,14 +168,22 @@ def start(tags, song_name, log_file, test=0):
     if len(list_of_songs_with_info) != 0:
         song = getSong(list_of_songs_with_info, song_name, tags)
 
-    # else retry, but search only using song name
+    # else set retry flag to -1 so we can retry below
     else:
         print("Oops...Couldn't find the song in this turn, let me retry :p ..... ")
         song = -1
 
-    # retry, but search only using song name
+    # if retry flag is -1, retry, but search only using song name
+    # this flag was set by us if no songs were found in first try
+    # or it may be set by user when there are no matching songs in the list
+    # (the getSongs function returns -1 if user inputs 'n')
+
+    # in both cases, we have to retry search using song name
+
     if song == -1:
         list_of_songs_with_info.clear()
+
+        # new url based only on song name
         url = baseUrl + song_name
         printText(url, test=test)
 
@@ -187,9 +195,12 @@ def start(tags, song_name, log_file, test=0):
 
         song = getSong(list_of_songs_with_info, song_name, tags)
 
+    # if we were still not able to find correct song in 2nd try, just return None
+    # (means we failed to find data about song)
     if song == -1:
         return None
 
+    # if the song was found in any of above cases, then we go below.
     # the info we got had too much info, we will save only certain keys like artist from it
     song_info = getCertainKeys(song)
 

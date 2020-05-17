@@ -2,9 +2,13 @@ from Base import tools
 
 
 def modifyTitle(tags):
-    print("Curr Title: ", tags['title'][0])
+    try:
+        oldTitle = tags['title'][0]
+        print("Curr Title: ", tags['title'][0])
+    except KeyError:
+        print("No Title was found in tags, moving on...")
+        return
 
-    oldTitle = tags['title'][0]
     newTitle = tools.removeSiteName(oldTitle)
     newTitle = tools.removeGibberish(newTitle)
     newTitle = newTitle.strip()

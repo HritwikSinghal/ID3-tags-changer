@@ -1,10 +1,14 @@
 from Base import tools
+import traceback
 
 
 def fixArtist(tags):
-    oldArtist = tags['artist'][0]
-
-    print("Curr Artist: ", oldArtist)
+    try:
+        oldArtist = tags['artist'][0]
+        print("Curr Artist: ", oldArtist)
+    except KeyError:
+        print("No Artist was found in tags, moving on...")
+        return
 
     # old one
     # oldArtist = ';'.join(re.split(r'/|,|& ', oldArtist))
