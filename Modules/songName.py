@@ -7,7 +7,6 @@ def joinPathAndRename(old_name, newName, songDir, song_list):
     old_name_index = song_list.index(old_name)
     newNameWithPath = join(songDir, newName)
 
-    printList(song_list)
     try:
         os.rename(join(songDir, old_name), newNameWithPath)
         song_list[old_name_index] = newName

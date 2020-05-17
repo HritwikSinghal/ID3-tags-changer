@@ -5,6 +5,11 @@ from Base import tools
 from Base import jioSaavnApi
 
 
+def printText(text, test=0):
+    if test:
+        print(text)
+
+
 def getURL(baseUrl, song_name, tags):
     # get the search url using album or artist or year or only name
 
@@ -82,14 +87,23 @@ def getCertainKeys(song_info):
     return rinfo
 
 
-def getSong(song_info_list, song_name, tags, bit=0):
-    # automatch song
+# todo: improve song detection logic
+def autoMatch(song_info_list, song_name, tags):
     for song in song_info_list:
-        data = json.loads(song)
+        json_data = json.loads(song)
 
-        if data['title'].lower().strip() == song_name.lower().strip() and tools.isTagPresent(tags, 'album'):
-            if data['album'].lower().strip() == tools.removeYear(tags['album'][0]).lower().strip():
+        if json_data['title'].lower().strip() == song_name.lower().strip() and tools.isTagPresent(tags, 'album'):
+            if json_data['album'].lower().strip() == tools.removeYear(tags['album'][0]).lower().strip():
                 return song
+    return None
+
+
+# todo: simplify this
+def getSong(song_info_list, song_name, tags):
+    # auto-match song
+    song = autoMatch(song_info_list, song_name, tags)
+    if song is not None:
+        return song
 
     #############################
     # print("STOP")
@@ -97,9 +111,10 @@ def getSong(song_info_list, song_name, tags, bit=0):
     #############################
 
     # if no song was matched, Ask user
+    print("\n-------------------------------"
+          "--------------------------------\n")
 
-    if bit == 1:
-        print('\n------------------------------------------------------\nEnter number from below...')
+    # printing the song list
     i = 0
     for song in song_info_list:
         rel_keys = getCertainKeys(song)
@@ -109,36 +124,38 @@ def getSong(song_info_list, song_name, tags, bit=0):
                 print('\t', key, ':', rel_keys[key])
         print()
         i += 1
+
+    # now asking user
+
+    song_number = input("\nEnter your song number from above list, if none matches, enter 'n': ")
+
     try:
-        if bit == 1:
-            song_number = int(input("\nI've searched again! Please enter your song number from above list,\n"
-                                    "if none matches, enter 'n': ")) - 1
-        else:
-            song_number = int(input("\nEnter your song number from above list, "
-                                    "if none matches, enter 'n': ")) - 1
-    except IndexError:
-        try:
-            song_number = int(input("\nOops..You mistyped, please enter number within above range\n"
-                                    "if none matches, enter 'n': ")) - 1
-        except ValueError:
-            return -1
+        # check if the user entered an index number which was out of range of list
+        # if yes, ask user again
+        if int(song_number) > len(song_info_list):
+            song_number = int(input("\nOops..You mistyped, \n"
+                                    "Please enter number within above range. If none matches, enter 'n': ")) - 1
+
+            if song_number > len(song_info_list):
+                return -1
+
+    # if it was a alphabet, return -1
     except ValueError:
         return -1
 
-    return song_info_list[song_number]
+    return song_info_list[song_number - 1]
 
 
 def start(tags, song_name, log_file, test=0):
     baseUrl = "https://www.jiosaavn.com/search/"
 
     url = getURL(baseUrl, song_name, tags)
-    if test:
-        print(url)
-        # x = input()
+    printText(url, test=test)
 
     # get a list of songs which match search
     list_of_songs_with_info = jioSaavnApi.fetchList(url, log_file, test=test)
 
+    # None can only be returned in case of any error, so we were not able to find data
     if list_of_songs_with_info is None:
         return None
 
@@ -147,11 +164,12 @@ def start(tags, song_name, log_file, test=0):
     # x = input()
     ###########################
 
+    # if songs were found, get the correct song from that list
     if len(list_of_songs_with_info) != 0:
-        # means songs were found! move to getting the correct song from that list
         song = getSong(list_of_songs_with_info, song_name, tags)
+
+    # else retry, but search only using song name
     else:
-        # retry, but search only using song name
         print("Oops...Couldn't find the song in this turn, let me retry :p ..... ")
         song = -1
 
@@ -159,14 +177,15 @@ def start(tags, song_name, log_file, test=0):
     if song == -1:
         list_of_songs_with_info.clear()
         url = baseUrl + song_name
-
-        if test:
-            print(url)
+        printText(url, test=test)
 
         list_of_songs_with_info = jioSaavnApi.fetchList(url, log_file, test=test)
+
+        # None can only be returned in case of any error, so we were not able to find data
         if list_of_songs_with_info is None:
             return None
-        song = getSong(list_of_songs_with_info, song_name, tags, 1)
+
+        song = getSong(list_of_songs_with_info, song_name, tags)
 
     if song == -1:
         return None

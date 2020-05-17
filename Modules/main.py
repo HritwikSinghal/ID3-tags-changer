@@ -81,6 +81,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
             try:
                 json_data = retrieveTags.start(tags, song_name, log_file, test=test)
 
+                # None can only be returned in case of any error, so we were not able to find data
                 if json_data is not None:
                     found_data = 1
                 else:
@@ -108,55 +109,56 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
         #
         #
 
-        try:
-            albumName.start(tags, json_data, found_data)
-        except:
-            print("\nXXX---There Was some error fixing albumName.\n"
-                  "Make sure year is there in song tags. if not,"
-                  "add it manually and re-run this program.\n"
-                  "Moving to next\n")
-
-            tools.writeAndPrintLog(log_file,
-                                   '\n\nXXX---error in fixing albumname\n song_with_path =' + song_with_path + '\n',
-                                   test)
-
-        try:
-            artistName.start(tags, json_data, found_data)
-        except:
-            print("\nXXX---There Was some error fixing artistName. Moving to next\n")
-
-            tools.writeAndPrintLog(log_file, '\n\nXXX---error in artistname \n song_with_path =' + song_with_path + '\n',
-                                  test)
-
-        try:
-            composerName.start(tags, json_data, found_data)
-        except:
-            print("\nXXX---There Was some error fixing composerName. Moving to next\n")
-
-            tools.writeAndPrintLog(log_file, '\n\nXXX---error in composer\n song_with_path =' + song_with_path + '\n',
-                                  test)
-
-        try:
-            songTitle.start(tags, json_data, found_data)
-        except:
-            print("\nXXX---There Was some error fixing songTitle. Moving to next\n")
-
-            tools.writeAndPrintLog(log_file, '\n\nXXX---error in title\n song_with_path =' + song_with_path + '\n', test)
-
-        try:
-            addDateLenOrg.start(tags, json_data, found_data)
-        except:
-            print("\nXXX---There Was some error fixing Date, Len, Org. Moving to next\n")
-
-            tools.writeAndPrintLog(log_file, '\n\nXXX---error in date\n song_with_path =' + song_with_path + '\n', test)
-
-        try:
-            albumArt.start(json_data, song_dir, song_with_path, found_data)
-        except:
-            print("\nXXX---There Was some error fixing albumArt. Moving to next\n")
-
-            tools.writeAndPrintLog(log_file, '\n\nXXX---error in albumART\n song_with_path =' + song_with_path + '\n',
-                                  test)
+        # try:
+        #     albumName.start(tags, json_data, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing albumName.\n"
+        #           "Make sure year is there in song tags. if not, add it manually and re-run this program.\n"
+        #           "Moving to next tag...\n")
+        #
+        #     tools.writeAndPrintLog(log_file,
+        #                            '\n\nXXX---error in fixing albumname\n song_with_path =' + song_with_path + '\n',
+        #                            test)
+        #
+        # try:
+        #     artistName.start(tags, json_data, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing artistName. Moving to next\n")
+        #
+        #     tools.writeAndPrintLog(log_file,
+        #                            '\n\nXXX---error in artistname \n song_with_path =' + song_with_path + '\n',
+        #                            test)
+        #
+        # try:
+        #     composerName.start(tags, json_data, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing composerName. Moving to next\n")
+        #
+        #     tools.writeAndPrintLog(log_file, '\n\nXXX---error in composer\n song_with_path =' + song_with_path + '\n',
+        #                            test)
+        #
+        # try:
+        #     songTitle.start(tags, json_data, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing songTitle. Moving to next\n")
+        #
+        #     tools.writeAndPrintLog(log_file, '\n\nXXX---error in title\n song_with_path =' + song_with_path + '\n',
+        #                            test)
+        #
+        # try:
+        #     addDateLenOrg.start(tags, json_data, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing Date, Len, Org. Moving to next\n")
+        #
+        #     tools.writeAndPrintLog(log_file, '\n\nXXX---error in date\n song_with_path =' + song_with_path + '\n', test)
+        #
+        # try:
+        #     albumArt.start(json_data, song_dir, song_with_path, found_data)
+        # except:
+        #     print("\nXXX---There Was some error fixing albumArt. Moving to next\n")
+        #
+        #     tools.writeAndPrintLog(log_file, '\n\nXXX---error in albumART\n song_with_path =' + song_with_path + '\n',
+        #                            test)
 
         print()
 
