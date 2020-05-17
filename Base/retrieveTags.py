@@ -141,6 +141,7 @@ def getSong(song_info_list, song_name, tags):
     except ValueError:
         return -1
 
+    song_number = int(song_number)
     return song_info_list[song_number - 1]
 
 
