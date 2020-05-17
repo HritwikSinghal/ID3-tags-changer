@@ -106,6 +106,6 @@ def fetchList(url, log_file, test=0):
         return song_list
     except:
         print("invalid url...")
-        tools.write_print_log(log_file, "\n\nXXX-------invalid url---------\n", test=test)
+        tools.writeAndPrintLog(log_file, "\n\nXXX-------invalid url---------\n", test=test)
 
         return None

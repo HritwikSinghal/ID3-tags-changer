@@ -51,7 +51,7 @@ def changeSongName(songDir, song_list, log_file, test=0):
         print()
     except:
         print("XXX---There Was some error fixing name. Moving to next")
-        tools.write_print_log(log_file, '\n\nXXX---error fixing name== ' + curr + '\n', test)
+        tools.writeAndPrintLog(log_file, '\n\nXXX---error fixing name== ' + curr + '\n', test)
 
 
 def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
@@ -68,7 +68,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
                 print("Tags created.")
             except:
                 print("XXX---There Was some error creating tags. Moving to next")
-                tools.write_print_log(log_file, '\n\nXXX---error creating tags= ' + song_with_path + '\n', test)
+                tools.writeAndPrintLog(log_file, '\n\nXXX---error creating tags= ' + song_with_path + '\n', test)
 
                 continue
 
@@ -97,9 +97,9 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
                       "Fixing tags locally\n")
 
                 # todo: log search url and all other params
-                tools.write_print_log(log_file,
-                                      '\n\nXXX---error Cannot find data for selected song = ' + song_with_path + '\n',
-                                      test)
+                tools.writeAndPrintLog(log_file,
+                                       '\n\nXXX---error Cannot find data for selected song = ' + song_with_path + '\n',
+                                       test)
         else:
             found_data = 0
             json_data = ''
@@ -116,44 +116,47 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
                   "add it manually and re-run this program.\n"
                   "Moving to next\n")
 
-            tools.write_print_log(log_file,
-                                  '\n\nXXX---error in fixing albumname\n song_with_path =' + song_with_path + '\n',
-                                  test)
+            tools.writeAndPrintLog(log_file,
+                                   '\n\nXXX---error in fixing albumname\n song_with_path =' + song_with_path + '\n',
+                                   test)
 
         try:
             artistName.start(tags, json_data, found_data)
         except:
             print("\nXXX---There Was some error fixing artistName. Moving to next\n")
 
-            tools.write_print_log(log_file, '\n\nXXX---error in artistname \n song_with_path =' + song_with_path + '\n', test)
+            tools.writeAndPrintLog(log_file, '\n\nXXX---error in artistname \n song_with_path =' + song_with_path + '\n',
+                                  test)
 
         try:
             composerName.start(tags, json_data, found_data)
         except:
             print("\nXXX---There Was some error fixing composerName. Moving to next\n")
 
-            tools.write_print_log(log_file, '\n\nXXX---error in composer\n song_with_path =' + song_with_path + '\n', test)
+            tools.writeAndPrintLog(log_file, '\n\nXXX---error in composer\n song_with_path =' + song_with_path + '\n',
+                                  test)
 
         try:
             songTitle.start(tags, json_data, found_data)
         except:
             print("\nXXX---There Was some error fixing songTitle. Moving to next\n")
 
-            tools.write_print_log(log_file, '\n\nXXX---error in title\n song_with_path =' + song_with_path + '\n', test)
+            tools.writeAndPrintLog(log_file, '\n\nXXX---error in title\n song_with_path =' + song_with_path + '\n', test)
 
         try:
             addDateLenOrg.start(tags, json_data, found_data)
         except:
             print("\nXXX---There Was some error fixing Date, Len, Org. Moving to next\n")
 
-            tools.write_print_log(log_file, '\n\nXXX---error in date\n song_with_path =' + song_with_path + '\n', test)
+            tools.writeAndPrintLog(log_file, '\n\nXXX---error in date\n song_with_path =' + song_with_path + '\n', test)
 
         try:
             albumArt.start(json_data, song_dir, song_with_path, found_data)
         except:
             print("\nXXX---There Was some error fixing albumArt. Moving to next\n")
 
-            tools.write_print_log(log_file, '\n\nXXX---error in albumART\n song_with_path =' + song_with_path + '\n', test)
+            tools.writeAndPrintLog(log_file, '\n\nXXX---error in albumART\n song_with_path =' + song_with_path + '\n',
+                                  test)
 
         print()
 

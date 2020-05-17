@@ -166,7 +166,6 @@ def start(tags, song_name, log_file, test=0):
         list_of_songs_with_info = jioSaavnApi.fetchList(url, log_file, test=test)
         if list_of_songs_with_info is None:
             return None
-
         song = getSong(list_of_songs_with_info, song_name, tags, 1)
 
     if song == -1:

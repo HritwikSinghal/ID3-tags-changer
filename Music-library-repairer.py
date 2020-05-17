@@ -63,13 +63,9 @@ else:
 
 start(test=test)
 
-
-# todo: take better logs
-
 ''' 
 - make it less ask from user (add support for old songs with no metadata)
 - code cleanup
-- make more fucking useful logs
 - rename song name as song title after retrieving it from web
 
 - get songs from multiple pages or api's
@@ -77,3 +73,4 @@ start(test=test)
     or make it search from all 3
 '''
 # todo: implement caching using e_songid
+# todo: take better logs
