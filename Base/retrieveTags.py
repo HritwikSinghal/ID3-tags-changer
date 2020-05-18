@@ -103,16 +103,16 @@ def autoMatch(song_info_list, song_name, tags):
 
         #################################################
         # print(json.dumps(json_data, indent=4))
-        print()
-        print(json_data['title'].lower().strip())
-        print(song_name.lower().strip())
+        # print()
+        # print(json_data['title'].lower().strip())
+        # print(song_name.lower().strip())
         #################################################
 
         song_name = song_name.lower().strip()
         title = json_data['title'].lower().strip()
 
         ed1 = tools.editDistDP(song_name, title, len(song_name), len(title))
-        print(ed1)
+        # print(ed1)
         if ed1 > 5:
             continue
 
@@ -124,11 +124,11 @@ def autoMatch(song_info_list, song_name, tags):
             except KeyError:
                 album_from_json = json_data['album'].lower().strip()
 
-            print(album_from_json)
-            print(album_from_tags)
+            # print(album_from_json)
+            # print(album_from_tags)
 
             ed2 = tools.editDistDP(album_from_tags, album_from_json, len(album_from_tags), len(album_from_json))
-            print(ed2)
+            # print(ed2)
 
             if ed2 >= 4:
                 continue
@@ -144,11 +144,11 @@ def autoMatch(song_info_list, song_name, tags):
             artist_from_tags = tools.removeTrailingExtras(artist_from_tags)
             artist_from_tags = tools.removeDup(artist_from_tags)
 
-            print(artist_from_json)
-            print(artist_from_tags)
+            # print(artist_from_json)
+            # print(artist_from_tags)
 
             ed3 = tools.editDistDP(artist_from_tags, artist_from_json, len(artist_from_tags), len(artist_from_json))
-            print(ed3)
+            # print(ed3)
 
             if ed3 >= 11:
                 continue
