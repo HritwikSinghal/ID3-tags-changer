@@ -1,6 +1,7 @@
 import os
-from Modules import main
+
 from Base import tools
+from Modules import main
 
 
 def start(test=0):
@@ -56,7 +57,8 @@ def start(test=0):
             exit(0)
 
 
-tools.changeDir(os.getcwd())
+song_dir = os.getcwd()
+os.chdir(song_dir)
 if os.path.isfile(os.path.join("Base", "test_bit.py")):
     test = 1
 else:

@@ -33,18 +33,11 @@ from bs4 import BeautifulSoup
 from json import JSONDecoder
 from pyDes import *
 import base64
-from urllib.parse import unquote
-from sys import platform
-import html
 import os
-import json
 import logger
 import json
-import sys
 import ast
-import urllib3.request
 from traceback import print_exc
-import subprocess
 import re
 import urllib3
 

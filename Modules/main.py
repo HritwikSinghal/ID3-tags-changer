@@ -3,19 +3,21 @@
 
 import os
 import re
-import mutagen
-from os.path import isfile, isdir
-from mutagen.easyid3 import EasyID3 as easyid3
-from Base import tools
 import traceback
+from os.path import isdir
+from os.path import isfile
 
+import mutagen
+from mutagen.easyid3 import EasyID3 as easyid3
+
+from Base import retrieveTags
+from Base import tools
 from Modules import addDateLenOrg
 from Modules import albumArt
 from Modules import albumName
 from Modules import artistName
 from Modules import composerName
 from Modules import songName
-from Base import retrieveTags
 from Modules import songTitle
 
 

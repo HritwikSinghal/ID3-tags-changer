@@ -1,10 +1,11 @@
+import base64
 import os
 import re
 import traceback
-from pyDes import *
-import base64
-from bs4 import BeautifulSoup
+
 import requests
+from bs4 import BeautifulSoup
+from pyDes import *
 
 
 # -----------------------------------------------------#
@@ -169,10 +170,6 @@ def printDict(myDict):
     print('-----------')
 
 
-def changeDir(songDir):
-    os.chdir(songDir)
-
-
 def fixImageUrl(oldUrl):
     url = oldUrl.replace('150x150', '500x500')
     return url
@@ -247,13 +244,13 @@ def writeAndPrintLog(log_file, line, test=0):
 
 
 def getLogFile(song_dir):
-    changeDir(song_dir)
+    os.chdir(song_dir)
     log_file = open('Music-library-repairer_LOGS.txt', 'a')
     return log_file
 
 
 def createLogFile(song_dir):
-    changeDir(song_dir)
+    os.chdir(song_dir)
     with open('Music-library-repairer_LOGS.txt', 'w+') as log_file:
         log_file.write("This is log file for Music-library-repairer. SongDir = " + song_dir + "\n\n")
 

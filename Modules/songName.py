@@ -1,3 +1,5 @@
+import os
+
 from Base.tools import *
 from Base.tools import join
 
@@ -50,5 +52,5 @@ def fixName(songDir, old_name, song_list):
 
 
 def start(songDir, song, song_list):
-    changeDir(songDir)
+    os.chdir(songDir)
     fixName(songDir, song, song_list)
