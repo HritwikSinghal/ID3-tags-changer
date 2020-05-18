@@ -138,7 +138,7 @@ def getSong(song_info_list, song_name, tags):
     song_number = input("\nEnter your song number from above list, if none matches, enter 'n': ")
 
     try:
-        # if user entered 'n' or any letter, then conversion to int will fail and it jumps to 'except'
+        # if user entered 'n' or any letter, then conversion to int will fail and ValueError is raised
 
         # check if the user entered an index number which was out of range of list, if yes, ask user again
         if int(song_number) > len(song_info_list):

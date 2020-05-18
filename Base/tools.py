@@ -255,6 +255,6 @@ def getLogFile(song_dir):
 def createLogFile(song_dir):
     changeDir(song_dir)
     with open('Music-library-repairer_LOGS.txt', 'w+') as log_file:
-        log_file.write("This is log file for Music-library-repairer_LOGS. SongDir = " + song_dir + "\n\n")
+        log_file.write("This is log file for Music-library-repairer. SongDir = " + song_dir + "\n\n")
 
     return getLogFile(song_dir)

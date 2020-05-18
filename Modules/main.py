@@ -109,10 +109,6 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
             found_data = 0
             json_data = ''
 
-
-
-
-
         try:
             albumName.start(tags, json_data, found_data)
         except:
@@ -167,7 +163,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
         print()
 
 
-def handleSongs(song_dir, files, get_from_web_flag, sub_dir_flag=-1, test=0):
+def handleSongs(song_dir, files, get_from_web_flag, sub_dir_flag=1, test=0):
     print('Now in ', song_dir)
 
     if sub_dir_flag == 0 and int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
