@@ -97,14 +97,64 @@ def getCertainKeys(song_info):
     return rinfo
 
 
-# todo: improve song detection logic using edit distance
 def autoMatch(song_info_list, song_name, tags):
     for song in song_info_list:
         json_data = json.loads(song)
 
-        if json_data['title'].lower().strip() == song_name.lower().strip() and tools.isTagPresent(tags, 'album'):
-            if json_data['album'].lower().strip() == tools.removeYear(tags['album'][0]).lower().strip():
-                return song
+        #################################################
+        # print(json.dumps(json_data, indent=4))
+        print()
+        print(json_data['title'].lower().strip())
+        print(song_name.lower().strip())
+        #################################################
+
+        song_name = song_name.lower().strip()
+        title = json_data['title'].lower().strip()
+
+        ed1 = tools.editDistDP(song_name, title, len(song_name), len(title))
+        print(ed1)
+        if ed1 > 5:
+            continue
+
+        if tools.isTagPresent(tags, 'album'):
+
+            album_from_tags = tools.removeYear(tags['album'][0]).lower().strip()
+            try:
+                album_from_json = json_data['actual_album'].lower().strip()
+            except KeyError:
+                album_from_json = json_data['album'].lower().strip()
+
+            print(album_from_json)
+            print(album_from_tags)
+
+            ed2 = tools.editDistDP(album_from_tags, album_from_json, len(album_from_tags), len(album_from_json))
+            print(ed2)
+
+            if ed2 >= 4:
+                continue
+
+        if tools.isTagPresent(tags, 'artist'):
+            artist_from_json = json_data['singers']
+            artist_from_json = tools.divideBySColon(artist_from_json)
+            artist_from_json = tools.removeTrailingExtras(artist_from_json)
+            artist_from_json = tools.removeDup(artist_from_json)
+
+            artist_from_tags = tags['artist'][0]
+            artist_from_tags = tools.divideBySColon(artist_from_tags)
+            artist_from_tags = tools.removeTrailingExtras(artist_from_tags)
+            artist_from_tags = tools.removeDup(artist_from_tags)
+
+            print(artist_from_json)
+            print(artist_from_tags)
+
+            ed3 = tools.editDistDP(artist_from_tags, artist_from_json, len(artist_from_tags), len(artist_from_json))
+            print(ed3)
+
+            if ed3 >= 11:
+                continue
+
+        return song
+
     return None
 
 

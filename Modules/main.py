@@ -56,7 +56,7 @@ def changeSongName(songDir, song_list, log_file, test=0):
     print()
 
 
-def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
+def fixTags(song_dir, song_list, log_file, get_from_web_flag=0, test=0):
     for song in song_list:
         song_with_path = tools.join(song_dir, song)
 
@@ -165,7 +165,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag, test=0):
         print()
 
 
-def handleSongs(song_dir, files, get_from_web_flag, sub_dir_flag=1, test=0):
+def handleSongs(song_dir, files, get_from_web_flag, sub_dir_flag=-1, test=0):
     print('Now in ', song_dir)
 
     if sub_dir_flag == 0 and int(input("Do you Want to Fix songs in " + song_dir + " ?\n1 == Yes, 0 == NO\n")) == 0:
@@ -203,4 +203,4 @@ def start(test=0):
     else:
         print("Walking down ", song_dir, "\b...")
         for curr_dir, sub_dirs, files in os.walk(song_dir, topdown=True):
-            handleSongs(curr_dir, files, sub_dir_flag, get_from_web_flag, test=test)
+            handleSongs(curr_dir, files, get_from_web_flag, sub_dir_flag, test=test)

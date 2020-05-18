@@ -1,6 +1,5 @@
 import os
 
-from Base import tools
 from Modules import main
 
 
@@ -32,7 +31,7 @@ def start(test=0):
             Warning: This program is in early stages so it may mess up a little bit
                     Please make a backup of your songs somewhere in case anything goes wrong.
                     I WILL NOT BE RESPONSIBLE FOR ANY MESS.
-                    PLEASE ENTER IN LOWER CASE 'yes' TO RUN OR 'no' TO EXIT
+                    Enter 'yes' TO RUN OR 'no' TO EXIT (IN LOWER CASE)
         ''')
 
         x = input()
@@ -57,8 +56,6 @@ def start(test=0):
             exit(0)
 
 
-song_dir = os.getcwd()
-os.chdir(song_dir)
 if os.path.isfile(os.path.join("Base", "test_bit.py")):
     test = 1
 else:
@@ -66,14 +63,8 @@ else:
 
 start(test=test)
 
-''' 
-- make it less ask from user (add support for old songs with no metadata)
-- code cleanup
-'''
-
 # todo: rename song name as song title after retrieving it from web
 # todo: take better logs
-# todo: implement caching using e_songid
 # todo:- get songs from multiple pages or api's
 #       maybe change to spitify api or gaana (if songs are not available on spotify)
 #       or make it search from all 3

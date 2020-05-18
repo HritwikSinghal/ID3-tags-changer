@@ -93,12 +93,12 @@ def removeBitrate(oldName):
 
 
 def removeYear(oldName):
-    newName = re.sub(r' \(\d*\)', '', oldName)
+    newName = re.sub(r'\s*\(\d*\)', '', oldName)
     return newName.strip()
 
 
 def removeGibberish(oldName):
-    newName = re.sub(r'&quot;|&*amp', '', oldName)
+    newName = re.sub(r'&quot;|&*amp| - Single', '', oldName)
     return newName.strip()
 
 
@@ -209,7 +209,9 @@ def editDistDP(str1, str2, len_str1, len_str2):
                                    dp[i - 1][j],  # Remove
                                    dp[i - 1][j - 1])  # Replace
 
-    return dp[len_str1][len_str2]
+    # todo: improve this
+    non_matching_words = int(dp[len_str1][len_str2])
+    return non_matching_words
 
 
 # ---------------------------------------------#
