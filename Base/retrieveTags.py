@@ -119,10 +119,10 @@ def autoMatch(song_info_list, song_name, tags):
         if tools.isTagPresent(tags, 'album'):
 
             album_from_tags = tools.removeYear(tags['album'][0]).lower().strip()
-            try:
-                album_from_json = json_data['actual_album'].lower().strip()
-            except KeyError:
-                album_from_json = json_data['album'].lower().strip()
+            # try:
+            #     album_from_json = json_data['actual_album'].lower().strip()
+            # except KeyError:
+            album_from_json = json_data['album'].lower().strip()
 
             # print(album_from_json)
             # print(album_from_tags)
