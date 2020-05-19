@@ -1,5 +1,7 @@
 import json
 
+from mutagen.mp3 import MP3
+
 from Base import jioSaavnApi
 from Base import tools
 
@@ -7,6 +9,12 @@ from Base import tools
 def printText(text, test=0):
     if test:
         print(text)
+
+
+def mod(num):
+    if num >= 0:
+        return num
+    return -num
 
 
 def getURL(baseUrl, song_name, tags):
@@ -97,22 +105,25 @@ def getCertainKeys(song_info):
     return rinfo
 
 
-def autoMatch(song_info_list, song_name, tags):
+def autoMatch(song_info_list, song_name, tags, song_with_path, test=0):
     for song in song_info_list:
         json_data = json.loads(song)
 
         #################################################
-        # print(json.dumps(json_data, indent=4))
-        # print()
-        # print(json_data['title'].lower().strip())
-        # print(song_name.lower().strip())
+        if test:
+            # print(json.dumps(json_data, indent=4))
+            print()
+            print(json_data['title'].lower().strip())
+            print(song_name.lower().strip())
         #################################################
 
         song_name = song_name.lower().strip()
         title = json_data['title'].lower().strip()
 
         ed1 = tools.editDistDP(song_name, title, len(song_name), len(title))
-        # print(ed1)
+
+        printText(ed1, test)
+
         if ed1 > 5:
             continue
 
@@ -123,14 +134,14 @@ def autoMatch(song_info_list, song_name, tags):
             #     album_from_json = json_data['actual_album'].lower().strip()
             # except KeyError:
             album_from_json = json_data['album'].lower().strip()
-
-            # print(album_from_json)
-            # print(album_from_tags)
-
             ed2 = tools.editDistDP(album_from_tags, album_from_json, len(album_from_tags), len(album_from_json))
-            # print(ed2)
 
-            if ed2 >= 4:
+            if test:
+                print(album_from_json)
+                print(album_from_tags)
+                print(ed2)
+
+            if ed2 > 4:
                 continue
 
         if tools.isTagPresent(tags, 'artist'):
@@ -144,23 +155,36 @@ def autoMatch(song_info_list, song_name, tags):
             artist_from_tags = tools.removeTrailingExtras(artist_from_tags)
             artist_from_tags = tools.removeDup(artist_from_tags)
 
-            # print(artist_from_json)
-            # print(artist_from_tags)
-
             ed3 = tools.editDistDP(artist_from_tags, artist_from_json, len(artist_from_tags), len(artist_from_json))
-            # print(ed3)
+
+            if test:
+                print(artist_from_json)
+                print(artist_from_tags)
+                print(ed3)
 
             if ed3 >= 11:
                 continue
+
+        audio = MP3(song_with_path)
+        length_from_tags = int(audio.info.length)
+        length_from_json = int(json_data['duration'])
+
+        if test:
+            print(length_from_json)
+            print(length_from_tags)
+            print(mod(length_from_json) - length_from_tags)
+
+        if mod(length_from_json - length_from_tags) > 10:
+            continue
 
         return song
 
     return None
 
 
-def getSong(song_info_list, song_name, tags):
+def getSong(song_info_list, song_name, tags, song_with_path, test=0):
     # auto-match song
-    song = autoMatch(song_info_list, song_name, tags)
+    song = autoMatch(song_info_list, song_name, tags, song_with_path, test)
     if song is not None:
         return song
 
@@ -226,7 +250,7 @@ def start(tags, song_name, log_file, test=0):
 
     # if songs were found, get the correct song from that list
     if len(list_of_songs_with_info) != 0:
-        song = getSong(list_of_songs_with_info, song_name, tags)
+        song = getSong(list_of_songs_with_info, song_name, tags, song_with_path, test)
 
     # else set retry flag to -1 so we can retry below
     else:
@@ -253,7 +277,7 @@ def start(tags, song_name, log_file, test=0):
         if list_of_songs_with_info is None:
             return None
 
-        song = getSong(list_of_songs_with_info, song_name, tags)
+        song = getSong(list_of_songs_with_info, song_name, tags, song_with_path, test)
 
     # if we were still not able to find correct song in 2nd try, just return None
     # (means we failed to find data about song)

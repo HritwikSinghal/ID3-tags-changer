@@ -90,20 +90,18 @@ def fetchList(url, log_file, test=0):
                     json_data = re.sub(r'.\[\b.*?"\]', "", json_data)
                     actual_album = ''
 
-                json_data = json.loads(str(json_data))
+                try:
+                    json_data = json.loads(str(json_data))
+                except:
+                    continue
+                
                 if actual_album != '':
                     json_data['actual_album'] = actual_album
 
             fix(json_data)
-            x = json.dumps(json_data, indent=2)
+            json_data = json.dumps(json_data, indent=2)
 
-            #######################
-            # print(actual_album)
-            # print(x)
-            # a = input()
-            #######################
-
-            song_list.append(x)
+            song_list.append(json_data)
 
         return song_list
     except:
