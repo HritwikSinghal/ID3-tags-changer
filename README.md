@@ -48,5 +48,7 @@ I have not tested this on linux, but there may be issue with file paths in any l
 **SS:** 
 
 ![Before](https://imgur.com/DuRLHcH)
+
 ![During](https://imgur.com/WECDgXZ)
+
 ![After](https://imgur.com/wPIP3LQ)
