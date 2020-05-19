@@ -27,6 +27,9 @@ If tags were not downloaded, these things will be fixed:
 	- remove '&quot' and ' - single' and '&amp' from tags
  - and many more..
 
+Note: This library uses song name as param to search on web, so make sure the song name is 
+      as accurate as possible for max accuracy.
+
 Installation:
 
 Clone this repository using
