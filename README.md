@@ -30,6 +30,10 @@ If tags were not downloaded, these things will be fixed:
 Note: This library uses song name as param to search on web, so make sure the song name is 
       as accurate as possible for max accuracy.
 
+After name, if album is there in tags, it matches using it. After album, it matches using artist
+and finally using date. So if any of these tags is wrong,
+better to remove it.
+
 Installation:
 
 Clone this repository using
