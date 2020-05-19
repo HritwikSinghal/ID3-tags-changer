@@ -81,7 +81,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag=0, test=0):
 
         if get_from_web_flag:
             try:
-                json_data = retrieveTags.start(tags, song_name, log_file, test=test)
+                json_data = retrieveTags.start(tags, song_name, log_file, song_with_path, test=test)
 
                 # None can only be returned in case of any error, so we were not able to find data
                 if json_data is not None:
