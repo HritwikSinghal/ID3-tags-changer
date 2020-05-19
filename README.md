@@ -3,13 +3,13 @@
 
 This program will fix the following tags for each song in your Music library
 
-1 - Album
-2 - Artist
-3 - Composer
-4 - Title
-5 - Date, Length(tag) & Label
-6 - AlbumArt
-7 - Song Name
+ - Album
+ - Artist
+ - Composer
+ - Title
+ - Date, Length(tag) & Label
+ - AlbumArt
+ - Song Name
 
 if a song does not have these tags, it will download tags from saavn and append them to the song.
 (It will ask if you want to retrieve data from web, just enter no to fix songs locally)
