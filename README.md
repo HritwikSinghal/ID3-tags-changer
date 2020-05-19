@@ -1,5 +1,9 @@
 # Music-library-repairer
 
+This program is in early stages so it may mess up a little bit
+Please make a backup of your songs somewhere in case anything goes wrong.
+
+I WILL NOT BE RESPONSIBLE FOR ANY MESS.
 
 This program will fix the following tags for each song in your Music library
 
