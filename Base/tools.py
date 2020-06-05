@@ -125,16 +125,106 @@ def removeDup(old_name):
 
 
 def decrypt_url(url):
-    base_url = 'http://h.saavncdn.com'
     des_cipher = des(b"38346591", ECB, b"\0\0\0\0\0\0\0\0", pad=None, padmode=PAD_PKCS5)
-
     enc_url = base64.b64decode(url.strip())
     dec_url = des_cipher.decrypt(enc_url, padmode=PAD_PKCS5).decode('utf-8')
-    dec_url = base_url + dec_url[10:] + '_320.mp3'
-    r = requests.get(dec_url)
-    if str(r.status_code) != '200':
-        dec_url = dec_url.replace('_320.mp3', '.mp3')
-    return dec_url
+    dec_url = re.sub('_96.mp4', '_320.mp3', dec_url)
+    print(dec_url)
+
+    try:
+        aac_url = dec_url[:]
+        h_url = aac_url.replace('aac.saavncdn.com', 'h.saavncdn.com')
+
+        # ---------------------------------------------------------#
+
+        # check for 320 mp3 on aac.saavncdn.com
+        r = requests.head(aac_url, allow_redirects=True)
+        if str(r.status_code) == '200':
+            return aac_url
+
+        # check for 320 mp3 on h.saavncdn.com
+        r = requests.head(h_url, allow_redirects=True)
+        if str(r.status_code) == '200':
+            return aac_url
+
+        # ---------------------------------------------------------#
+
+        # check for 160 mp3 on aac.saavncdn.com
+        aac_url = aac_url.replace('_320.mp3', '_160.mp3')
+        r = requests.head(h_url, allow_redirects=True)
+        if str(r.status_code) == '200':
+            return aac_url
+
+        # check for 160 mp3 on h.saavncdn.com
+        h_url = h_url.replace('_320.mp3', '_160.mp3')
+        r = requests.head(h_url, allow_redirects=True)
+        if str(r.status_code) == '200':
+            return aac_url
+
+        # ---------------------------------------------------------#
+        # check for 128 mp3 on aac.saavncdn.com
+        aac_url = aac_url.replace('_320.mp3', '.mp3')
+        r = requests.head(h_url, allow_redirects=True)
+        if str(r.status_code) == '200':
+            return aac_url
+
+        # check for 128 mp3 on h.saavncdn.com
+        h_url = h_url.replace('_320.mp3', '.mp3')
+        r = requests.head(h_url, allow_redirects=True)
+        if str(r.status_code) == '200':
+            return aac_url
+
+        # ---------------------------------------------------------#
+        # ---------------------------------------------------------#
+        # ---------------------------------------------------------#
+        # now trying for m4a
+        # Edit: skipped m4a support as of now
+
+        # aac_url = dec_url[:].replace(".mp3", '.mp4')
+        # h_url = aac_url.replace('aac.saavncdn.com', 'h.saavncdn.com')
+        #
+        # # ---------------------------------------------------------#
+        #
+        # # check for 320 m4a on aac.saavncdn.com
+        # r = requests.head(aac_url, allow_redirects=True)
+        # if str(r.status_code) == '200':
+        #     return aac_url
+        #
+        # # check for 320 m4a on h.saavncdn.com
+        # r = requests.head(h_url, allow_redirects=True)
+        # if str(r.status_code) == '200':
+        #     return aac_url
+        #
+        # # ---------------------------------------------------------#
+        #
+        # # check for 160 m4a on aac.saavncdn.com
+        # aac_url = aac_url.replace('_320.mp4', '_160.mp4')
+        # r = requests.head(h_url, allow_redirects=True)
+        # if str(r.status_code) == '200':
+        #     return aac_url
+        #
+        # # check for 160 m4a on h.saavncdn.com
+        # h_url = h_url.replace('_320.mp4', '_160.mp4')
+        # r = requests.head(h_url, allow_redirects=True)
+        # if str(r.status_code) == '200':
+        #     return aac_url
+        #
+        # # ---------------------------------------------------------#
+        # # check for 128 m4a on aac.saavncdn.com
+        # aac_url = aac_url.replace('_320.mp4', '.mp4')
+        # r = requests.head(h_url, allow_redirects=True)
+        # if str(r.status_code) == '200':
+        #     return aac_url
+        #
+        # # check for 128 m4a on h.saavncdn.com
+        # h_url = h_url.replace('_320.mp4', '.mp4')
+        # r = requests.head(h_url, allow_redirects=True)
+        # if str(r.status_code) == '200':
+        #     return aac_url
+
+    except:
+        return None
+
 
 
 def get_lyrics(url):
