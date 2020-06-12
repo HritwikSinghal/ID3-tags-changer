@@ -49,7 +49,7 @@ Run the app using
 $ python3 Music-library-repairer.py
 ```
 
-I have not tested this on linux, but there may be issue with file paths in any linux distro. if you find any issue, please open an issue on github. I will try to fix it 
+Tested on Linux and Windows. if you find any issue, please open an issue on github. I will try to fix it 
 
 
 **SS:** 
