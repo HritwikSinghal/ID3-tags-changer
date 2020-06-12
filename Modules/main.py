@@ -24,7 +24,7 @@ from Modules import songTitle
 def inputSongDir(test=0):
     while True:
         if test == 1:
-            songDir = r'C:\Users\hritwik\Pictures\Camera Roll'
+            songDir = r'/home/hritwik/Videos/CR'
         else:
             songDir = input("Enter song dir:  ")
 
