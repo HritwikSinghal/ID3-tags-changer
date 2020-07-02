@@ -1,7 +1,4 @@
-import os
-
 from Base.tools import *
-from Base.tools import join
 
 
 def joinPathAndRename(old_name, newName, songDir, song_list):
@@ -9,10 +6,11 @@ def joinPathAndRename(old_name, newName, songDir, song_list):
     # we can edit the entry in list
 
     old_name_index = song_list.index(old_name)
-    newNameWithPath = join(songDir, newName)
+    newNameWithPath = os.path.join(songDir, newName)
+    old_name_with_path = os.path.join(songDir, old_name)
 
     try:
-        os.rename(join(songDir, old_name), newNameWithPath)
+        os.rename(old_name_with_path, newNameWithPath)
         song_list[old_name_index] = newName
 
     except FileExistsError:
@@ -20,14 +18,14 @@ def joinPathAndRename(old_name, newName, songDir, song_list):
         x = int(input("Do you want to PERMANENTLY delete this old file?"
                       "\n1 == Yes, 0 == NO\n"))
 
-        if x == 1:
+        if x:
             duplicate_file_index = song_list.index(newName)
 
             os.remove(newNameWithPath)
             del song_list[duplicate_file_index]
             print("File removed successfully. Now renaming new file.")
 
-            os.rename(join(songDir, old_name), newNameWithPath)
+            os.rename(old_name_with_path, newNameWithPath)
             print("File renamed successfully.")
 
             song_list[old_name_index] = newName
@@ -36,12 +34,13 @@ def joinPathAndRename(old_name, newName, songDir, song_list):
 
 
 def fixName(songDir, old_name, song_list):
+    old_name = old_name.strip()
     print("Current Name: ", old_name)
 
     newName = removeBitrate(old_name)
     newName = removeGibberish(newName)
     newName = removeSiteName(newName)
-    newName = (newName.replace('.mp3', '')).strip()
+    newName = newName.replace('.mp3', '').strip()
 
     if '.mp3' not in newName:
         newName = newName + '.mp3'

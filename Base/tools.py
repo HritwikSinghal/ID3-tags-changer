@@ -1,11 +1,9 @@
-import base64
 import os
 import re
 import traceback
 
 import requests
 from bs4 import BeautifulSoup
-from pyDes import *
 
 
 # -----------------------------------------------------#
@@ -84,7 +82,7 @@ def removeBitrate(oldName):
     x = re.compile(r'''
     \s*-*\s*                            # for foo - bar
     \[*                                 # for foo [bar
-    \d*\s*[kK][bB][pP][sS]         # for KBps or KBPS or kbps or Kbps
+    \d*\s*[kK][bB][pP][sS]              # for KBps or KBPS or kbps or Kbps
     \]*                                 # for foo bar]
     ''', re.VERBOSE)
 
@@ -124,123 +122,6 @@ def removeDup(old_name):
     return new_name
 
 
-def decrypt_url(url):
-    des_cipher = des(b"38346591", ECB, b"\0\0\0\0\0\0\0\0", pad=None, padmode=PAD_PKCS5)
-    enc_url = base64.b64decode(url.strip())
-    dec_url = des_cipher.decrypt(enc_url, padmode=PAD_PKCS5).decode('utf-8')
-    dec_url = re.sub('_96.mp4', '_320.mp3', dec_url)
-
-    try:
-        aac_url = dec_url[:]
-        h_url = aac_url.replace('aac.saavncdn.com', 'h.saavncdn.com')
-
-        # ---------------------------------------------------------#
-
-        # check for 320 mp3 on aac.saavncdn.com
-        r = requests.head(aac_url, allow_redirects=True, headers=user_agent)
-        if str(r.status_code) == '200':
-            return aac_url
-
-        # check for 320 mp3 on h.saavncdn.com
-        r = requests.head(h_url, allow_redirects=True)
-        if str(r.status_code) == '200':
-            return h_url
-
-        # ---------------------------------------------------------#
-
-        # check for 160 mp3 on aac.saavncdn.com
-        aac_url = aac_url.replace('_320.mp3', '_160.mp3')
-        r = requests.head(aac_url, allow_redirects=True, headers=user_agent)
-        if str(r.status_code) == '200':
-            return aac_url
-
-        # check for 160 mp3 on h.saavncdn.com
-        h_url = h_url.replace('_320.mp3', '_160.mp3')
-        r = requests.head(h_url, allow_redirects=True)
-        if str(r.status_code) == '200':
-            return h_url
-
-        # ---------------------------------------------------------#
-        # check for 128 mp3 on aac.saavncdn.com
-        aac_url = aac_url.replace('_320.mp3', '.mp3')
-        r = requests.head(aac_url, allow_redirects=True, headers=user_agent)
-        if str(r.status_code) == '200':
-            return aac_url
-
-        # check for 128 mp3 on h.saavncdn.com
-        h_url = h_url.replace('_320.mp3', '.mp3')
-        r = requests.head(h_url, allow_redirects=True)
-        if str(r.status_code) == '200':
-            return h_url
-
-        # ---------------------------------------------------------#
-        # ---------------------------------------------------------#
-        # ---------------------------------------------------------#
-        # now trying for m4a
-        # Edit: skipped m4a support as of now
-
-        # aac_url = dec_url[:].replace(".mp3", '.mp4')
-        # h_url = aac_url.replace('aac.saavncdn.com', 'h.saavncdn.com')
-        #
-        # # ---------------------------------------------------------#
-        #
-        # # check for 320 m4a on aac.saavncdn.com
-        # r = requests.head(aac_url, allow_redirects=True)
-        # if str(r.status_code) == '200':
-        #     return aac_url
-        #
-        # # check for 320 m4a on h.saavncdn.com
-        # r = requests.head(h_url, allow_redirects=True)
-        # if str(r.status_code) == '200':
-        #     return h_url
-        #
-        # # ---------------------------------------------------------#
-        #
-        # # check for 160 m4a on aac.saavncdn.com
-        # aac_url = aac_url.replace('_320.mp4', '_160.mp4')
-        # r = requests.head(aac_url, allow_redirects=True)
-        # if str(r.status_code) == '200':
-        #     return aac_url
-        #
-        # # check for 160 m4a on h.saavncdn.com
-        # h_url = h_url.replace('_320.mp4', '_160.mp4')
-        # r = requests.head(h_url, allow_redirects=True)
-        # if str(r.status_code) == '200':
-        #     return h_url
-        #
-        # # ---------------------------------------------------------#
-        # # check for 128 m4a on aac.saavncdn.com
-        # aac_url = aac_url.replace('_320.mp4', '.mp4')
-        # r = requests.head(aac_url, allow_redirects=True)
-        # if str(r.status_code) == '200':
-        #     return aac_url
-        #
-        # # check for 128 m4a on h.saavncdn.com
-        # h_url = h_url.replace('_320.mp4', '.mp4')
-        # r = requests.head(h_url, allow_redirects=True)
-        # if str(r.status_code) == '200':
-        #     return h_url
-
-    except:
-        return None
-
-
-def get_lyrics(url):
-    try:
-        if '/song/' in url:
-            url = url.replace("/song/", '/lyrics/')
-            source = requests.get(url).text
-            soup = BeautifulSoup(source, 'html5lib')
-            res = soup.find('p', class_='lyrics')
-            lyrics = str(res).replace("<br/>", "\n")
-            lyrics = lyrics.replace('<p class="lyrics"> ', '')
-            lyrics = lyrics.replace("</p>", '')
-            return (lyrics)
-    except Exception:
-        traceback.print_exc()
-        return
-
-
 # ------------------------------------------#
 # Extras
 
@@ -261,10 +142,6 @@ def printDict(myDict):
 def fixImageUrl(oldUrl):
     url = oldUrl.replace('150x150', '500x500')
     return url
-
-
-def join(dir, file):
-    return os.path.join(dir, file)
 
 
 def editDistDP(str1, str2, len_str1, len_str2):
@@ -326,7 +203,7 @@ def checkAndFixTag(tags, tag_name, tag_value_from_json):
 # ---------------------------------------------#
 
 
-def writeAndPrintLog(log_file, line, test=0):
+def writePrintLog(log_file, line, test=0):
     log_file.write(line)
     traceback.print_exc(file=log_file)
     if test:
