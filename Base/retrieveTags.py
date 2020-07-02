@@ -62,7 +62,8 @@ def autoMatch(song_info_list, song_name, tags, song_with_path, test=0):
             artist_from_tags = tools.removeTrailingExtras(artist_from_tags)
             artist_from_tags = tools.removeDup(artist_from_tags)
 
-            ed_artist = tools.editDistDP(artist_from_tags, artist_from_json, len(artist_from_tags), len(artist_from_json))
+            ed_artist = tools.editDistDP(artist_from_tags, artist_from_json, len(artist_from_tags),
+                                         len(artist_from_json))
 
             if test:
                 print(artist_from_json)
@@ -112,15 +113,24 @@ def getSong(song_info_list, song_name, tags, song_with_path, test=0):
     # if no song was matched, Ask user
 
     print("\n-------------------------------"
-          "\nDownloaded songs info, select song number to download.")
+          "\nFrom Below, Select song number.")
 
     # printing the song list
+    keys = [
+        'title',
+        'album',
+        'singers',
+        'year',
+        'label',
+        'music',
+        'duration'
+    ]
+
     i = 0
     for song in song_info_list:
         print(i + 1, end=' ) \n')
-        for key in song:
-            # if(key == )
-            print('\t', key, ':', song[key])
+        for key in keys:
+            print('\t', key.title(), ':', song[key])
         print()
         i += 1
 

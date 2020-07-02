@@ -15,7 +15,7 @@ from Base import tools
 
 
 def addAlbumArt(json_data, songNameWithPath):
-    img_url = json_data['image_url'].strip()
+    img_url = json_data['image'].strip()
 
     # Download AlbumArt
     response = requests.get(img_url, stream=True)

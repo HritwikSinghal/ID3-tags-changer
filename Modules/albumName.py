@@ -31,11 +31,11 @@ def start(tags, json_data, found_data):
             album_name = json_data['album']
 
         tools.checkAndFixTag(tags, 'album', album_name)
-        date = json_data['date']
+        date = json_data['year']
         fixAlbum(tags, date)
     else:
         try:
-            date = tags['date'][0]
+            date = tags['year'][0]
         except KeyError:
             date = ''
         fixAlbum(tags, date)

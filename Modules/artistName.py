@@ -32,7 +32,7 @@ def fixArtist(tags):
 
 def start(tags, json_data, found_data):
     if found_data:
-        artist_name = json_data['artist']
+        artist_name = json_data['singers']
         tools.checkAndFixTag(tags, 'artist', artist_name)
 
     fixArtist(tags)

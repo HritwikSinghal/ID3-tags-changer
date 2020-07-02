@@ -33,7 +33,6 @@ def inputSongDir(test=0):
             print("No such Dir exist, Please enter Dir again...")
 
 
-# todo : add m4a support
 def getSongList(files):
     songs = []
     for x in files:
@@ -57,7 +56,6 @@ def fixSongName(songDir, song_list, log_file, test=0):
     print()
 
 
-# todo : add m4a support
 def fixTags(song_dir, song_list, log_file, get_from_web_flag=0, test=0):
     for song in song_list:
         song_with_path = os.path.join(song_dir, song)
@@ -117,11 +115,6 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag=0, test=0):
         else:
             found_data = 0
             json_data = ''
-
-        # todo: remove this
-        # ------------------------------------------------ #
-        input("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-        # ------------------------------------------------ #
 
         try:
             albumName.start(tags, json_data, found_data)

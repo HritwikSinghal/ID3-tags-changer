@@ -2,9 +2,6 @@ import os
 import re
 import traceback
 
-import requests
-from bs4 import BeautifulSoup
-
 
 # -----------------------------------------------------#
 # Website Name Specifics
@@ -137,11 +134,6 @@ def printDict(myDict):
     for key, value in myDict.items():
         print(key, ':', value)
     print('-----------')
-
-
-def fixImageUrl(oldUrl):
-    url = oldUrl.replace('150x150', '500x500')
-    return url
 
 
 def editDistDP(str1, str2, len_str1, len_str2):
