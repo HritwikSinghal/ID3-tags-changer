@@ -149,11 +149,6 @@ headers = {
 search_api_url = 'https://www.jiosaavn.com/api.php?p=1&q={0}&_format=json&_marker=0&api_version=4&ctx=web6dot0&n=20&__call=search.getResults'
 
 
-def printText(text, test=0):
-    if test:
-        print(text)
-
-
 def getURL(baseUrl, song_name, tags):
     # get the search url using album or artist or year or only name
 
@@ -229,7 +224,7 @@ def fix(song_info, test=0):
 
     song_info['title'] = tools.removeGibberish(song_info['title'])
     song_info["album"] = tools.removeGibberish(song_info["album"]).strip()
-    song_info["album"] = song_info["album"] + ' (' + song_info['year'] + ')'
+    # song_info["album"] = song_info["album"] + ' (' + song_info['year'] + ')'
 
     if test:
         print(json.dumps(song_info, indent=2))
@@ -250,6 +245,7 @@ def getImpKeys(song_info, log_file, test=0):
     keys["label"] = song_info["more_info"]["label"]
     keys['image'] = song_info['image']
     keys['encrypted_media_url'] = song_info['more_info']['encrypted_media_url']
+    keys["duration"] = song_info["more_info"]["duration"]
 
     fix(keys, test=test)
 
@@ -265,9 +261,18 @@ def fixContent(data):
     return fixed_json
 
 
-def start(song_name, tags, log_file, test=0):
-    url = getURL(search_api_url, song_name, tags)
-    printText(url, test=test)
+def getSongInfo(data, log_file, test=0):
+    songs_info = []
+    for curr_song in data['results']:
+        songs_info.append(getImpKeys(curr_song, log_file, test=test))
+
+    return songs_info
+
+
+def retrieveData(url, log_file, test=0):
+    if test:
+        print(url)
+
     res = requests.get(url, headers=headers)
 
     data = str(res.text).strip()
@@ -277,58 +282,28 @@ def start(song_name, tags, log_file, test=0):
         data = fixContent(data)
         data = json.loads(data)
 
-    # todo: remove this
-    # -------------------------------------------------- #
-    with open('song.txt', 'w+', encoding='utf-8') as aaa:
-        json.dump(data, aaa, indent=4)
-
-    print(data['results'])
-
-    if test:
-        x = input()
-    # -------------------------------------------------- #
-
-    # if songs were found, get imp keys of songs
-    songs_info = []
-    if int(data['total']) != 0:
-        retry_flag = 0
-        for curr_song in data['results']:
-            songs_info.append(getImpKeys(curr_song, log_file, test=test))
-
-    # else set retry flag to -1 so we can retry below
-    else:
-        print("Oops...Couldn't find the song in this turn, let me retry :p ..... ")
-        retry_flag = -1
-
-    # if retry flag is -1, search only using song name
-    # this flag was set by us if no songs were found in first try
-    # or it may be set by user when there are no matching songs in the list
-    # (the getSongs function returns -1 if user inputs 'n'
-    # in both cases, we have to retry search using song name
-
-    if retry_flag == -1:
-        songs_info.clear()
-
-        # new url based only on song name
-        url = search_api_url + song_name
-        printText(url, test=test)
-
-        list_of_songs_with_info = jioSaavnApi.start(url, tags, log_file, test=test)
-
-        # None can only be returned in case of any error, so we were not able to find data
-        if list_of_songs_with_info is None:
-            return None
-
-        song = getSong(list_of_songs_with_info, song_name, tags, song_with_path, test)
-
-    # if we were still not able to find correct song in 2nd try, just return None
-    # (means we failed to find data about song)
-    if retry_flag == -1:
+    if int(data['total']) == 0:
         return None
 
-    # if the song was found in any of above cases, then we go below.
-    # the info we got had too much info, we will save only certain keys like artist from it
-    song_info = getCertainKeys(retry_flag)
+    songs_info = getSongInfo(data, log_file, test=test)
+    return songs_info
 
-    # -------------------------------------------------- #
-    return data
+
+def start(song_name, tags, log_file, retry_flag=0, test=0):
+    if not retry_flag:
+        url = getURL(search_api_url, song_name, tags)
+        songs_info = retrieveData(url, log_file, test=test)
+
+        if songs_info is None:
+            retry_flag = 1
+        else:
+            retry_flag = 0
+
+    if retry_flag:
+        print("Let me retry :p ..... ")
+
+        # new url based only on song name
+        url = search_api_url.format(song_name)
+        songs_info = retrieveData(url, log_file, test=test)
+
+    return songs_info

@@ -256,13 +256,6 @@
 #     # get a list of songs which match search
 #     list_of_songs_with_info = jioSaavnApi.start(url, log_file, test=test)
 #
-#     # todo: remove this
-#     # -------------------------------------------------- #
-#     tools.printList(list_of_songs_with_info)
-#     if test:
-#         x = input()
-#     # -------------------------------------------------- #
-#
 #     # None can only be returned in case of any error, so we were not able to find data
 #     if list_of_songs_with_info is None:
 #         return None
@@ -332,7 +325,7 @@ def mod(num):
 
 def autoMatch(song_info_list, song_name, tags, song_with_path, test=0):
     for song in song_info_list:
-        json_data = json.loads(song)
+        json_data = json.loads(json.dumps(song))
 
         #################################################
         if test:
@@ -346,8 +339,8 @@ def autoMatch(song_info_list, song_name, tags, song_with_path, test=0):
         title = json_data['title'].lower().strip()
 
         ed1 = tools.editDistDP(song_name, title, len(song_name), len(title))
-
-        printText(ed1, test)
+        if test:
+            print(ed1)
 
         if ed1 > 5:
             continue
@@ -428,13 +421,6 @@ def getSong(song_info_list, song_name, tags, song_with_path, test=0):
         print(key, ":", tags[key][0])
 
     # if no song was matched, Ask user
-    not_to_show_keys = [
-        'image_url',
-        'actual_album',
-        'url',
-        'lyrics_url',
-        'e_songid'
-    ]
 
     print("\n-------------------------------"
           "\nDownloaded songs info, select song number to download.")
@@ -442,11 +428,9 @@ def getSong(song_info_list, song_name, tags, song_with_path, test=0):
     # printing the song list
     i = 0
     for song in song_info_list:
-        rel_keys = getCertainKeys(song)
         print(i + 1, end=' ) \n')
-        for key in rel_keys:
-            if key not in not_to_show_keys:
-                print('\t', key, ':', rel_keys[key])
+        for key in song:
+            print('\t', key, ':', song[key])
         print()
         i += 1
 
@@ -466,25 +450,19 @@ def getSong(song_info_list, song_name, tags, song_with_path, test=0):
 
     # if user entered 'n' or any letter, return -1 (since no song was matched correctly)
     except ValueError:
-        return -1
+        return None
 
     song_number = int(song_number)
     return song_info_list[song_number - 1]
 
 
 def start(tags, song_name, log_file, song_with_path, test=0):
-    # get a list of songs which match search
     list_of_songs_with_info = jioSaavnApi.start(song_name, tags, log_file, test=test)
 
-    # todo: remove this
-    # -------------------------------------------------- #
-    tools.printList(list_of_songs_with_info)
-    if test:
-        x = input()
-    # -------------------------------------------------- #
+    song_info = getSong(list_of_songs_with_info, song_name, tags, song_with_path, test=test)
 
-    # get the correct song and its info from that list
-    song_info = getSong(list_of_songs_with_info, song_name, tags, song_with_path, test)
+    if song_info is None:
+        list_of_songs_with_info = jioSaavnApi.start(song_name, tags, log_file, retry_flag=1, test=test)
+        song_info = getSong(list_of_songs_with_info, song_name, tags, song_with_path, test=test)
 
-    # return those selected keys
     return song_info

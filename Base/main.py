@@ -65,7 +65,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag=0, test=0):
         try:
             tags = easyid3(song_with_path)
         except:
-            print("This Song has no tags. Creating tags...")
+            print(" ==================== This Song has no tags. Creating tags... ==================== ")
             try:
                 tags = mutagen.File(song_with_path, easy=True)
                 tags.add_tags()
@@ -92,7 +92,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag=0, test=0):
                 if json_data is not None:
                     found_data = 1
                 else:
-                    print("No data found for this song...")
+                    print(" ==================== No data found for this song... ==================== ")
                     found_data = 0
                     json_data = ''
 
@@ -105,7 +105,7 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag=0, test=0):
             except:
                 found_data = 0
                 json_data = ''
-                print("No data found for this song...")
+                print(" ==================== No data found for this song... ==================== ")
 
                 log_file.write(
                     '\n\n ==================== Error: No data found for: ' + song_with_path + ' ==================== \n')
@@ -117,6 +117,9 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag=0, test=0):
         else:
             found_data = 0
             json_data = ''
+
+        print(found_data)
+        input("HUEUH")
 
         try:
             albumName.start(tags, json_data, found_data)
