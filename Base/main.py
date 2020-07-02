@@ -118,8 +118,10 @@ def fixTags(song_dir, song_list, log_file, get_from_web_flag=0, test=0):
             found_data = 0
             json_data = ''
 
-        print(found_data)
-        input("HUEUH")
+        # todo: remove this
+        # ------------------------------------------------ #
+        input("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+        # ------------------------------------------------ #
 
         try:
             albumName.start(tags, json_data, found_data)
