@@ -131,6 +131,7 @@
 
 
 import json
+import re
 
 import requests
 import urllib3.exceptions
@@ -183,6 +184,78 @@ def getURL(baseUrl, song_name, tags):
     return url.replace(" ", '+')
 
 
+def fix(song_info, test=0):
+    oldArtist = song_info["primary_artists"]
+    newArtist = tools.removeGibberish(oldArtist)
+    newArtist = tools.divideBySColon(newArtist)
+    newArtist = tools.removeTrailingExtras(newArtist)
+    song_info['primary_artists'] = tools.removeDup(newArtist)
+
+    song_info["singers"] = song_info['primary_artists']
+
+    old_composer = song_info["music"]
+    new_composer = tools.removeGibberish(old_composer)
+    new_composer = tools.divideBySColon(new_composer)
+    new_composer = tools.removeTrailingExtras(new_composer)
+    song_info["music"] = tools.removeDup(new_composer)
+
+    song_info['image'] = song_info['image'].replace('-150x150.jpg', '-500x500.jpg')
+
+    # ---------------------------------------------------------------#
+
+    new_title = song_info['title'].replace('&quot;', '#')
+    if new_title != song_info['title']:
+        song_info['title'] = new_title
+        song_info['title'] = tools.removeGibberish(song_info['title'])
+
+        x = re.compile(r'''
+                                (
+                                [(\]]
+                                .*          # 'featured in' or 'from' or any other shit in quotes
+                                \#(.*)\#      # album name
+                                [)\]]
+                                )
+                                ''', re.VERBOSE)
+
+        album_name = x.findall(song_info['title'])
+        song_info['title'] = song_info['title'].replace(album_name[0][0], '').strip()
+
+        song_info['album'] = album_name[0][1]
+
+        # old method, if above wont work, this will work 9/10 times.
+        # json_data = re.sub(r'.\(\b.*?"\)', "", str(info.text))
+        # json_data = re.sub(r'.\[\b.*?"\]', "", json_data)
+        # actual_album = ''
+
+    song_info['title'] = tools.removeGibberish(song_info['title'])
+    song_info["album"] = tools.removeGibberish(song_info["album"]).strip()
+    song_info["album"] = song_info["album"] + ' (' + song_info['year'] + ')'
+
+    if test:
+        print(json.dumps(song_info, indent=2))
+
+
+def getImpKeys(song_info, log_file, test=0):
+    keys = {}
+
+    keys["title"] = song_info["title"]
+    keys["primary_artists"] = ", ".join(
+        [artist["name"] for artist in song_info["more_info"]["artistMap"]["primary_artists"]])
+    keys["album"] = song_info["more_info"]["album"]
+    keys["singers"] = keys["primary_artists"]
+    keys["music"] = song_info["more_info"]["music"]
+    keys["starring"] = ";".join(
+        [artist["name"] for artist in song_info["more_info"]["artistMap"]["artists"] if artist['role'] == 'starring'])
+    keys['year'] = song_info['year']
+    keys["label"] = song_info["more_info"]["label"]
+    keys['image'] = song_info['image']
+    keys['encrypted_media_url'] = song_info['more_info']['encrypted_media_url']
+
+    fix(keys, test=test)
+
+    return keys
+
+
 def fixContent(data):
     # old
     # data = re.sub(r'<!DOCTYPE html>\s*<.*>?', '', data)
@@ -197,23 +270,65 @@ def start(song_name, tags, log_file, test=0):
     printText(url, test=test)
     res = requests.get(url, headers=headers)
 
-    # todo: remove this
-    # -------------------------------------------------- #
-    data = json.loads(res.text.strip())
-    with open('song.txt', 'w+', encoding='utf-8') as aaa:
-        json.dump(data, aaa, indent=4)
-    print(data['results'][0])
-
-    if test:
-        x = input()
-    # -------------------------------------------------- #
-
     data = str(res.text).strip()
-
     try:
         data = json.loads(data)
     except:
         data = fixContent(data)
         data = json.loads(data)
 
+    # todo: remove this
+    # -------------------------------------------------- #
+    with open('song.txt', 'w+', encoding='utf-8') as aaa:
+        json.dump(data, aaa, indent=4)
+
+    print(data['results'])
+
+    if test:
+        x = input()
+    # -------------------------------------------------- #
+
+    # if songs were found, get imp keys of songs
+    songs_info = []
+    if int(data['total']) != 0:
+        retry_flag = 0
+        for curr_song in data['results']:
+            songs_info.append(getImpKeys(curr_song, log_file, test=test))
+
+    # else set retry flag to -1 so we can retry below
+    else:
+        print("Oops...Couldn't find the song in this turn, let me retry :p ..... ")
+        retry_flag = -1
+
+    # if retry flag is -1, search only using song name
+    # this flag was set by us if no songs were found in first try
+    # or it may be set by user when there are no matching songs in the list
+    # (the getSongs function returns -1 if user inputs 'n'
+    # in both cases, we have to retry search using song name
+
+    if retry_flag == -1:
+        songs_info.clear()
+
+        # new url based only on song name
+        url = search_api_url + song_name
+        printText(url, test=test)
+
+        list_of_songs_with_info = jioSaavnApi.start(url, tags, log_file, test=test)
+
+        # None can only be returned in case of any error, so we were not able to find data
+        if list_of_songs_with_info is None:
+            return None
+
+        song = getSong(list_of_songs_with_info, song_name, tags, song_with_path, test)
+
+    # if we were still not able to find correct song in 2nd try, just return None
+    # (means we failed to find data about song)
+    if retry_flag == -1:
+        return None
+
+    # if the song was found in any of above cases, then we go below.
+    # the info we got had too much info, we will save only certain keys like artist from it
+    song_info = getCertainKeys(retry_flag)
+
+    # -------------------------------------------------- #
     return data

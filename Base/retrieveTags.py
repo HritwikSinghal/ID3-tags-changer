@@ -330,64 +330,6 @@ def mod(num):
     return -num
 
 
-def getCertainKeys(song_info):
-    # these are the keys which are useful to us
-
-    rel_keys = [
-        'title',
-        'album',
-        'singers',
-        'music',
-        'url',
-
-        'year',
-        'label',
-        'duration',
-
-        'e_songid',
-        'image_url',
-        'tiny_url',
-        'actual_album'
-    ]
-
-    json_data = json.loads(song_info)
-
-    #########################
-    # print(song_info)
-    # x = input()
-    #########################
-
-    # this will store all relevant keys and their values
-    rinfo = {}
-
-    # for k, v in json_data.items():
-    #     print(k, ':', v)
-
-    for key in json_data:
-
-        if key in rel_keys:
-            if key == 'singers':
-                rinfo['artist'] = json_data[key]
-            elif key == 'music':
-                rinfo['composer'] = json_data[key]
-            elif key == 'year':
-                rinfo['date'] = json_data[key]
-            elif key == 'duration':
-                rinfo['length'] = json_data[key]
-            elif key == 'label':
-                rinfo['organization'] = json_data[key]
-            elif key == 'image_url':
-                rinfo['image_url'] = tools.fixImageUrl(json_data[key])
-            # elif key == 'url':
-            #     rinfo['url'] = tools.decrypt_url(json_data[key])
-            elif key == 'tiny_url':
-                rinfo['lyrics_url'] = json_data[key]
-            else:
-                rinfo[key] = json_data[key]
-
-    return rinfo
-
-
 def autoMatch(song_info_list, song_name, tags, song_with_path, test=0):
     for song in song_info_list:
         json_data = json.loads(song)
@@ -541,54 +483,8 @@ def start(tags, song_name, log_file, song_with_path, test=0):
         x = input()
     # -------------------------------------------------- #
 
-    # None can only be returned in case of any error, so we were not able to find data
-    if list_of_songs_with_info is None:
-        return None
-
-    ###########################
-    # tools.printList(list_of_songs_with_info)
-    # x = input()
-    ###########################
-
-    # if songs were found, get the correct song from that list
-    if len(list_of_songs_with_info) != 0:
-        song = getSong(list_of_songs_with_info, song_name, tags, song_with_path, test)
-
-    # else set retry flag to -1 so we can retry below
-    else:
-        print("Oops...Couldn't find the song in this turn, let me retry :p ..... ")
-        song = -1
-
-    # if retry flag is -1, retry, but search only using song name
-    # this flag was set by us if no songs were found in first try
-    # or it may be set by user when there are no matching songs in the list
-    # (the getSongs function returns -1 if user inputs 'n')
-
-    # in both cases, we have to retry search using song name
-
-    if song == -1:
-        list_of_songs_with_info.clear()
-
-        # new url based only on song name
-        url = search_api_url + song_name
-        printText(url, test=test)
-
-        list_of_songs_with_info = jioSaavnApi.start(url, tags, log_file, test=test)
-
-        # None can only be returned in case of any error, so we were not able to find data
-        if list_of_songs_with_info is None:
-            return None
-
-        song = getSong(list_of_songs_with_info, song_name, tags, song_with_path, test)
-
-    # if we were still not able to find correct song in 2nd try, just return None
-    # (means we failed to find data about song)
-    if song == -1:
-        return None
-
-    # if the song was found in any of above cases, then we go below.
-    # the info we got had too much info, we will save only certain keys like artist from it
-    song_info = getCertainKeys(song)
+    # get the correct song and its info from that list
+    song_info = getSong(list_of_songs_with_info, song_name, tags, song_with_path, test)
 
     # return those selected keys
     return song_info
