@@ -22,7 +22,7 @@ from Modules import songTitle
 def inputSongDir(test=0):
     while True:
         if test:
-            songDir = r'/home/hritwik/Videos/CR'
+            songDir = r'C:\Users\Hritwik\Videos\test2'
         else:
             songDir = input("Enter song dir:  ")
 
@@ -197,7 +197,7 @@ def start(test=0):
     song_dir = inputSongDir(test)
 
     if test:
-        sub_dir_flag = -1
+        sub_dir_flag = 0
         get_from_web_flag = 1
     else:
         sub_dir_flag = int(input("\nDo you want to run this program in all sub-dirs?\n"

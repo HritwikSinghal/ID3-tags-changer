@@ -89,12 +89,12 @@ def fix(song_info, test=0):
         # json_data = re.sub(r'.\(\b.*?"\)', "", str(info.text))
         # json_data = re.sub(r'.\[\b.*?"\]', "", json_data)
         # actual_album = ''
+
     else:
         song_info['actual_album'] = ''
 
     song_info['title'] = tools.removeGibberish(song_info['title'])
     song_info["album"] = tools.removeGibberish(song_info["album"]).strip()
-    # song_info["album"] = song_info["album"] + ' (' + song_info['year'] + ')'
 
     if test:
         print(json.dumps(song_info, indent=2))
