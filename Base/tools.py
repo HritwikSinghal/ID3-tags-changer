@@ -93,8 +93,8 @@ def removeYear(oldName):
 
 
 def removeGibberish(oldName):
-    newName = re.sub(r'&quot;|&*amp| - Single', '', oldName)
-    return newName.strip()
+    newName = re.sub(r'&quot;|&*amp| - Single|', '', oldName)
+    return newName.strip().replace('&#039;', '')
 
 
 def removeTrailingExtras(oldName):
